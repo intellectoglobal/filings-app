@@ -46,12 +46,12 @@ def get_payment(db: Session):
     return db.query(models.JOB_SUPPORT_PAYMENT).all()
 
 
-def update_payment(db: Session, request: schemas.JOB_SUPPORT_PAYMENT) -> int:
+def update_payment(db: Session, request: schemas.JOB_SUPPORT_PAYMENT_GU) -> int:
     db_req = models.JOB_SUPPORT_PAYMENT(**request.dict())
-    db_req.id = request.job_support_id
+    db_req.id = request.id
     db.merge(db_req)
     db.commit()
-    return request.job_support_id
+    return request.id
 
 def create_comment(db: Session, request: schemas.JOB_SUPPORT_COMMENTS):
     db_comment = models.JOB_SUPPORT_COMMENTS(**request.dict())
@@ -65,9 +65,9 @@ def get_comment(db: Session):
     return db.query(models.JOB_SUPPORT_COMMENTS).all()
 
 
-def update_comment(db: Session, request: schemas.JOB_SUPPORT_COMMENTS) -> int:
+def update_comment(db: Session, request: schemas.JOB_SUPPORT_COMMENTS_GU) -> int:
     db_req = models.JOB_SUPPORT_COMMENTS(**request.dict())
-    db_req.id = request.job_support_id
+    db_req.id = request.id
     db.merge(db_req)
     db.commit()
-    return request.job_support_id
+    return request.id

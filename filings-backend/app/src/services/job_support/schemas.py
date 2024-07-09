@@ -32,9 +32,27 @@ class JOB_SUPPORT_PAYMENT(BaseModel):
     resource_payment_status: str = "Not Paid"
     resource_payment_date: str = None
 
+class JOB_SUPPORT_PAYMENT_GU(BaseModel):
+
+    id: int
+    job_support_id : int
+    candidate_payment_amount: int = 0 
+    candidate_payment_status: str = "Not Paid"
+    candidate_payment_date: str = None
+    resource_payment_amount: int = 0
+    resource_payment_status: str = "Not Paid"
+    resource_payment_date: str = None
+
 
 class JOB_SUPPORT_COMMENTS(BaseModel):
 
+    job_support_id: int
+    comments: str
+    commented_at: str
+
+class JOB_SUPPORT_COMMENTS_GU(BaseModel):
+
+    id: int
     job_support_id: int
     comments: str
     commented_at: str

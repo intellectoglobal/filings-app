@@ -45,8 +45,8 @@ export const UsersActions = ({ params, rowId, setRowId }) => {
   // console.log("user info details", userinfo);
   let value = userinfo;
   const handleFormClose = () => {
-    if(window.confirm("Discard Changes")){
-    setOpen(false);
+    if (window.confirm("Discard Changes")) {
+      setOpen(false);
     }
   };
   const handleClickOpen = () => {
@@ -61,7 +61,7 @@ export const UsersActions = ({ params, rowId, setRowId }) => {
     const endpoint = endpoints[userinfo.enquired_for];
 
     if (endpoint) {
-      fetch(`http://localhost:8000/api/v1/${endpoint}/${params.row.req_id}`)
+      fetch(`https://3.226.14.5:5000/api/v1/${endpoint}/${params.row.req_id}`)
         .then((res) => res.json())
         .then((result) => {
           setOutput(result);
@@ -124,7 +124,7 @@ export const UsersActions = ({ params, rowId, setRowId }) => {
     const data = params.row;
     if (window.confirm("Are you sure to delete this record?")) {
       const result = await fetch(
-        "http://localhost:8000/api/v1/req-data-delete",
+        "https://3.226.14.5:5000/api/v1/req-data-delete",
         {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
@@ -147,7 +147,7 @@ export const UsersActions = ({ params, rowId, setRowId }) => {
     };
 
     const endpoint = endpoints[userinfo.enquired_for];
-    const API_ENDPOINT = "http://localhost:8000/api/v1";
+    const API_ENDPOINT = "https://3.226.14.5:5000/api/v1";
 
     console.log("user2", userinfo);
     fetch(`${API_ENDPOINT}/req-data-update`, {
@@ -170,11 +170,14 @@ export const UsersActions = ({ params, rowId, setRowId }) => {
   const handleSubmit = async () => {
     setLoading(true);
     const data = params.row;
-    const result = await fetch("http://localhost:8000/api/v1/req-data-update", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
+    const result = await fetch(
+      "https://3.226.14.5:5000/api/v1/req-data-update",
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      }
+    );
     if (result) {
       setSuccess(true);
       setRowId(null);

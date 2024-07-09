@@ -46,7 +46,7 @@ def job_support_payment_data(db: Session = Depends(get_db)):
 
 
 @router.put("/job-support-payment-update")
-async def job_support_payment_update(request: schemas.JOB_SUPPORT_PAYMENT,  db: Session = Depends(get_db)):
+async def job_support_payment_update(request: schemas.JOB_SUPPORT_PAYMENT_GU,  db: Session = Depends(get_db)):
     return service.update_payment(db=db, request=request)
 
 
@@ -61,6 +61,6 @@ def job_support_comment_data(db: Session = Depends(get_db)):
 
 
 @router.put("/job-support-comment-update")
-async def job_support_comment_update(request: schemas.JOB_SUPPORT_COMMENTS,  db: Session = Depends(get_db)):
+async def job_support_comment_update(request: schemas.JOB_SUPPORT_COMMENTS_GU,  db: Session = Depends(get_db)):
     return service.update_comment(db=db, request=request)
 

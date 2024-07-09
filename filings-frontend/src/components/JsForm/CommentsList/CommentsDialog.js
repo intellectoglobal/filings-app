@@ -18,13 +18,29 @@ import { cmdgetRequests } from "../../../Context/actions";
 import axios from "axios";
 import { useValue } from "../../../Context/ContextProvider";
 
-const CommentsDialog = ({ open, setOpen, params, rowId }) => {
+const CommentsDialog = ({ open, setOpen, params, rowId, CData }) => {
+  const CommentDataLength = CData !== undefined ? CData.comment.length : 0;
+  const today = new Date().toLocaleDateString("en-GB");
+  const commentData = () => {
+    if (CData !== undefined) {
+      return CData.comment.filter((list) => list.commented_at === today);
+    } else {
+      return [];
+    }
+  };
+
+  // console.log("date", today);
+  const {
+    state: { cmdrequests },
+  } = useValue();
+  let cmdData = cmdrequests.filter(
+    (list) => list.commented_at === today && list.job_support_id === rowId
+  );
   const [values, setValues] = useState({
-    comment: "",
+    comment: cmdData.length !== 0 ? cmdData[0].comments : "",
     comment_date: "",
   });
 
-  const [visiblity, setVisibility] = useState(false);
   const { dispatch } = useValue();
   const theme = createTheme({
     palette: {
@@ -43,43 +59,47 @@ const CommentsDialog = ({ open, setOpen, params, rowId }) => {
     },
   });
 
-  const today = new Date().toLocaleDateString("en-GB");
-  const cmd = {
+  const cmtPost = {
     job_support_id: rowId,
     comments: values.comment,
     commented_at: today,
   };
-  const {
-    state: { cmdrequests },
-  } = useValue();
+  const cmtUpdate = {
+    id: cmdData.length !== 0 ? cmdData[0].id : 0,
+    job_support_id: cmdData.length !== 0 ? cmdData[0].job_support_id : "",
+    comments: values.comment,
+    commented_at: today,
+  };
 
-  let cmdData = cmdrequests.filter((list) => list.commented_at === today);
-  let jsID = cmdrequests.filter((list) => list.job_support_id === rowId);
-  let comID;
-  try {
-    comID = true ? jsID[0].job_support_id === rowId : false;
-  } catch (err) {
-    console.log(err);
-  }
-
-  // http://localhost:8000/api/v1/job-support-comment-update
+  // https://3.226.14.5:5000/api/v1/job-support-comment-update
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    axios
-      .post("http://localhost:8000/api/v1/job-support-comment-data", cmd)
-      .then((res) => console.log("res", res.data));
-
+    if (cmdData.length === 0) {
+      axios
+        .post(
+          "https://3.226.14.5:5000/api/v1/job-support-comment-data",
+          cmtPost
+        )
+        .then((res) => console.log("Comment Data Posted"));
+    } else {
+      axios
+        .put(
+          "https://3.226.14.5:5000/api/v1/job-support-comment-update",
+          cmtUpdate
+        )
+        .then((res) => console.log("Comment Data Updated"));
+    }
+    console.log("params", cmdData);
     cmdgetRequests(dispatch);
+    setOpen(false);
   };
 
   useEffect(() => {
     cmdgetRequests(dispatch);
   }, []);
 
-  console.log("visiblity", cmdrequests);
-  console.log("rowId", comID);
+  // console.log("visiblity", cmdrequests);
   //   console.log("visiblity", cmdData.length);
   return (
     <>
@@ -119,19 +139,20 @@ const CommentsDialog = ({ open, setOpen, params, rowId }) => {
                     justify="center"
                     alignItems="center"
                   >
-                    <CommentsDataTable params={params.row} rowId={rowId} />
+                    <CommentsDataTable
+                      params={params.row}
+                      rowId={rowId}
+                      today={today}
+                    />
                     <TextValidator
                       label="New Comment"
                       size="small"
                       type="text"
                       name="comment"
                       value={values.comment}
-                      sx={{
-                        display:
-                          ( cmdData.length === 0 && comID === true) || undefined
-                            ? ""
-                            : "none",
-                      }}
+                      // sx={{
+                      //   display: commentData().length === 0 ? "" : "none",
+                      // }}
                       onChange={(e) =>
                         setValues((presvalue) => {
                           return {
@@ -155,7 +176,7 @@ const CommentsDialog = ({ open, setOpen, params, rowId }) => {
                         Back
                       </Button>
                       <Button
-                        disabled={cmdData.length !== 0 && comID === true}
+                        // disabled={cmdData.length !== 0 && comID === true}
                         variant="contained"
                         color="secondary"
                         onClick={handleSubmit}

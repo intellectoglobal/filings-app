@@ -213,17 +213,7 @@
       </Box> */
 }
 
-
-
-
-
-
-
 // =========================MUIdataTableLegacy=============================
-
-
-
-
 
 // import MUIDataTable from "mui-datatables";
 // import React, { useState } from "react";
@@ -446,7 +436,7 @@
 
 //   React.useEffect(() => {
 //     (async () => {
-//       const response = await fetch("http://localhost:8000/enq-data");
+//       const response = await fetch("https://3.226.14.5:5000/enq-data");
 //       const content = await response.json();
 //       setenqData(content);
 //     })();

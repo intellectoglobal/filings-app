@@ -31,43 +31,43 @@ export const EnqForm = (props) => {
   const [open, setOpen] = React.useState(false);
   const [userinfo, setInfo] = React.useState({
     req_id: uid,
-    first_name: "vignesh",
-    last_name: "siva",
-    mobile: "7639290579",
-    email: "vignxs@gmail.com",
-    address: "15/10 , mela thoopu street",
-    city: "PYR",
-    pincode: "609307",
+    first_name: "",
+    last_name: "",
+    mobile: "",
+    email: "",
+    address: "",
+    city: "",
+    pincode: "",
   });
   const [newGstinfo, setnewGstInfo] = React.useState({
     req_id: uid,
-    company_name: "IGS",
-    company_address: "medavakkam koot road",
-    company_city: "chennai",
-    company_pincode: "600021",
-    company_email: "igs@gamil.com",
-    created_by: "vignxs",
-    updated_by: "vignxs",
+    company_name: "",
+    company_address: "",
+    company_city: "",
+    company_pincode: "",
+    company_email: "",
+    created_by: "admin",
+    updated_by: "admin",
   });
   const [Gstinfo, setGstInfo] = React.useState({
     req_id: uid,
     gst_time: "",
     period: "",
-    created_by: "vignxs",
-    updated_by: "vignxs",
+    created_by: "admin",
+    updated_by: "admin",
   });
   const [Paninfo, setPanInfo] = React.useState({
     req_id: uid,
-    created_by: "vignxs",
-    updated_by: "vignxs",
+    created_by: "admin",
+    updated_by: "admin",
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
   });
   const [Taxinfo, setTaxInfo] = React.useState({
     req_id: uid,
     pan: "",
-    created_by: "vignxs",
-    updated_by: "vignxs",
+    created_by: "admin",
+    updated_by: "admin",
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
   });
@@ -103,7 +103,7 @@ export const EnqForm = (props) => {
         break;
     }
   };
-  const handleClear=()=>{
+  const handleClear = () => {
     setInfo({
       req_id: "",
       first_name: "",
@@ -114,8 +114,8 @@ export const EnqForm = (props) => {
       city: "",
       pincode: "",
     });
-  }
-  const API_ENDPOINT = "http://localhost:8000/api/v1";
+  };
+  const API_ENDPOINT = "https://3.226.14.5:5000/api/v1";
 
   async function userInfoPost(e) {
     e.preventDefault();
@@ -737,9 +737,12 @@ export const EnqForm = (props) => {
                   Cancel
                 </Button>
 
-
-                <Button variant="outlined" color="green" type="reset" onClick={handleClear}>
-
+                <Button
+                  variant="outlined"
+                  color="green"
+                  type="reset"
+                  onClick={handleClear}
+                >
                   Clear
                 </Button>
               </Stack>

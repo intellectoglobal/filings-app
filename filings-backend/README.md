@@ -24,7 +24,7 @@ The server should reload automatically (because you added --reload to the uvicor
 
 ### Interactive API docs
 
-Now go to <a href="http://127.0.0.1:8000/docs" class="external-link" target="_blank">http://127.0.0.1:8000/docs</a>.
+Now go to <a href="https://3.226.14.5:5000/docs" class="external-link" target="_blank">https://3.226.14.5:5000/docs</a>.
 
 This interactive API documentation is provided by Swagger UI:
 
@@ -32,10 +32,9 @@ This interactive API documentation is provided by Swagger UI:
 
 ### Alternative API docs
 
-And now, go to <a href="http://127.0.0.1:8000/redoc" class="external-link" target="_blank">http://127.0.0.1:8000/redoc</a>.
+And now, go to <a href="https://3.226.14.5:5000/redoc" class="external-link" target="_blank">https://3.226.14.5:5000/redoc</a>.
 
 You will see the alternative automatic documentation
-
 
 # Database Configuration
 
@@ -47,9 +46,8 @@ F:\IGS\filings-app\filings-backend\app\src\db.env
 
 ## Change the value of the variables with your database credentials in db.env file.
 
-
-DB_USER = ******
-DB_PASS = ******
+DB_USER = **\*\***
+DB_PASS = **\*\***
 DB_HOST = localhost
 DB_NAME = fdb
 
@@ -62,6 +60,7 @@ Steps to be followed to migrate the changes in models to database:
 The above command will create a revision file in 'alembic/versions' directory.
 
 (optional)
+
 ### `alembic upgrade head --sql`.
 
 This command will list out the sql queries that is going to be applied. use this command to make sure the changes are correct before making migrations.
