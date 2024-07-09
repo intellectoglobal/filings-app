@@ -115,7 +115,7 @@ export const EnqForm = (props) => {
       pincode: "",
     });
   };
-  const API_ENDPOINT = "https://3.226.14.5:5000/api/v1";
+  const API_ENDPOINT = "http://127.0.0.1:8000/api/v1";
 
   async function userInfoPost(e) {
     e.preventDefault();

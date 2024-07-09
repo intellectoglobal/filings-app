@@ -436,7 +436,7 @@
 
 //   React.useEffect(() => {
 //     (async () => {
-//       const response = await fetch("https://3.226.14.5:5000/enq-data");
+//       const response = await fetch("http://127.0.0.1:8000/enq-data");
 //       const content = await response.json();
 //       setenqData(content);
 //     })();

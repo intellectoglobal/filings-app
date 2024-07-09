@@ -60,7 +60,7 @@ export const UsersActions = ({ params, rowId, setRowId }) => {
     const data = params.row;
     if (window.confirm("Are you sure to delete this record?")) {
       const result = await fetch(
-        "https://3.226.14.5:5000/api/v1/req-data-delete",
+        "http://127.0.0.1:8000/api/v1/req-data-delete",
         {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
@@ -76,7 +76,7 @@ export const UsersActions = ({ params, rowId, setRowId }) => {
     setLoading(true);
     const data = params.row;
     const result = await fetch(
-      "https://3.226.14.5:5000/api/v1/req-data-update",
+      "http://127.0.0.1:8000/api/v1/req-data-update",
       {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
