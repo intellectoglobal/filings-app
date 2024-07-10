@@ -69,7 +69,7 @@ export const Filings = (props) => {
     // e.preventDefault();
     var data = new FormData();
     data.append("file", e.target.files[0]);
-    const resp = await fetch("https://3.226.14.5:5000/uploadfile", {
+    const resp = await fetch("http://127.0.0.1:8000/uploadfile", {
       method: "POST",
       headers: { Accept: "multipart/form-data" },
       body: data,
