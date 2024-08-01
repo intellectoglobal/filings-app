@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useMemo } from "react";
 import {
   DataGrid,
   GridToolbarContainer,
@@ -18,6 +17,7 @@ import { Link, useNavigate } from "react-router-dom";
 import UseForm from "./UseForm";
 import JSformActions from "./JSformActions";
 import { useValue } from "../../Context/ContextProvider";
+import RefreshIcon from "@mui/icons-material/Refresh";
 
 const JobSupportDataTable = () => {
   const {
@@ -27,6 +27,29 @@ const JobSupportDataTable = () => {
   const login = () => {
     navigate("/login");
   };
+
+  const [data, setData] = useState([]);
+  const [refresh, setRefresh] = useState(0);
+
+  const handleRefresh = async () => {
+    console.log("refreshed");
+    console.log("refresh value", refresh);
+    setRefresh((prev) => prev + 1);
+    try {
+      const response = await fetch(
+        "http://localhost:8000/api/v1/job-support-data-all"
+      );
+      const result = await response.json();
+      setData(result);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    handleRefresh(); // Fetch initial data on component mount
+  }, []);
+
   const inputBox = {
     "& .MuiDataGrid-toolbarQuickFilter": {
       "& .MuiTextField-root": {
@@ -52,7 +75,6 @@ const JobSupportDataTable = () => {
       backgroundColor: "rgba(145, 158, 171, 0.12)",
       borderRadius: "10px",
     },
-    "& .MuiDataGrid-main ": {},
     margin: "0 auto",
     width: "100%",
     "& .MuiTextField-root": {
@@ -83,6 +105,7 @@ const JobSupportDataTable = () => {
     borderRadius: "12px",
     padding: "30px",
   };
+
   const getMuiTheme = () =>
     createTheme({
       palette: {
@@ -100,9 +123,9 @@ const JobSupportDataTable = () => {
         },
       },
     });
-  const Table = "Main"
+
+  const Table = "Main";
   const [editId, setEditId] = useState(null);
-  const { fsrequests } = UseForm();
 
   const enqColumns = useMemo(() => [
     {
@@ -169,14 +192,13 @@ const JobSupportDataTable = () => {
     {
       field: "status",
       headerName: "Status",
-  
       width: 100,
       type: "singleSelect",
       headerAlign: "center",
       align: "center",
       valueOptions: [
         "Cannot Provide Support",
-        "Confrimed",
+        "Confirmed",
         "Demo Completed",
         "Demo Scheduled",
         "Demo Yet to Schedule",
@@ -197,6 +219,7 @@ const JobSupportDataTable = () => {
       align: "center",
     },
   ]);
+
   function CustomToolbar() {
     return (
       <GridToolbarContainer sx={{ background: "#000000" }}>
@@ -270,10 +293,17 @@ const JobSupportDataTable = () => {
                 color="secondary"
                 sx={{ height: "30px", width: "40px", color: "#FFFFFE" }}
                 startIcon={<AddIcon />}
-                onClick={window.scrollTo(0, 0)}
+                onClick={() => window.scrollTo(0, 0)}
                 variant="contained"
               >
                 Add
+              </Button>
+              <Button
+                startIcon={<RefreshIcon />}
+                onClick={handleRefresh}
+                sx={{ ml: 2, bgcolor: "#FFFFFF" }}
+              >
+                Refresh
               </Button>
             </div>
           </div>
@@ -281,7 +311,7 @@ const JobSupportDataTable = () => {
             <DataGrid
               sx={{ border: 0 }}
               columns={enqColumns}
-              rows={fsrequests}
+              rows={data}
               getRowId={(row) => row.id}
               rowsPerPageOptions={[10, 20, 30]}
               components={{ Toolbar: CustomToolbar }}
@@ -295,8 +325,7 @@ const JobSupportDataTable = () => {
                 },
                 panel: {
                   sx: {
-                    "& .MuiDataGrid-filterForm": {
-                    },
+                    "& .MuiDataGrid-filterForm": {},
                     "& .MuiDataGrid-paper": {
                       boxShadow: "none !important",
                     },

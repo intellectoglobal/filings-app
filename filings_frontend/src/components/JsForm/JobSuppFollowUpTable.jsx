@@ -20,6 +20,7 @@ import UseForm from "./UseForm";
 import JSformActions from "./JSformActions";
 import { renderEndDateCell } from "./JScustomRender";
 import { useValue } from "../../Context/ContextProvider";
+import RefreshIcon from "@mui/icons-material/Refresh";
 
 const JobSupportFollowUpTable = () => {
   const {
@@ -29,6 +30,28 @@ const JobSupportFollowUpTable = () => {
   const login = () => {
     navigate("/login");
   };
+
+  const [refresh, setRefresh] = useState(0);
+  const handleRefresh = async () => {
+    console.log("refreshed");
+    setRefresh((prev) => prev + 1);
+
+    try {
+      const response = await fetch(
+        "http://localhost:8000/api/v1/job-support-data-all"
+      );
+      const result = await response.json();
+
+      // Filter candidates with status "Confirmed"
+      const followUpCandidates = result.filter(
+        (candidate) => candidate.status === "Follow Up"
+      );
+      setData(followUpCandidates); // Assuming setData updates the state that holds the candidate data
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
   const inputBox = {
     "& .MuiDataGrid-toolbarQuickFilter": {
       "& .MuiTextField-root": {
@@ -105,7 +128,7 @@ const JobSupportFollowUpTable = () => {
     });
 
   const [editId, setEditId] = useState(null);
-  const {  FollowupData } = UseForm();
+  const { FollowupData } = UseForm();
   // const [rowEditStatus, setRowEditStatus] = useState({});
   // const handleRowEditStart = (params) => {
   //   setRowEditStatus({
@@ -129,7 +152,7 @@ const JobSupportFollowUpTable = () => {
   //   });
   //   setEditId(null);
   // };
-  const Table = "Main"
+  const Table = "Main";
   const enqColumns = useMemo(() => [
     {
       field: "actions",
@@ -163,7 +186,7 @@ const JobSupportFollowUpTable = () => {
       field: "date_of_enquiry",
       headerAlign: "center",
       align: "center",
-     // editable: true,
+      // editable: true,
       filterable: true,
       headerName: "Start Date",
       width: 120,
@@ -229,7 +252,7 @@ const JobSupportFollowUpTable = () => {
     },
     {
       field: "feedback",
-     // editable: true,
+      // editable: true,
       headerName: "Feedback",
       width: 180,
       headerAlign: "center",
@@ -325,13 +348,21 @@ const JobSupportFollowUpTable = () => {
               >
                 Add
               </Button>
+              <Button
+                startIcon={<RefreshIcon />}
+                // onClick={onRefresh}
+                onClick={handleRefresh}
+                sx={{ ml: 2, bgcolor: "#FFFFFF" }}
+              >
+                Refresh
+              </Button>
             </div>
           </div>
           <Box height={595}>
             <DataGrid
               sx={{ border: 0 }}
               columns={enqColumns}
-              rows={ FollowupData }
+              rows={FollowupData}
               getRowId={(row) => row.id}
               rowsPerPageOptions={[10, 20, 30]}
               components={{ Toolbar: CustomToolbar }}

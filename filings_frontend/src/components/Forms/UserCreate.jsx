@@ -89,7 +89,7 @@ export const UserCreateForm = (props) => {
   async function userInfoPost(e) {
     e.preventDefault();
     await axios
-      .post("https://3.226.14.5:5000/api/admin-register", userinfo)
+      .post("http://localhost:8000/api/admin-register", userinfo)
       .then((e) => {
         console.log(e);
         // getUsers(dispatch);

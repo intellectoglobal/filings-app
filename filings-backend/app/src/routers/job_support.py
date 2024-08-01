@@ -21,6 +21,10 @@ async def job_support_create_data(request: schemas.IGS_JOB_SUPPORT,  db: Session
 def job_support_data(db: Session = Depends(get_db)):
     return service.get_all(db=db)
 
+@router.get("/jobsupport-followUpData")
+def jobsupport_followUpData(db: Session = Depends(get_db)):
+    return service.get_followUp_data(db=db)
+
 @router.get("/job-support-data-all")
 def job_support_data_all(db: Session = Depends(get_db)):
     return service.get_requests(db=db)

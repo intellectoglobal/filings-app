@@ -24,7 +24,7 @@ The server should reload automatically (because you added --reload to the uvicor
 
 ### Interactive API docs
 
-Now go to <a href="https://3.226.14.5:5000/docs" class="external-link" target="_blank">https://3.226.14.5:5000/docs</a>.
+Now go to <a href="http://localhost:8000/docs" class="external-link" target="_blank">http://localhost:8000/docs</a>.
 
 This interactive API documentation is provided by Swagger UI:
 
@@ -32,7 +32,7 @@ This interactive API documentation is provided by Swagger UI:
 
 ### Alternative API docs
 
-And now, go to <a href="https://3.226.14.5:5000/redoc" class="external-link" target="_blank">https://3.226.14.5:5000/redoc</a>.
+And now, go to <a href="http://localhost:8000/redoc" class="external-link" target="_blank">http://localhost:8000/redoc</a>.
 
 You will see the alternative automatic documentation
 

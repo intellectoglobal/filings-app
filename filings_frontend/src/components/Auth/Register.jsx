@@ -18,34 +18,34 @@ const theme = createTheme({
 });
 
 export default function SignUpComponent() {
-    const signIn = useSignIn();
-    const [values, setValues] = React.useState({
-      email: "",
-      user_name: "",
-      password: "",
-      is_admin: 1,
-      apps : ["Filings", "Admin", "Job-Support", "Course-Enquiry"]
+  const signIn = useSignIn();
+  const [values, setValues] = React.useState({
+    email: "",
+    user_name: "",
+    password: "",
+    is_admin: 1,
+    apps: ["Filings", "Admin", "Job-Support", "Course-Enquiry"],
+  });
+  const navigate = useNavigate();
+
+  const handleChange = (event) => {
+    setValues({ ...values, [event.target.name]: event.target.value });
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    console.log(values);
+
+    const res = await fetch("http://localhost:8000/api/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(values),
     });
-    const navigate = useNavigate();
-
-    const handleChange = (event) => {
-      setValues({ ...values, [event.target.name]: event.target.value });
-    };
-
-    const handleSubmit = async (event) => {
-      event.preventDefault();
-      console.log(values)
-
-      const res = await fetch("https://3.226.14.5:5000/api/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
-      });
-      const post_resp = await res.json();
-      if (post_resp) {
-        navigate(-1);
-      }
-    };
+    const post_resp = await res.json();
+    if (post_resp) {
+      navigate(-1);
+    }
+  };
   return (
     <ThemeProvider theme={theme}>
       <Paper

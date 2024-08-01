@@ -12,7 +12,7 @@ import UseForm from "./UseForm";
 import { useValue } from "../../Context/ContextProvider";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-const EnqFormActions = ({ params,setEditId, editId }) => {
+const EnqFormActions = ({ params, setEditId, editId }) => {
   const { handleDelete } = UseForm(params);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -27,7 +27,7 @@ const EnqFormActions = ({ params,setEditId, editId }) => {
     const editedRow = params.row;
     setLoading(true);
     axios
-      .put(`https://3.226.14.5:5000/api/v1/course-enquiry-update`, editedRow)
+      .put(`http://localhost:8000/api/v1/course-enquiry-update`, editedRow)
       .then((res) => {
         console.log(res.data);
         console.log("Empdata Successfully updated");

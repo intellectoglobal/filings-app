@@ -71,25 +71,25 @@ const CommentsDialog = ({ open, setOpen, params, rowId, CData }) => {
     commented_at: today,
   };
 
-  // https://3.226.14.5:5000/api/v1/job-support-comment-update
+  // http://localhost:8000/api/v1/job-support-comment-update
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (cmdData.length === 0) {
       axios
-        .post("https://3.226.14.5:5000/api/v1/job-support-comment-data", cmtPost)
+        .post("http://localhost:8000/api/v1/job-support-comment-data", cmtPost)
         .then((res) => console.log("Comment Data Posted"));
     } else {
       axios
         .put(
-          "https://3.226.14.5:5000/api/v1/job-support-comment-update",
+          "http://localhost:8000/api/v1/job-support-comment-update",
           cmtUpdate
         )
         .then((res) => console.log("Comment Data Updated"));
     }
     console.log("params", cmdData);
     cmdgetRequests(dispatch);
-    setOpen(false)
+    setOpen(false);
   };
 
   useEffect(() => {
@@ -136,7 +136,11 @@ const CommentsDialog = ({ open, setOpen, params, rowId, CData }) => {
                     justify="center"
                     alignItems="center"
                   >
-                    <CommentsDataTable params={params.row} rowId={rowId} today={today}  />
+                    <CommentsDataTable
+                      params={params.row}
+                      rowId={rowId}
+                      today={today}
+                    />
                     <TextValidator
                       label="New Comment"
                       size="small"
