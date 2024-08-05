@@ -10,6 +10,7 @@ DB_USER = os.getenv("DB_USER")
 DB_PASS = os.getenv("DB_PASS")
 DB_HOST = os.getenv("DB_HOST")
 DB_NAME = os.getenv("DB_NAME")
+DB_PORT = os.getenv("DB_PORT")
 
 env = os.getenv("VERCEL")
 
@@ -24,8 +25,18 @@ if env:
     DB_HOST = os.getenv("PGHOST")
     DB_NAME = os.getenv("PGDATABASE")
 
-SQLALCHEMY_DATABASE_URL = f"postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}/{DB_NAME}"
 
+# Debugging print statements
+print(f"DB_USER: {DB_USER}")
+print(f"DB_PASS: {DB_PASS}")
+print(f"DB_HOST: {DB_HOST}")
+print(f"DB_NAME: {DB_NAME}")
+print(f"DB_PORT: {DB_PORT}")
+
+# Ensure DB_PORT is being included in the URL
+SQLALCHEMY_DATABASE_URL = f"postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+
+print(f"SQLALCHEMY_DATABASE_URL: {SQLALCHEMY_DATABASE_URL}")
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL

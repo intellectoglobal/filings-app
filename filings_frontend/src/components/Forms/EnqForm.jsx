@@ -115,7 +115,7 @@ export const EnqForm = (props) => {
       pincode: "",
     });
   }
-  const API_ENDPOINT = "https://3.226.14.5:5000/api/v1";
+  const API_ENDPOINT = "http://localhost:8000/api/v1";
 
   async function userInfoPost(e) {
     e.preventDefault();
@@ -131,7 +131,7 @@ export const EnqForm = (props) => {
       setUid(newUid);
 
       // Check response status and proceed accordingly
-      if (response.status === 200) {
+      if (response.status === 201) {
         if (userinfo.enquired_for === "GST") {
           // Send POST request for GST info
           await fetch(`${API_ENDPOINT}/req-gst`, {

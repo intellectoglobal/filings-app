@@ -60,7 +60,7 @@ const UseForm = (params) => {
   const postData = () => {
     if (Object.values(values).includes("") === false) {
       axios
-        .post("https://3.226.14.5:5000/api/v1/course-enquiry", enqdata)
+        .post("http://localhost:8000/api/v1/course-enquiry", enqdata)
         .then((res) => console.log(res.data));
       console.log("success", Object.values(values));
     }
@@ -94,7 +94,7 @@ const handleDelete = async () => {
     const { id } = parameter.row;
     if (window.confirm("Are you sure to delete this record?")) {
       await axios
-        .delete(`https://3.226.14.5:5000/api/v1/course-enquiry-delete/${id}`)
+        .delete(`http://localhost:8000/api/v1/course-enquiry-delete/${id}`)
         .then((res) => console.log("Employee Data Successfully deleted"))
 
         .catch((error) => {

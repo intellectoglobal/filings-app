@@ -44,31 +44,29 @@ export default function SignInComponent() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const res = await fetch("https://3.226.14.5:5000/api/login", {
+    const res = await fetch("http://localhost:8000/api/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),
     });
     const post_resp = await res.json();
     setError(post_resp.errors);
-    console.log("login user", post_resp);
-    console.log("setError:", error);
 
-    if (post_resp.active_flag == true) {
+    if (post_resp.active_flag) {
       signIn({
         token: post_resp.token,
         expiresIn: 3600,
         tokenType: "Bearer",
         authState: { user: values.user_name },
-        // refreshToken: res.data.refreshToken, // Only if you are using refreshToken feature
-        // refreshTokenExpireIn: res.data.refreshTokenExpireIn, // Only if you are using refreshToken feature
       });
-      //   dispatch({ type: "LOGGED_IN" });
+
+      // Set values in context
       dispatch({ type: "LOGGED_IN", payload: true });
       dispatch({ type: "IS_ADMIN", payload: post_resp.is_admin });
       dispatch({ type: "APPS_ACCESS", payload: post_resp.apps });
       dispatch({ type: "CURRENT_USER", payload: post_resp.user_name });
 
+      // Update Redux state
       dispatches(
         loginData({
           currentUser: post_resp.user_name,
@@ -76,9 +74,16 @@ export default function SignInComponent() {
           isLoggedIn: true,
         })
       );
+
+      // Update localStorage
+      localStorage.setItem("isLogged", "true");
+      localStorage.setItem("currentUser", post_resp.user_name);
+      localStorage.setItem("apps", JSON.stringify(post_resp.apps));
+
       navigate("/enq-admin");
     }
   };
+
   return (
     <ThemeProvider theme={theme}>
       {/* <img
