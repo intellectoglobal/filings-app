@@ -17,6 +17,7 @@ const muiCache = createCache({
   key: "mui-datatables",
   prepend: true,
 });
+
 export const Compliance = (props) => {
   const [responsive, setResponsive] = useState("vertical");
   const [tableBodyHeight, setTableBodyHeight] = useState("400px");
@@ -81,10 +82,11 @@ export const Compliance = (props) => {
             Responsive Option
           </InputLabel>
           <Select
+            label="Responsive Option"
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={responsive}
-            style={{ width: "200px", marginBottom: "10px", marginRight: 10 }}
+            style={{ width: "155px", marginBottom: "10px", marginRight: 15 }}
             onChange={(e) => setResponsive(e.target.value)}
           >
             <MenuItem value={"vertical"}>vertical</MenuItem>
@@ -103,10 +105,11 @@ export const Compliance = (props) => {
             Table Body Height
           </InputLabel>
           <Select
+            label="Table Body Height"
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={tableBodyHeight}
-            style={{ width: "200px", marginBottom: "10px", marginRight: 10 }}
+            style={{ width: "155px", marginBottom: "10px", marginRight: 15 }}
             onChange={(e) => setTableBodyHeight(e.target.value)}
           >
             <MenuItem value={""}>[blank]</MenuItem>
@@ -120,10 +123,11 @@ export const Compliance = (props) => {
             Max Table Body Height
           </InputLabel>
           <Select
+            label="Max Table Body Height"
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={tableBodyMaxHeight}
-            style={{ width: "200px", marginBottom: "10px" }}
+            style={{ width: "155px", marginBottom: "10px", marginRight: 15 }}
             onChange={(e) => setTableBodyMaxHeight(e.target.value)}
           >
             <MenuItem value={""}>[blank]</MenuItem>
@@ -135,10 +139,11 @@ export const Compliance = (props) => {
         <FormControl>
           <InputLabel id="demo-simple-select-label">Search Button</InputLabel>
           <Select
+            label="Search Button"
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={searchBtn}
-            style={{ width: "200px", marginBottom: "10px" }}
+            style={{ width: "155px", marginBottom: "10px", marginRight: 15 }}
             onChange={(e) => setSearchBtn(e.target.value)}
           >
             <MenuItem value={"true"}>{"true"}</MenuItem>
@@ -149,10 +154,11 @@ export const Compliance = (props) => {
         <FormControl>
           <InputLabel id="demo-simple-select-label">Download Button</InputLabel>
           <Select
+            label="Download Button"
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={downloadBtn}
-            style={{ width: "200px", marginBottom: "10px" }}
+            style={{ width: "155px", marginBottom: "10px", marginRight: 15 }}
             onChange={(e) => setDownloadBtn(e.target.value)}
           >
             <MenuItem value={"true"}>{"true"}</MenuItem>
@@ -163,10 +169,11 @@ export const Compliance = (props) => {
         <FormControl>
           <InputLabel id="demo-simple-select-label">Print Button</InputLabel>
           <Select
+            label="Print Button"
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={printBtn}
-            style={{ width: "200px", marginBottom: "10px" }}
+            style={{ width: "155px", marginBottom: "10px", marginRight: 15 }}
             onChange={(e) => setPrintBtn(e.target.value)}
           >
             <MenuItem value={"true"}>{"true"}</MenuItem>
@@ -179,10 +186,11 @@ export const Compliance = (props) => {
             View Column Button
           </InputLabel>
           <Select
+            label="View Column Button"
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={viewColumnBtn}
-            style={{ width: "200px", marginBottom: "10px" }}
+            style={{ width: "155px", marginBottom: "10px", marginRight: 15 }}
             onChange={(e) => setViewColumnBtn(e.target.value)}
           >
             <MenuItem value={"true"}>{"true"}</MenuItem>
@@ -193,10 +201,11 @@ export const Compliance = (props) => {
         <FormControl>
           <InputLabel id="demo-simple-select-label">Filter Button</InputLabel>
           <Select
+            label="Filter Button"
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={filterBtn}
-            style={{ width: "200px", marginBottom: "10px" }}
+            style={{ width: "155px", marginBottom: "10px", marginRight: 15 }}
             onChange={(e) => setFilterBtn(e.target.value)}
           >
             <MenuItem value={"true"}>{"true"}</MenuItem>

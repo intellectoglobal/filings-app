@@ -27,7 +27,7 @@ const EnqFormActions = ({ params, setEditId, editId }) => {
     const editedRow = params.row;
     setLoading(true);
     axios
-      .put(`https://3.226.14.5:5000/api/v1/course-enquiry-update`, editedRow)
+      .put(`http://localhost:8000/api/v1/course-enquiry-update`, editedRow)
       .then((res) => {
         console.log(res.data);
         console.log("Empdata Successfully updated");

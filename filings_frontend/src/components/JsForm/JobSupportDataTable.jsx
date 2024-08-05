@@ -3,6 +3,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useMemo } from "react";
+// import RefreshIcon from '@mui/icons-material/Refresh';
 import {
   DataGrid,
   GridToolbarContainer,
@@ -27,6 +28,11 @@ const JobSupportDataTable = () => {
   const login = () => {
     navigate("/login");
   };
+  // const [refresh, setRefresh] = useState(0);
+  //  const handleRefresh = () => {
+  //   console.log('refreshed')
+  //    setRefresh((prev) => prev + 1);
+  //  };
   const inputBox = {
     "& .MuiDataGrid-toolbarQuickFilter": {
       "& .MuiTextField-root": {

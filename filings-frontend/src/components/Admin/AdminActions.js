@@ -61,7 +61,7 @@ export const UsersActions = ({ params, rowId, setRowId }) => {
     const endpoint = endpoints[userinfo.enquired_for];
 
     if (endpoint) {
-      fetch(`https://3.226.14.5:5000/api/v1/${endpoint}/${params.row.req_id}`)
+      fetch(`http://localhost:8000/api/v1/${endpoint}/${params.row.req_id}`)
         .then((res) => res.json())
         .then((result) => {
           setOutput(result);
@@ -124,7 +124,7 @@ export const UsersActions = ({ params, rowId, setRowId }) => {
     const data = params.row;
     if (window.confirm("Are you sure to delete this record?")) {
       const result = await fetch(
-        "https://3.226.14.5:5000/api/v1/req-data-delete",
+        "http://localhost:8000/api/v1/req-data-delete",
         {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
@@ -147,7 +147,7 @@ export const UsersActions = ({ params, rowId, setRowId }) => {
     };
 
     const endpoint = endpoints[userinfo.enquired_for];
-    const API_ENDPOINT = "https://3.226.14.5:5000/api/v1";
+    const API_ENDPOINT = "http://localhost:8000/api/v1";
 
     console.log("user2", userinfo);
     fetch(`${API_ENDPOINT}/req-data-update`, {
@@ -171,7 +171,7 @@ export const UsersActions = ({ params, rowId, setRowId }) => {
     setLoading(true);
     const data = params.row;
     const result = await fetch(
-      "https://3.226.14.5:5000/api/v1/req-data-update",
+      "http://localhost:8000/api/v1/req-data-update",
       {
         method: "PUT",
         headers: { "Content-Type": "application/json" },

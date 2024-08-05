@@ -18,7 +18,6 @@ const inputBox = {
   width: "100%",
   "& .MuiTextField-root": {
     m: 1.5,
-    // borderRadius:'15px',
     backgroundColor: "#fffffe",
     borderRadius: "10px",
     width: "23ch",
@@ -38,14 +37,8 @@ const inputBox = {
   "& .MuiOutlinedInput-root": {
     borderRadius: "10px",
   },
-  // marginLeft: "70px",
   justifyContent: "center",
   boxShadow: `rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px`,
-  // bgcolor: "#094067",
-  // left: "-170px",
-  // top: ".8rem",
-  // width: "1300px",
-  // height: "650px",
   flexGrow: 1,
   position: "relative",
   borderRadius: "10px",
@@ -66,32 +59,28 @@ export const Filings = (props) => {
   };
 
   const submit = async (e) => {
-    // e.preventDefault();
     var data = new FormData();
     data.append("file", e.target.files[0]);
-    const resp = await fetch("https://3.226.14.5:5000/uploadfile", {
+    const resp = await fetch("http://localhost:8000/uploadfile", {
       method: "POST",
       headers: { Accept: "multipart/form-data" },
       body: data,
     });
     const post_resp = await resp.json();
     setED(post_resp);
-    first.Fname = extractedData.First_name;
-    first.Lname = extractedData.Last_name;
-    first.Hno = extractedData.House_no;
-    first.addres = extractedData.Address;
-    first.pincode = extractedData.Post_code;
-    first.city = extractedData.City;
-    first.country = extractedData.Country;
-    first.favClr = extractedData.Favorite_color;
-    first.drivinglicence = extractedData.Driving_Licence;
+    setFirst({
+      Fname: post_resp.First_name,
+      Lname: post_resp.Last_name,
+      Hno: post_resp.House_no,
+      addres: post_resp.Address,
+      pincode: post_resp.Post_code,
+      city: post_resp.City,
+      country: post_resp.Country,
+      favClr: post_resp.Favorite_color,
+      drivinglicence: post_resp.Driving_Licence,
+    });
     setLoading(true);
   };
-
-  // React.useEffect(() => {
-  //   setFirst(extractedData.First_name);
-  //   console.log("rst");
-  // }, [extractedData.First_name]);
 
   const fileChange = (e) => {
     setFname(e.target.files[0].name);
@@ -114,8 +103,7 @@ export const Filings = (props) => {
     const { enqueueSnackbar } = useSnackbar();
 
     const handleClickVariant = (variant) => () => {
-      // variant could be success, error, warning, info, or default
-      enqueueSnackbar("File uploaded successfuly!", { variant });
+      enqueueSnackbar("File uploaded successfully!", { variant });
     };
 
     return isLogged ? (
@@ -126,7 +114,6 @@ export const Filings = (props) => {
             sx={{
               m: 2,
               width: "100px",
-              // height: "38px",
               color: "#FFFFFE",
             }}
             variant="contained"
@@ -143,6 +130,7 @@ export const Filings = (props) => {
       login()
     );
   }
+
   const [first, setFirst] = React.useState({
     Fname: "",
     Lname: "",
@@ -154,9 +142,61 @@ export const Filings = (props) => {
     country: "",
     city: "",
   });
+
   const handleChange = (event) => {
     event.persist();
     setFirst({ ...first, [event.target.name]: event.target.value });
+  };
+
+  const handleFirstNameChange = (e) => {
+    const value = e.target.value.replace(/[^a-zA-Z]/g, '');
+    setFirst({ ...first, Fname: value });
+  };
+
+  const handleLastNameChange = (e) => {
+    const value = e.target.value.replace(/[^a-zA-Z]/g, '');
+    setFirst({ ...first, Lname: value });
+  };
+
+  const handleCountryChange = (e) => {
+    const value = e.target.value.replace(/[^a-zA-Z]/g, '');
+    setFirst({ ...first, country: value });
+  };
+
+  const handleCityChange = (e) => {
+    const value = e.target.value.replace(/[^a-zA-Z]/g, '');
+    setFirst({ ...first, city: value });
+  };
+
+  const handlePincodeChange = (e) => {
+    const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 6);
+    setFirst({ ...first, pincode: value });
+  };
+
+  const handleDrivingLicenceChange = (e) => {
+    let value = e.target.value.toUpperCase().replace(/[^a-zA-Z0-9]/g, '');
+    if (value.length > 2) {
+      value = value.slice(0, 2) + value.slice(2).replace(/[^0-9]/g, '');
+    }
+    if (value.length > 15) {
+      value = value.slice(0, 15);
+    }
+    setFirst({ ...first, drivinglicence: value });
+  };
+
+  const handleClear = () => {
+    setFirst({
+      Fname: "",
+      Lname: "",
+      Hno: 0,
+      addres: "",
+      pincode: "",
+      favClr: "",
+      drivinglicence: "",
+      country: "",
+      city: "",
+    });
+    setFname("");
   };
 
   return (
@@ -200,35 +240,32 @@ export const Filings = (props) => {
             size="small"
             type="text"
             value={first.Fname || ""}
-            onChange={(e) => {
-              setFirst({ ...first, Fname: e.target.value });
-            }}
+            onChange={handleFirstNameChange}
           />
           <TextField
             size="small"
             label="Last name"
             type="text"
             value={first.Lname || ""}
+            onChange={handleLastNameChange}
           />
         </Grid>
         <Grid style={{ display: "flex" }}>
-          <TextField
-            label="House No"
-            size="small"
-            type="number"
-            value={first.Hno || ""}
-          />
           <TextField
             label="Address"
             size="small"
             type="text"
             value={first.addres || ""}
+            onChange={(e) => {
+              setFirst({ ...first, addres: e.target.value });
+            }}
           />
           <TextField
             label="Post Code"
             type="text"
             size="small"
             value={first.pincode || ""}
+            onChange={handlePincodeChange}
           />
         </Grid>
         <Grid style={{ display: "flex" }}>
@@ -237,41 +274,44 @@ export const Filings = (props) => {
             size="small"
             type="text"
             value={first.country || ""}
+            onChange={handleCountryChange}
           />
           <TextField
             label="City"
             type="text"
             size="small"
             value={first.city || ""}
+            onChange={handleCityChange}
           />
         </Grid>
         <Grid style={{ display: "flex" }}>
-          <TextField
-            label="Favorite Color"
-            size="small"
-            type="text"
-            value={first.favClr || ""}
-          />
           <TextField
             label="Driving Licence"
             size="small"
             type="text"
             value={first.drivinglicence || ""}
+            onChange={handleDrivingLicenceChange}
           />
         </Grid>
       </Grid>
-      <div style={{ positiion: "absolute", bottom: 0, width: "100%" }}>
+      <div style={{ position: "static", bottom: 0, width: "100%" }}>
         <Divider />
         <Stack spacing={2} direction="row">
           <MyApp />
-          {/* <Button
-            sx={{ m: 2, width: "100px", color: "#FFFFFE" }}
+          <Button
+            sx={{ 
+              m: 2, 
+              width: "100px", 
+              height: "38px",
+              top: "17px",
+              color: "#FFFFFE" 
+            }}
             variant="contained"
             color="green"
             type="submit"
           >
             Submit
-          </Button> */}
+          </Button>
           <Button
             sx={{
               m: 2,
@@ -282,7 +322,8 @@ export const Filings = (props) => {
             }}
             variant="outlined"
             color="green"
-            type="reset"
+            type="button"
+            onClick={handleClear} // Attach the handleClear function here
           >
             Clear
           </Button>

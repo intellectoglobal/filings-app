@@ -31,7 +31,7 @@ export const EnqForm = (props) => {
   const [open, setOpen] = React.useState(false);
   const [userinfo, setInfo] = React.useState({
     req_id: uid,
-    first_name: "vignesh",
+    first_name: "",
     last_name: "siva",
     mobile: "7639290579",
     email: "vignxs@gmail.com",
@@ -115,7 +115,7 @@ export const EnqForm = (props) => {
       pincode: "",
     });
   }
-  const API_ENDPOINT = "https://3.226.14.5:5000/api/v1";
+  const API_ENDPOINT = "http://127.0.0.1:8000/api/v1";
 
   async function userInfoPost(e) {
     e.preventDefault();
@@ -131,7 +131,7 @@ export const EnqForm = (props) => {
       setUid(newUid);
 
       // Check response status and proceed accordingly
-      if (response.status === 200) {
+      if (response.status === 201) {
         if (userinfo.enquired_for === "GST") {
           // Send POST request for GST info
           await fetch(`${API_ENDPOINT}/req-gst`, {
@@ -178,7 +178,7 @@ export const EnqForm = (props) => {
       // Set submitted flag and new info object
       setInfo({
         req_id: newUid,
-        first_name: "vignesh",
+        first_name: "",
         last_name: "siva",
         mobile: "7639290579",
         email: "vignxs@gmail.com",

@@ -16,6 +16,7 @@ import { useDispatch } from "react-redux";
 import { height } from "@mui/system";
 import bg from "../../Assets/patterns.png";
 import logo from "../../Assets/logo.png";
+import baseURL from "../../api/baseURL";
 
 const theme = createTheme({
   palette: {
@@ -44,7 +45,7 @@ export default function SignInComponent() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const res = await fetch("https://3.226.14.5:5000/api/login", {
+    const res = await fetch(`${baseURL}/api/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),

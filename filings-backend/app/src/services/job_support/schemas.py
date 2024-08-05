@@ -13,8 +13,8 @@ class IGS_JOB_SUPPORT(BaseModel):
     feedback: str
     created_by: str = "admin"
     updated_by: str = "admin"
-    created_at: datetime = datetime.now()
-    updated_at: datetime = datetime.now()
+    created_at: datetime = str
+    updated_at: datetime = str
     payment_period: str
     date_of_enquiry : str
 
