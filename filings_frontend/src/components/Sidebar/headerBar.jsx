@@ -143,6 +143,10 @@ export default function HeaderBar(props) {
 
   const handleClick = () => {
     signOut();
+    localStorage.removeItem("currentUser");
+    localStorage.removeItem("isLogged");
+    localStorage.removeItem("apps");
+    localStorage.removeItem("loginState");
     dispatch({ type: "LOGGED_OUT", payload: true });
   };
 
@@ -254,7 +258,7 @@ export default function HeaderBar(props) {
                     noWrap
                     component="div"
                   >
-                    Intellecto Global Services
+                    Intellion Technologies
                   </Typography>
                 </Button>
               </Box>

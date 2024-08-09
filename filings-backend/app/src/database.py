@@ -26,17 +26,8 @@ if env:
     DB_NAME = os.getenv("PGDATABASE")
 
 
-# Debugging print statements
-print(f"DB_USER: {DB_USER}")
-print(f"DB_PASS: {DB_PASS}")
-print(f"DB_HOST: {DB_HOST}")
-print(f"DB_NAME: {DB_NAME}")
-print(f"DB_PORT: {DB_PORT}")
-
 # Ensure DB_PORT is being included in the URL
 SQLALCHEMY_DATABASE_URL = f"postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
-
-print(f"SQLALCHEMY_DATABASE_URL: {SQLALCHEMY_DATABASE_URL}")
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL

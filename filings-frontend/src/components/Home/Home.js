@@ -66,7 +66,7 @@ function HomePage() {
   const { state, dispatch } = useValue();
 
   const changePath = () => {
-    window.location = "https://intellecto.co.in/about-us/";
+    window.location = "https://intelliontechnologies.in/about-us/";
   };
   const navigate = useNavigate();
   const login = () => {
@@ -119,7 +119,7 @@ function HomePage() {
                   padding: "1vw 0vw",
                 }}
               >
-                Intellecto Global Services
+                Intellion Technologies
               </h1>
             </Grid>
             <Grid style={{ display: "flex", marginRight: "1vw", gap: "1vw" }}>

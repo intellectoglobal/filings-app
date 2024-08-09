@@ -50,3 +50,11 @@ def user(db: Session = Depends(get_db)):
 @router.put("/users-update")  
 async def users_update(request: schemas.User_GU,  db: Session = Depends(get_db)):
     return service.update_user(db=db, request=request)
+
+@router.post('/set-new-password')	
+async def set_new_password(request: schemas.SetNewPwd, db: Session = Depends(get_db)):
+    try:
+        result = service.set_new_passwords(db, email=request.email, new_password=request.new_password)
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))

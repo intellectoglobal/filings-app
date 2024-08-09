@@ -50,6 +50,9 @@ const reducer = (state, action) => {
       return {
         ...state,
         isLogged: false,
+        currentUser: null,
+        apps: [],
+        loginState: [],
       };
     case "IS_ADMIN":
       return {

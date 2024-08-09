@@ -13,3 +13,4 @@ class User(BaseModel):
 	active_flag = Column(BOOLEAN, default = 1)
 	is_admin = Column(BOOLEAN)
 	apps = Column(ARRAY(String))
+	is_pwd_set = Column(BOOLEAN, default = False)
