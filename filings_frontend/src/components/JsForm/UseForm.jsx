@@ -133,9 +133,23 @@ const UseForm = (params) => {
     fsgetRequests(dispatch);
   }, []);
 
+  // const handleDelete = async () => {
+  //   const { id } = parameter.row;
+  //   if (window.confirm("Are you sure to delete this record?")) {
+  //     await axios
+  //       .delete(`http://localhost:8000/api/v1/job-support-data-delete/${id}`)
+  //       .then((res) => console.log("Employee Data Successfully deleted"))
+
+  //       .catch((error) => {
+  //         console.log(error);
+  //       });
+  //     dispatch({ type: "FSDELETE_REQUESTS", payload: id });
+  //     fsgetRequests(dispatch);
+  //   }
+  // };
   const handleDelete = async () => {
     const { id } = parameter.row;
-    if (window.confirm("Are you sure to delete this record?")) {
+    {
       await axios
         .delete(`http://localhost:8000/api/v1/job-support-data-delete/${id}`)
         .then((res) => console.log("Employee Data Successfully deleted"))

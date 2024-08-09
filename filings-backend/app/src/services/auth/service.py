@@ -4,6 +4,7 @@ from . import models, schemas
 from datetime import datetime, timedelta
 from typing import Optional
 from ...dependencies import send_email
+from .models import User
 
 auth_handler = AuthHandler()
 
@@ -16,17 +17,29 @@ def get_user_by_email(db: Session, email: str):
 def get_user_by_user(db: Session, user: str):
     return db.query(models.User).filter(models.User.user_name == user).first()
 
+def get_user_by_id(db: Session, user_id: int) -> User:
+   return db.query(User).filter(User.user_id == user_id).first()
+
 
 def get_user(db: Session):
     return db.query(models.User).all()
 
 
-def update_user(db: Session, request: schemas.User_GU) -> int:
-    db_req = models.User(**request.dict())
-    db_req.user_id = request.user_id
-    db.merge(db_req)
+# def update_user(db: Session, request: schemas.User_GU) -> int:
+#     db_req = models.User(**request.dict())
+#     db_req.user_id = request.user_id
+#     db.merge(db_req)
+#     db.commit()
+#     return request.user_id
+
+def update_user(db: Session, user: models.User, request: schemas.User_GU) -> models.User:
+    # Update the user's attributes with the new data
+    for key, value in request.dict().items():
+        setattr(user, key, value)
+    # Commit the changes to the database
     db.commit()
-    return request.user_id
+    db.refresh(user)
+    return user
 
 def create_user(db: Session, user: schemas.User):
     hashed_password = auth_handler.get_password_hash(user.password)
@@ -52,3 +65,7 @@ def create_admin_user(db: Session, user: schemas.AdminUser):
     db.refresh(db_user)
     send_email(user.user_name,user.email,password)  
     return user.email
+
+def delete_user(db: Session, user: models.User):
+    db.delete(user)
+    db.commit()

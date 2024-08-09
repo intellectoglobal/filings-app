@@ -143,6 +143,9 @@ export default function HeaderBar(props) {
 
   const handleClick = () => {
     signOut();
+    localStorage.removeItem("currentUser");
+    localStorage.removeItem("isLogged");
+    localStorage.removeItem("apps");
     dispatch({ type: "LOGGED_OUT", payload: true });
   };
 
