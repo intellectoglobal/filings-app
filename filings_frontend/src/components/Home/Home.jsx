@@ -8,11 +8,10 @@ import courseEnq from "../../Assets/courseEnq.png";
 import { motion } from "framer-motion";
 import { Grid } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { fontSize } from "@mui/system";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-
     width: "101vw",
     height: "100vh",
     marginLeft: "-3vw",

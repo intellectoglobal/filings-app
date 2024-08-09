@@ -21,11 +21,7 @@ const UseForm = (params) => {
     "Demo Scheduled",
     "Demo Yet to Schedule",
   ];
-  const FollowupData = fsrequests.filter((row) => {
-    if (FollowUpStatus.includes(row.status)) {
-      return row;
-    }
-  });
+  const FollowupData = fsrequests.filter((row) => row.status === "Follow Up");
   const [values, setValues] = useState({
     candidate_name: "",
     mobile: "",
