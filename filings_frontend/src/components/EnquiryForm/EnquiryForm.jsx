@@ -190,6 +190,11 @@ const EnquiryForm = () => {
                     required={true}
                     value={values.name}
                     onChange={handleChange}
+                    validators={["matchRegexp:^[A-Za-z.]*$", "required"]}
+                    errorMessages={[
+                      "Only alphabets and period are allowed",
+                      "This field is required",
+                    ]}
                   />
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
@@ -248,6 +253,11 @@ const EnquiryForm = () => {
                     required={true}
                     value={values.comments}
                     onChange={handleChange}
+                    validators={["matchRegexp:^[A-Za-z.]*$", "required"]}
+                    errorMessages={[
+                      "Only alphabets and period are allowed",
+                      "This field is required",
+                    ]}
                   />
                 </Grid>
                 <Grid style={{ display: "flex" }}>
@@ -318,6 +328,11 @@ const EnquiryForm = () => {
                     required={true}
                     value={values.fee_structure}
                     onChange={handleChange}
+                    validators={["matchRegexp:^[0-9./]*$", "required"]}
+                    errorMessages={[
+                      "Only numbers, period, and Forward slash are allowed",
+                      "This field is required",
+                    ]}
                   />
                   <FormControl sx={{ m: 1.5, minWidth: "23ch" }} size="small">
                     <InputLabel color="green" id="demo-simple-select-label">
@@ -381,38 +396,39 @@ const EnquiryForm = () => {
                       ))}
                     </Select>
                   </FormControl>
-                  </Grid>
+                </Grid>
               </Grid>
-              <Divider/>
-              <div style={{ width: "100%",padding:"20px 0 20px 0" }}>
-              <Stack spacing={1} direction="row">
-                <Button
-                  sx={{color: "#FFFFFE" }}
-                  variant="contained"
-                  color="green"
-                  type="submit"
-                >
-                  Submit
-                </Button>
-                <Button
-                  sx={{color: "#FFFFFE" }}
-                  variant="contained"
-                  color="green"
-                  to="/enquiry-table"
-                  component={Link}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  variant="outlined"
-                  color="green"
-                  type="reset"
-                  onClick={clearFields}
-                >
-                  Clear
-                </Button>
-              </Stack>
-            </div>
+              <Divider />
+              <div style={{ width: "100%", padding: "20px 0 20px 0" }}>
+                <Stack spacing={1} direction="row">
+                  <Button
+                    sx={{ color: "#FFFFFE" }}
+                    variant="contained"
+                    color="green"
+                    type="submit"
+                  >
+                    Submit
+                  </Button>
+                  <Button
+                    sx={{ color: "#FFFFFE" }}
+                    variant="contained"
+                    color="green"
+                    to="/enquiry-table"
+                    component={Link}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    color="green"
+                    type="reset"
+                    onClick={clearFields}
+                  >
+                    Clear
+                  </Button>
+                </Stack>
+                          
+              </div>
             </ValidatorForm>
             <SnackBar open={open} setOpen={setOpen} />
           </ThemeProvider>
