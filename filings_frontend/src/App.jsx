@@ -18,6 +18,7 @@ import { AdminList } from "./components/AppAdmin/AdminList";
 import { UserCreateForm } from "./components/Forms/UserCreate";
 import EnquiryFormDataTable from "./components/EnquiryForm/EnquiryFormDataTable";
 import HomePage from "./components/Home/Home";
+import SetNewPwd from "./components/Auth/SetNewPwd";
 function App() {
     // const isLoggedIn = getState().isLoggedIn
 
@@ -34,6 +35,7 @@ function App() {
           <Route path="/enq-form" element={<EnqForm />} />
           <Route path="/enq-admin" element={<EnqAdmin />} />
           <Route path="/login" element={<SignInComponent />} />
+          <Route path="/set-new-pwd" element={<SetNewPwd />} />
           <Route path="/register" element={<SignUpComponent />} />
           <Route path="/job-supp-form" element={<JobSupportForm />} />
           <Route path="/enquiry-form" element={<EnquiryForm />} />

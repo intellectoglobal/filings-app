@@ -48,7 +48,7 @@ export const UserCreateForm = (props) => {
   const [error, setError] = useState();
   const [open, setOpen] = React.useState(false);
   const [userinfo, setInfo] = React.useState({
-    user_name: "vignesh",
+    user_name: "",
     email: "vignxs@gmail.com",
     is_admin: false,
     apps: [],

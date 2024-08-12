@@ -8,11 +8,10 @@ import courseEnq from "../../Assets/courseEnq.png";
 import { motion } from "framer-motion";
 import { Grid } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { fontSize } from "@mui/system";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-
     width: "101vw",
     height: "100vh",
     marginLeft: "-3vw",
@@ -37,7 +36,6 @@ const useStyles = makeStyles((theme) => ({
   },
   heroButton: {
     fontSize: "1rem",
-    // fontSize: "16px",
     fontWeight: "bold",
     color: "#F6F1F1",
     backgroundColor: "#000000",
@@ -64,11 +62,16 @@ const useStyles = makeStyles((theme) => ({
 function HomePage() {
   const classes = useStyles();
   const { state, dispatch } = useValue();
+  const navigate = useNavigate();
 
   const changePath = () => {
-    window.location = "https://intellecto.co.in/about-us/";
+    window.location = "https://intelliontechnologies.in/about-us/";
   };
-  const navigate = useNavigate();
+
+  const contactUs = () => {
+    window.location = "https://intelliontechnologies.in/contact-us/";
+  };
+
   const login = () => {
     navigate("/login");
     dispatch({ type: "HOME", payload: false });
@@ -119,11 +122,13 @@ function HomePage() {
                   padding: "1vw 0vw",
                 }}
               >
-                Intellecto Global Services
+                Intellion Technologies
               </h1>
             </Grid>
             <Grid style={{ display: "flex", marginRight: "1vw", gap: "1vw" }}>
-              <Button style={{ color: "#094067" }}>Contact Us</Button>
+              <Button style={{ color: "#094067" }} onClick={contactUs}>
+                Contact Us
+              </Button>
               <Button style={{ color: "#094067" }} onClick={changePath}>
                 About Us
               </Button>

@@ -93,7 +93,7 @@ def send_email(user,recipient,pwd):
               <br>
               <br>
               <p>Regards,</p>
-              <p>Intellecto Global Services.</p>
+              <p>Intellion Technologies.</p>
               </body>
               </html>"""
     
@@ -103,7 +103,7 @@ def send_email(user,recipient,pwd):
     smtp_server = "smtp.gmail.com"
     smtp_port = 587
     smtp_username = "intellectoglobal@gmail.com"
-    smtp_password = "kvcclzrgfwnjigzk"
+    smtp_password = "fvip qzoj axip emzm"
 
     # Send the message via SMTP
     with smtplib.SMTP(smtp_server, smtp_port) as server:

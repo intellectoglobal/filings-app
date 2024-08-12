@@ -7,8 +7,8 @@ class IGS_REQ_GST(BaseModel):
     period : str	
     created_by : str = "admin"
     updated_by : str = "admin"
-    created_at : datetime = datetime.now()
-    updated_at : datetime = datetime.now()
+    created_at : datetime = str
+    updated_at : datetime = str
 
     
     class Config:

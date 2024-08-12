@@ -16,6 +16,7 @@ import { useDispatch } from "react-redux";
 import { height } from "@mui/system";
 import bg from "../../Assets/patterns.png";
 import logo from "../../Assets/logo.png";
+import baseURL from "../../api/baseURL";
 
 const theme = createTheme({
   palette: {
@@ -44,7 +45,7 @@ export default function SignInComponent() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const res = await fetch("http://localhost:8000/api/login", {
+    const res = await fetch(`${baseURL}/api/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),
@@ -57,10 +58,20 @@ export default function SignInComponent() {
         token: post_resp.token,
         expiresIn: 3600,
         tokenType: "Bearer",
-        authState: { user: values.user_name },
+        authState: { user: values.email },
       });
 
       // Set values in context
+
+      // Update localStorage
+
+    // Check if the password has been set
+    if (!post_resp.is_pwd_set) {
+      navigate("/set-new-pwd", { state: { post_resp } }); 
+      localStorage.setItem("email", values.email);
+       // Redirect to SetNewPwd page
+    } else {
+      // Navigate based on user role
       dispatch({ type: "LOGGED_IN", payload: true });
       dispatch({ type: "IS_ADMIN", payload: post_resp.is_admin });
       dispatch({ type: "APPS_ACCESS", payload: post_resp.apps });
@@ -75,12 +86,16 @@ export default function SignInComponent() {
         })
       );
 
-      // Update localStorage
       localStorage.setItem("isLogged", "true");
       localStorage.setItem("currentUser", post_resp.user_name);
+      localStorage.setItem("email", values.email);
       localStorage.setItem("apps", JSON.stringify(post_resp.apps));
-
-      navigate("/enq-admin");
+      if (post_resp.is_admin) {
+        navigate("/admin"); // Redirect to admin page
+      } else {
+        navigate("/job-supp-table"); // Redirect to employee page
+      }
+    }
     }
   };
 
@@ -103,7 +118,7 @@ export default function SignInComponent() {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          marginTop: "-4vw",
+          marginTop: "-7vw",
           zIndex: 2,
         }}
       >

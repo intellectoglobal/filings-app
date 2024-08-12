@@ -33,3 +33,8 @@ class User_GU(BaseModel):
 	apps: list
 	created_at: datetime
 	updated_at: datetime
+
+
+class SetNewPwd(BaseModel):
+	email:str
+	new_password:str

@@ -55,7 +55,7 @@ DB_NAME = fdb
 
 Steps to be followed to migrate the changes in models to database:
 
-### `alembic revision --autogenerate -m 'changes made as a message`.
+### `alembic revision --autogenerate -m "changes made as a message"`.
 
 The above command will create a revision file in 'alembic/versions' directory.
 

@@ -178,7 +178,7 @@ export const EnqForm = (props) => {
       // Set submitted flag and new info object
       setInfo({
         req_id: newUid,
-        first_name: "vignesh",
+        first_name: "",
         last_name: "siva",
         mobile: "7639290579",
         email: "vignxs@gmail.com",

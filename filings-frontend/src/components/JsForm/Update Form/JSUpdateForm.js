@@ -255,7 +255,7 @@ const JSUpdateForm = ({ open, setOpen, params, page }) => {
                     color="secondary"
                     style={{ left: "4rem" }}
                     onClick={() => {
-                      if (window.confirm("Are you sure, You want to Save")) {
+                      if (window.confirm("Are you sure, You want to Save?")) {
                         handleSubmit();
                         setOpen(false);
                       }

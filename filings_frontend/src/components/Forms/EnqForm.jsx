@@ -32,18 +32,13 @@ export const EnqForm = (props) => {
   const [userinfo, setInfo] = React.useState({
     req_id: uid,
     first_name: "",
-    last_name: "",
-    mobile: "",
-    email: "",
-    address: "",
-    city: "",
-    pincode: "",
-    errorMessages: "",
+    last_name: "siva",
+    mobile: "7639290579",
+    email: "vignxs@gmail.com",
+    address: "15/10 , mela thoopu street",
+    city: "PYR",
+    pincode: "609307",
   });
-    const [errors, setErrors] = React.useState({
-      mobile: "",
-      pincode: "",
-    });
   const [newGstinfo, setnewGstInfo] = React.useState({
     req_id: uid,
     company_name: "IGS",
@@ -245,7 +240,7 @@ const validateInput = (name, value) => {
       // Set submitted flag and new info object
       setInfo({
         req_id: newUid,
-        first_name: "vignesh",
+        first_name: "",
         last_name: "siva",
         mobile: "7639290579",
         email: "vignxs@gmail.com",

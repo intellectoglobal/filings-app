@@ -52,6 +52,7 @@ const reducer = (state, action) => {
         isLogged: false,
         currentUser: null,
         apps: [],
+        loginState: [],
       };
     case "IS_ADMIN":
       return {
