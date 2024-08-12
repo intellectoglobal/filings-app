@@ -1,22 +1,23 @@
 from pydantic import BaseModel
-from datetime import datetime
+from datetime import datetime,date
+from typing import Optional
 
 class IGS_JOB_SUPPORT(BaseModel):
 
     candidate_name: str
     mobile: int
     technology: str
-    start_date: str
-    followup_date: str
+    start_date: date
+    followup_date: date
     resource: str
     status: str
     feedback: str
     created_by: str = "admin"
     updated_by: str = "admin"
-    created_at: datetime = str
-    updated_at: datetime = str
+    created_at: Optional[datetime] = None 
+    updated_at: Optional[datetime] = None 
     payment_period: str
-    date_of_enquiry : str
+    date_of_enquiry : date
 
     class Config:
         orm_mode = True

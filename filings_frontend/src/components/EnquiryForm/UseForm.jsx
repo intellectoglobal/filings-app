@@ -90,9 +90,23 @@ const UseForm = (params) => {
     setOpen(true);
   };
 
+// const handleDelete = async () => {
+//     const { id } = parameter.row;
+//     if (window.confirm("Are you sure to delete this record?")) {
+//       await axios
+//         .delete(`http://localhost:8000/api/v1/course-enquiry-delete/${id}`)
+//         .then((res) => console.log("Employee Data Successfully deleted"))
+
+//         .catch((error) => {
+//           console.log(error);
+//         });
+//       dispatch({ type: "ENQDELETE_REQUESTS", payload: id });
+//       enqgetRequests(dispatch);
+//     }
+//   };
 const handleDelete = async () => {
     const { id } = parameter.row;
-    if (window.confirm("Are you sure to delete this record?")) {
+    {
       await axios
         .delete(`http://localhost:8000/api/v1/course-enquiry-delete/${id}`)
         .then((res) => console.log("Employee Data Successfully deleted"))

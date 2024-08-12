@@ -274,6 +274,11 @@ export const UserCreateForm = (props) => {
                     },
                   }}
                   onChange={(e) => handleChangeInfo(e, "user")}
+                  validators={["matchRegexp:^[A-Za-z.]*$", "required"]}
+                  errorMessages={[
+                    "Only alphabets and period are allowed",
+                    "This field is required",
+                  ]}
                 />
                 <TextValidator
                   label="Email"

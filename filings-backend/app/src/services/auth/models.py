@@ -10,7 +10,7 @@ class User(BaseModel):
 	user_name = Column(String, unique=True)
 	email = Column(String, unique=True)
 	password = Column(String)
-	active_flag = Column(BOOLEAN, default = 1)
+	active_flag = Column(BOOLEAN, default = True)
 	is_admin = Column(BOOLEAN)
 	apps = Column(ARRAY(String))
 	is_pwd_set = Column(BOOLEAN, default = False)

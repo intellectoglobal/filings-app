@@ -13,10 +13,15 @@ import {
 // import { UsersActions } from "./AdminActions";
 import { Button, Paper } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CancelIcon from '@mui/icons-material/Cancel'; // Optional for false values
+
 import { useValue } from "../../Context/ContextProvider";
 import { getUsers } from "../../Context/actions";
 import { UsersActions } from "./UserActions";
 import { Link, useNavigate } from "react-router-dom";
+
+
 
 export const AdminList = () => {
   const {
@@ -129,6 +134,8 @@ export const AdminList = () => {
 
   const [pageSize, setPageSize] = useState(10);
   const [rowId, setRowId] = useState(null);
+
+  
   const enqColumns = useMemo(
     () => [
       {
@@ -138,7 +145,7 @@ export const AdminList = () => {
         width: 100,
         filterable: true,
         renderCell: (params) => (
-          <UsersActions {...{ params, rowId, setRowId }} />
+          <UsersActions params={params} rowId={rowId} setRowId={setRowId} />
         ),
       },
       {
@@ -161,6 +168,14 @@ export const AdminList = () => {
       },
       // "last_name",
       // "mobile",
+      // {
+      //   field: "active_flag",
+      //   headerAlign: "center",
+      //   align: "center",
+      //   headerName: "IsActive",
+      //   width: 100,
+      //   filterable: false,
+      // },
       {
         field: "active_flag",
         headerAlign: "center",
@@ -168,7 +183,21 @@ export const AdminList = () => {
         headerName: "IsActive",
         width: 100,
         filterable: false,
+        renderCell: (params) =>
+          params.value ? (
+            <CheckCircleIcon color="success" />
+          ) : (
+            <CancelIcon color="error" />
+          ),
       },
+      // {
+      //   field: "is_admin",
+      //   headerAlign: "center",
+      //   align: "center",
+      //   headerName: "IsAdmin",
+      //   width: 100,
+      //   filterable: true,
+      // },
       {
         field: "is_admin",
         headerAlign: "center",
@@ -176,7 +205,14 @@ export const AdminList = () => {
         headerName: "IsAdmin",
         width: 100,
         filterable: true,
+        renderCell: (params) =>
+          params.value ? (
+            <CheckCircleIcon color="success" />
+          ) : (
+            <CancelIcon color="error" />
+          ),
       },
+
       // "address",
       // "city",
       // "pincode",
@@ -310,12 +346,12 @@ export const AdminList = () => {
         </div>
         {/* <Divider /> */}
         <Box height={595}>
-          <DataGrid
+          {/* <DataGrid
             sx={{ border: 0 }}
             columns={enqColumns}
             rows={users}
             getRowId={(row) => row.user_id}
-            rowsPerPageOptions={[10, 20, 30]}
+            rowsPerPageOptions={[10, 20, 30,50,100]}
             pageSize={pageSize}
             onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
             components={{ Toolbar: CustomToolbar }}
@@ -342,7 +378,46 @@ export const AdminList = () => {
             //   top: params.isFirstVisible ? 0 : 5,
             //   bottom: params.isLastVisible ? 0 : 5,
             // })}
-            onCellEditCommit={(params) => setRowId(params.id)}
+            // onCellEditCommit={(params) => {
+            //   setRowId(params.id), handleEdit(params);
+            // }}
+            onCellEditCommit={(params) => {console.log("Cell Edit Commit Params:", params);
+              setRowId(params.id);// Pass the params object to handleEdit
+            }
+          }
+          /> */}
+          <DataGrid
+            sx={{ border: 0 }}
+            columns={enqColumns}
+            rows={users}
+            getRowId={(row) => row.user_id}
+            rowsPerPageOptions={[10, 20, 30, 50, 100]}
+            pageSize={pageSize}
+            onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+            components={{ Toolbar: CustomToolbar }}
+            disableColumnMenu
+            componentsProps={{
+              toolbar: {
+                csvOptions: { disableToolbarButton: true },
+                printOptions: { disableToolbarButton: true },
+                showQuickFilter: true,
+                quickFilterProps: { debounceMs: 250 },
+              },
+              panel: {
+                sx: {
+                  inset: `-18vh auto auto 25vw !important`,
+                  width: "35vw",
+                  "& .mui-datatables-1t5wrdm-MuiDataGrid-filterForm": {
+                    width: "35vw",
+                  },
+                },
+              },
+            }}
+            onCellEditCommit={(params) => {
+              console.log("Cell Edit Commit Params:", params);
+              setRowId(params.id);
+              handleEdit(params); // Pass the params object to handleEdit
+            }}
           />
         </Box>
       </Paper>

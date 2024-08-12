@@ -47,6 +47,28 @@ def user(db: Session = Depends(get_db)):
     return service.get_user(db=db)
 
 
+# @router.put("/users-update")  
+# async def users_update(request: schemas.User_GU,  db: Session = Depends(get_db)):
+#     return service.update_user(db=db, request=request)
+
+@router.put("/users-update/{id}")
+async def users_update(id: int, request: schemas.User_GU, db: Session = Depends(get_db)):
+    # Fetch the user from the database
+    user = service.get_user_by_id(db=db, user_id=id)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    # Update the user with the provided data
+    updated_user = service.update_user(db=db, user=user, request=request)
+    return updated_user
+
+@router.delete("/users/{id}", status_code=200)
+async def delete_user(id: int, db: Session = Depends(get_db)):
+    user = service.get_user_by_id(db=db, user_id=id)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    service.delete_user(db=db, user=user)
+    return {"detail": "User deleted successfully"}
 @router.put("/users-update")  
 async def users_update(request: schemas.User_GU,  db: Session = Depends(get_db)):
     return service.update_user(db=db, request=request)
