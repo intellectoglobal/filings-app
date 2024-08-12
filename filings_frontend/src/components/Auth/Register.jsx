@@ -36,16 +36,16 @@ export default function SignUpComponent() {
     event.preventDefault();
     console.log(values);
 
-    const res = await fetch("http://localhost:8000/api/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(values),
-    });
-    const post_resp = await res.json();
-    if (post_resp) {
-      navigate(-1);
-    }
-  };
+      const res = await fetch("http://localhost:8000/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      });
+      const post_resp = await res.json();
+      if (post_resp) {
+        navigate(-1);
+      }
+    };
   return (
     <ThemeProvider theme={theme}>
       <Paper

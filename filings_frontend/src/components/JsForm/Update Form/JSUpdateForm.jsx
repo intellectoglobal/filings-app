@@ -243,7 +243,7 @@ const JSUpdateForm = ({ open, setOpen, params, page }) => {
                     color="secondary"
                     // disabled={activeStep === 0}
                     onClick={() => {
-                      if (window.confirm("Do You Want Discard Changes")) {
+                       {
                         setOpen(false);
                       }
                     }}
@@ -255,7 +255,7 @@ const JSUpdateForm = ({ open, setOpen, params, page }) => {
                     color="secondary"
                     style={{ left: "4rem" }}
                     onClick={() => {
-                      if (window.confirm("Are you sure, You want to Save")) {
+                      {
                         handleSubmit();
                         setOpen(false);
                       }

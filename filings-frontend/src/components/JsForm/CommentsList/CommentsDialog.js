@@ -77,7 +77,10 @@ const CommentsDialog = ({ open, setOpen, params, rowId, CData }) => {
     e.preventDefault();
     if (cmdData.length === 0) {
       axios
-        .post("http://localhost:8000/api/v1/job-support-comment-data", cmtPost)
+        .post(
+          "http://localhost:8000/api/v1/job-support-comment-data",
+          cmtPost
+        )
         .then((res) => console.log("Comment Data Posted"));
     } else {
       axios

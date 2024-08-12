@@ -181,7 +181,7 @@ const validateInput = (name, value) => {
       mobile: "",
       pincode: "",
     });
-  };
+  }
   const API_ENDPOINT = "http://localhost:8000/api/v1";
 
   async function userInfoPost(e) {
@@ -198,7 +198,7 @@ const validateInput = (name, value) => {
       setUid(newUid);
 
       // Check response status and proceed accordingly
-      if (response.status === 200) {
+      if (response.status === 201) {
         if (userinfo.enquired_for === "GST") {
           // Send POST request for GST info
           await fetch(`${API_ENDPOINT}/req-gst`, {

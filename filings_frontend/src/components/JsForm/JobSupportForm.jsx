@@ -184,6 +184,11 @@ const JobSupportForm = () => {
                     required={true}
                     value={values.candidate_name}
                     onChange={handleChange}
+                    validators={["matchRegexp:^[A-Za-z.]*$", "required"]}
+                    errorMessages={[
+                      "Only alphabets and period are allowed",
+                      "This field is required",
+                    ]}
                   />
 
                   <TextValidator
@@ -195,6 +200,11 @@ const JobSupportForm = () => {
                     required={true}
                     value={values.technology}
                     onChange={handleChange}
+                    validators={["matchRegexp:^[A-Za-z.]*$", "required"]}
+                    errorMessages={[
+                      "Only alphabets and period are allowed",
+                      "This field is required",
+                    ]}
                   />
                   <TextValidator
                     label="Resource"
@@ -205,6 +215,11 @@ const JobSupportForm = () => {
                     required={true}
                     value={values.resource}
                     onChange={handleChange}
+                    validators={["matchRegexp:^[A-Za-z.]*$", "required"]}
+                    errorMessages={[
+                      "Only alphabets and period are allowed",
+                      "This field is required",
+                    ]}
                   />
                   <TextValidator
                     label="Mobile"
@@ -254,6 +269,11 @@ const JobSupportForm = () => {
                     required={true}
                     value={values.feedback}
                     onChange={handleChange}
+                    validators={["matchRegexp:^[A-Za-z.]*$", "required"]}
+                    errorMessages={[
+                      "Only alphabets and period are allowed",
+                      "This field is required",
+                    ]}
                   />
                 </Grid>
               </Grid>

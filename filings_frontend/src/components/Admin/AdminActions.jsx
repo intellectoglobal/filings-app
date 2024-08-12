@@ -157,6 +157,7 @@ export const UsersActions = ({ params, rowId, setRowId }) => {
     });
 
     if (endpoint) {
+      console.log("udaptin",output)
       fetch(`${API_ENDPOINT}${endpoint}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },

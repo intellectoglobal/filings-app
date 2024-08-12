@@ -75,11 +75,14 @@ export const UsersActions = ({ params, rowId, setRowId }) => {
   const handleSubmit = async () => {
     setLoading(true);
     const data = params.row;
-    const result = await fetch("http://localhost:8000/api/v1/req-data-update", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
+    const result = await fetch(
+      "http://localhost:8000/api/v1/req-data-update",
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      }
+    );
     if (result) {
       setSuccess(true);
       setRowId(null);

@@ -123,7 +123,7 @@ const EnquiryFormDataTable = () => {
       field: "actions",
       headerName: "Actions",
       type: "actions",
-      width: 80,
+      width: 100,
       filterable: true,
       renderCell: (params) => (
         <EnqFormActions {...{ params, editId, setEditId }} />
@@ -353,7 +353,7 @@ const EnquiryFormDataTable = () => {
               columns={enqColumns}
               rows={enqrequests}
               getRowId={(row) => row.id}
-              rowsPerPageOptions={[10, 20, 30]}
+              rowsPerPageOptions={[10, 20, 30,50,100]}
               components={{ Toolbar: CustomToolbar }}
               disableColumnMenu
               componentsProps={{
