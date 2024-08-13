@@ -18,13 +18,17 @@ router = APIRouter(
 
 
 @router.post('/job-support-data', status_code=status.HTTP_201_CREATED)
-async def job_support_create_data(request: schemas.IGS_JOB_SUPPORT, db: Session = Depends(get_db)):
+async def job_support_create_data(
+    request: schemas.IGS_JOB_SUPPORT,  # Ensure this matches your Pydantic model
+    db: Session = Depends(get_db)
+):
     try:
-        # Directly use the request data; Pydantic handles date parsing
+        print("error in the jobsuport router ::", request)
+        # Directly use the request data; Pydantic handles data validation
         return service.create_request(db=db, request=request)
     except Exception as e:
+        print("error in the jobsuport router ::", e)
         raise HTTPException(status_code=400, detail=str(e))
-
 
 @router.get("/job-support-data")
 def job_support_data(db: Session = Depends(get_db)):

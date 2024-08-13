@@ -337,14 +337,14 @@ const EnquiryFormDataTable = () => {
               >
                 Add
               </Button>
-              <Button
+              {/* <Button
                 startIcon={<RefreshIcon />}
                 // onClick={onRefresh}
                 onClick={handleRefresh}
                 sx={{ ml: 2, bgcolor: "#FFFFFF" }}
               >
                 Refresh
-              </Button>
+              </Button> */}
             </div>
           </div>
           <Box height={595}>

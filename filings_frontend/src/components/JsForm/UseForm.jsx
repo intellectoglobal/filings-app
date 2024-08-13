@@ -90,8 +90,17 @@ const UseForm = (params) => {
 
   const postData = () => {
     // if (Object.values(values).includes("") === false) {
+    const payload = JSON.stringify(enqdata)
     axios
-      .post("http://localhost:8000/api/v1/job-support-data", enqdata)
+      .post(
+        "http://localhost:8000/api/v1/job-support-data",
+        enqdata, // Send data directly as JSON
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
       .then((res) => console.log(res.data));
     setOpen(true);
     // }
