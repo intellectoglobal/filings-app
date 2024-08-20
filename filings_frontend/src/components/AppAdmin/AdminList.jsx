@@ -135,6 +135,11 @@ export const AdminList = () => {
   const [pageSize, setPageSize] = useState(10);
   const [rowId, setRowId] = useState(null);
 
+  const getUsersData = async (dispatch) => {
+    console.log("Enterd the fucnion ::", dispatch)
+    await getUsers(dispatch);
+  };
+  
   
   const enqColumns = useMemo(
     () => [
@@ -145,7 +150,7 @@ export const AdminList = () => {
         width: 100,
         filterable: true,
         renderCell: (params) => (
-          <UsersActions params={params} rowId={rowId} setRowId={setRowId} />
+          <UsersActions params={params} rowId={rowId} setRowId={setRowId} fetchAllUser={getUsersData} />
         ),
       },
       {
@@ -347,7 +352,7 @@ export const AdminList = () => {
         {/* <Divider /> */}
         <Box height={595}>
           {/* <DataGrid
-            sx={{ border: 0 }}
+              sx={{ border: 0 }}
             columns={enqColumns}
             rows={users}
             getRowId={(row) => row.user_id}

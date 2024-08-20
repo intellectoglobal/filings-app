@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import QontoConnector from "../Utils/StepperUtils";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
@@ -7,7 +7,6 @@ import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Stepper from "@mui/material/Stepper";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useEffect } from "react";
 import { Alert, Snackbar } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -16,12 +15,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { CircularProgress, Stack, IconButton } from "@mui/material";
 import Fade from "react-reveal/Fade";
-import {
-  CheckOutlined,
-  EditOutlined,
-  SaveOutlined,
-  DeleteOutlined,
-} from "@mui/icons-material";
+import { CheckOutlined, EditOutlined, SaveOutlined, DeleteOutlined } from "@mui/icons-material";
 import { green } from "@mui/material/colors";
 import { useValue } from "../../Context/ContextProvider";
 import { inputBoxAdminAction } from "../Utils/MuiStyles";
@@ -36,41 +30,52 @@ export const UsersActions = ({ params, rowId, setRowId }) => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [userinfo, setInfo] = useState(params.row);
-  const [sbOpen, setsbOpen] = React.useState(false);
+  const [sbOpen, setsbOpen] = useState(false);
   const [open, setOpen] = useState(false);
-  const [activeStep, setActiveStep] = React.useState(0);
-  const [output, setOutput] = React.useState({});
+  const [activeStep, setActiveStep] = useState(0);
+  const [output, setOutput] = useState({});
+  const [fetchedData, setFetchedData] = useState(null); // State to store fetched data
   const steps = getSteps();
 
-  // console.log("user info details", userinfo);
-  let value = userinfo;
+  useEffect(() => {
+    // Fetch user data when params.row.req_id changes
+    const fetchUserData = async () => {
+      if (params.row.req_id) {
+        try {
+          const endpoints = {
+            GST: "req-service-gst",
+            "GST Registration": "req-service-gst-rgst",
+            "PAN Registration": "req-service-pan-rgst",
+            "TAX Registration": "req-service-tax-rgst",
+          };
+  
+          const endpoint = endpoints[params.row.enquired_for];
+          if (endpoint) {
+            const response = await fetch(`http://localhost:8000/api/v1/users/${id}`);
+            const data = await response.json();
+            setFetchedData(data); // Store fetched data
+          }
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      }
+    };
+  
+    fetchUserData();
+  }, [params.row.req_id, params.row.enquired_for]);
+
   const handleFormClose = () => {
-    if(window.confirm("Discard Changes")){
-    setOpen(false);
+    if (window.confirm("Discard Changes")) {
+      setOpen(false);
     }
   };
+
   const handleClickOpen = () => {
     setOpen(true);
-    const endpoints = {
-      GST: "req-service-gst",
-      "GST Registration": "req-service-gst-rgst",
-      "PAN Registration": "req-service-pan-rgst",
-      "TAX Registration": "req-service-tax-rgst",
-    };
-
-    const endpoint = endpoints[userinfo.enquired_for];
-
-    if (endpoint) {
-      fetch(`http://localhost:8000/api/v1/${endpoint}/${params.row.req_id}`)
-        .then((res) => res.json())
-        .then((result) => {
-          setOutput(result);
-        });
-    }
-    console.log(output);
+    console.log(fetchedData);
   };
-  const handleNext = () =>
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+
+  const handleNext = () => setActiveStep((prevActiveStep) => prevActiveStep + 1);
 
   const handleReset = () => setActiveStep(0);
 
@@ -138,7 +143,6 @@ export const UsersActions = ({ params, rowId, setRowId }) => {
 
   const handleFormSubmit = async () => {
     setOpen(false);
-    console.log("user1", output);
     const endpoints = {
       GST: "/gst-update",
       "GST Registration": "/gst-rgst-update",
@@ -146,10 +150,9 @@ export const UsersActions = ({ params, rowId, setRowId }) => {
       "TAX Registration": "/tax-rgst-update",
     };
 
-    const endpoint = endpoints[userinfo.enquired_for];
+    const endpoint = endpoints[params.row.enquired_for];
     const API_ENDPOINT = "http://localhost:8000/api/v1";
 
-    console.log("user2", userinfo);
     fetch(`${API_ENDPOINT}/req-data-update`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -157,7 +160,6 @@ export const UsersActions = ({ params, rowId, setRowId }) => {
     });
 
     if (endpoint) {
-      console.log("udaptin",output)
       fetch(`${API_ENDPOINT}${endpoint}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -185,10 +187,10 @@ export const UsersActions = ({ params, rowId, setRowId }) => {
 
   useEffect(() => {
     if (rowId === params.id && success) setSuccess(false);
-    // if (rowId !==  params.id && success ===false) window.alert("Please save you changes");
   }, [rowId]);
+
   const navigate = useNavigate();
-  // console.log("setoutput", output);
+
   function getStepContent(stepIndex) {
     switch (stepIndex) {
       case 0:
@@ -381,7 +383,6 @@ export const UsersActions = ({ params, rowId, setRowId }) => {
             </IconButton>
           </Stack>
         </Box>
-        {/* <SnackBar open={open} setOpen={setOpen} /> */}
       </ThemeProvider>
     </>
   );
