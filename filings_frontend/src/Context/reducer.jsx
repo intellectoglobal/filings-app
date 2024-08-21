@@ -89,6 +89,11 @@ const reducer = (state, action) => {
         ...state,
         cmdrequests: action.payload,
       };
+    case "USER_ID":
+      return{
+        ...state,
+        user_id : action.payload,
+      }
     default:
       throw new Error("No action matched");
   }

@@ -1,9 +1,11 @@
 from ..services.request import service, schemas
 from typing import List
-from fastapi import APIRouter, Depends, HTTPException,status
+from fastapi import APIRouter, Depends, Path, HTTPException,status
 from sqlalchemy.orm import Session
 from ..dependencies import get_db
 from ..services.job_support import service, schemas
+from datetime import datetime, date
+from typing import Optional
 
 router = APIRouter(
     tags=["job_support"],
@@ -44,6 +46,9 @@ async def job_support_data_update(request: schemas.IGS_JOB_SUPPORT_GU,  db: Sess
 async def job_support_data_delete(id: int,  db: Session = Depends(get_db)):
     return service.delete_request(db=db, id=id)
 
+@router.get("/job-support-all/{user_id}")
+def request_job_support(user_id: int = Path(...), db: Session = Depends(get_db)):
+    return service.get_job_support(db=db, user_id=user_id)
 
 @router.post('/job-support-paymnet-data', status_code=status.HTTP_201_CREATED)
 async def job_support_create_payment(request: schemas.JOB_SUPPORT_PAYMENT,  db: Session = Depends(get_db)):
@@ -73,3 +78,24 @@ def job_support_comment_data(db: Session = Depends(get_db)):
 async def job_support_comment_update(request: schemas.JOB_SUPPORT_COMMENTS_GU,  db: Session = Depends(get_db)):
     return service.update_comment(db=db, request=request)
 
+
+@router.put("/update-dates/{id}", response_model=schemas.IGS_JOB_SUPPORT)
+def update_job_support_dates(id: int, start_date: Optional[date] = None, followup_date: Optional[date] = None, db: Session = Depends(get_db)):
+    updated_id = service.update_dates(db, id, start_date, followup_date)
+    if not updated_id:
+        raise HTTPException(status_code=404, detail="Job support request not found")
+    return service.get_dates(db, id)
+
+@router.get("/get-dates/{id}")
+def get_job_support_dates(id: int, db: Session = Depends(get_db)):
+    dates = service.get_dates(db, id)
+    if not dates:
+        raise HTTPException(status_code=404, detail="Job support request not found")
+    return dates
+
+@router.put("/reset-dates/{id}", response_model=schemas.IGS_JOB_SUPPORT)
+def reset_job_support_dates(id: int, db: Session = Depends(get_db)):
+    reset_id = service.reset_dates(db, id)
+    if not reset_id:
+        raise HTTPException(status_code=404, detail="Job support request not found")
+    return service.get_dates(db, id)

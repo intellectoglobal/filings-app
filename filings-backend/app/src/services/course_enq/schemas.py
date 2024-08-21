@@ -16,6 +16,7 @@ class IGS_COURSE_ENQ(BaseModel):
     purpose: str = None
     mode : str
     comments : str
+    user_id : int = None
 
     class Config:
         orm_mode = True

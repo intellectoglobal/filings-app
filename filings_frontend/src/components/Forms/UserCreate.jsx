@@ -44,12 +44,12 @@ export const UserCreateForm = (props) => {
   const login = () => {
     navigate("/login");
   };
-  const names = ["Filings", "Job-Support", "Course-Enquiry"];
+  const names = ["Filings", "Job-Support", "Course-Enquiry", "Job-Support-Admin"];
   const [error, setError] = useState();
   const [open, setOpen] = React.useState(false);
   const [userinfo, setInfo] = React.useState({
     user_name: "",
-    email: "vignxs@gmail.com",
+    email: "ganesanpalani2000@gmail.com",
     is_admin: false,
     apps: [],
   });
@@ -63,27 +63,43 @@ export const UserCreateForm = (props) => {
   };
   const handleChangeInfo = (e, service) => {
     const { name, value } = e.target;
-
+  
     switch (service) {
       case "user":
         setInfo((prev) => ({ ...prev, [name]: value }));
         break;
+        
       case "chip":
+        if (userinfo.role === "manager") {
+          // Ensure only "Job-Support-Admin" can be selected
+          if (value.includes("Job-Support-Admin")) {
+            setInfo((prev) => ({
+              ...prev,
+              apps: ["Job-Support-Admin"],
+            }));
+          }
+        } else {
+          setInfo((prev) => ({
+            ...prev,
+            apps: typeof value === "string" ? value.split(",") : value,
+          }));
+        }
+        break;
+  
+      case "role":
+        // Set the role and restrict apps to "Job-Support-Admin" if "manager" is selected
         setInfo((prev) => ({
           ...prev,
-          apps: typeof value === "string" ? value.split(",") : value,
+          role: value,
+          apps: value === "manager" ? ["Job-Support-Admin"] : [],
         }));
         break;
-      case "check":
-        setInfo((prev) => ({
-          ...prev,
-          is_admin: e.target.checked,
-        }));
-        break;
+  
       default:
         break;
     }
   };
+  
   const { dispatch } = useValue();
 
   async function userInfoPost(e) {
@@ -302,7 +318,7 @@ export const UserCreateForm = (props) => {
               </Grid>
               <div style={{ color: "red", marginLeft: ".8rem" }}>{error}</div>
               <Grid style={{ display: "flex" }}>
-                <FormGroup>
+                {/* <FormGroup>
                   <FormControlLabel
                     control={
                       <Checkbox
@@ -314,39 +330,52 @@ export const UserCreateForm = (props) => {
                     }
                     label="is Admin"
                   />
-                </FormGroup>
+                </FormGroup> */}
 
-                <FormControl sx={{ m: 2, minWidth: "33ch" }} size="small">
-                  <InputLabel id="demo-multiple-chip-label">Apps</InputLabel>
-                  <Select
-                    labelId="demo-multiple-chip-label"
-                    id="demo-multiple-chip"
-                    multiple
-                    value={userinfo.apps}
-                    onChange={(e) => handleChangeInfo(e, "chip")}
-                    input={
-                      <OutlinedInput id="select-multiple-chip" label="Chip" />
-                    }
-                    renderValue={(selected) => (
-                      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                        {selected.map((value) => (
-                          <Chip key={value} label={value} />
-                        ))}
-                      </Box>
-                    )}
-                    // MenuProps={MenuProps}
-                  >
-                    {names.map((name) => (
-                      <MenuItem
-                        key={name}
-                        value={name}
-                        style={getStyles(name, userinfo.apps, theme)}
-                      >
-                        {name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+                <FormControl sx={{ m: 2, minWidth: "22ch" }} size="small">
+  <InputLabel id="role-select-label">Role</InputLabel>
+  <Select
+    labelId="role-select-label"
+    id="role-select"
+    value={userinfo.role}
+    onChange={(e) => handleChangeInfo(e, "role")}
+    input={<OutlinedInput label="Role" />}
+  >
+    <MenuItem value="manager">Manager</MenuItem>
+    <MenuItem value="employee">Employee</MenuItem>
+    <MenuItem value="admin">Admin</MenuItem>
+  </Select>
+</FormControl>
+
+<FormControl sx={{ m: 2, minWidth: "23ch" }} size="small">
+  <InputLabel id="demo-multiple-chip-label">Apps</InputLabel>
+  <Select
+    labelId="demo-multiple-chip-label"
+    id="demo-multiple-chip"
+    multiple
+    value={userinfo.apps}
+    onChange={(e) => handleChangeInfo(e, "chip")}
+    input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+    renderValue={(selected) => (
+      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+        {selected.map((value) => (
+          <Chip key={value} label={value} />
+        ))}
+      </Box>
+    )}
+  >
+    {names.map((name) => (
+      <MenuItem
+        key={name}
+        value={name}
+        disabled={userinfo.role === "manager" && name !== "Job-Support-Admin"}
+        style={getStyles(name, userinfo.apps, theme)}
+      >
+        {name}
+      </MenuItem>
+    ))}
+  </Select>
+</FormControl>
               </Grid>
             </Grid>
             <Divider />

@@ -8,17 +8,22 @@ import HeaderBar from "./components/Sidebar/headerBar";
 import SignInComponent from "./components/Auth/Login";
 import SignUpComponent from "./components/Auth/Register";
 import JobSupportForm from "./components/JsForm/JobSupportForm";
+import JobSupportFormAdmin from "./components/JsForm_Admin/JobSuppForm";
 import EnquiryForm from "./components/EnquiryForm/EnquiryForm";
 import { RequireAuth } from "react-auth-kit";
 import JobSupportDataTable from "./components/JsForm/JobSupportDataTable";
 import JobSupportConfrimedTable from "./components/JsForm/JobSuppConfrimedTable";
+import JobSuppConfirmedTableAdmin from "./components/JsForm_Admin/JobSuppConfirmedDataTable";
 import JobSupportResourceTable from "./components/JsForm/JobSuppResourceTable";
+import JobSupportResourceTableAdmin from "./components/JsForm_Admin/JobSuppResourceTable";
 import JobSupportFollowUpTable from "./components/JsForm/JobSuppFollowUpTable";
+import JobSupportFollowUpTableAdmin from "./components/JsForm_Admin/JobSuppFollowUp";
 import { AdminList } from "./components/AppAdmin/AdminList";
 import { UserCreateForm } from "./components/Forms/UserCreate";
 import EnquiryFormDataTable from "./components/EnquiryForm/EnquiryFormDataTable";
 import HomePage from "./components/Home/Home";
 import SetNewPwd from "./components/Auth/SetNewPwd";
+import UpdateForm from "./components/EnquiryForm/Update Form/EnqUpdateForm.jsx";
 function App() {
     // const isLoggedIn = getState().isLoggedIn
   return (
@@ -35,15 +40,21 @@ function App() {
           <Route path="/set-new-pwd" element={<SetNewPwd />} />
           <Route path="/register" element={<SignUpComponent />} />
           <Route path="/job-supp-form" element={<JobSupportForm />} />
+          <Route path="/job-supp-form-admin" element={<JobSupportFormAdmin />} />
           <Route path="/enquiry-form" element={<EnquiryForm />} />
           <Route path="/job-supp-table" element={<JobSupportDataTable />} />
+          {/* <Route path="/job-supp-table-admin" element={<JobSupportDataTableAdmin />} /> */}
           <Route path="/job-supp-confrimed-table" element={<JobSupportConfrimedTable />} />
+          <Route path="/job-supp-confirmed-table-admin" element={<JobSuppConfirmedTableAdmin />} />
           <Route path="/job-supp-resource-table" element={<JobSupportResourceTable />} />
+          <Route path="/job-supp-resource-table-admin" element={<JobSupportResourceTableAdmin />} />
           <Route path="/js-followup-table" element={<JobSupportFollowUpTable />} />
+          <Route path="/js-followup-table-admin" element={<JobSupportFollowUpTableAdmin />} />
           <Route path="/enquiry-table" element={<EnquiryFormDataTable />} />
           <Route path="/admin" element={<AdminList />} />
           <Route path="/user-form" element={<UserCreateForm />} />
           <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<UpdateForm />} />
           {/* <Route
             path="/"
             element={

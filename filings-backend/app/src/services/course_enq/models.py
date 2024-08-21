@@ -19,6 +19,7 @@ class IGS_COURSE_ENQ(Base):
     purpose = Column(String, default=None)
     mode = Column(String)
     comments = Column(String)
+    user_id = Column(Integer, ForeignKey('IGS_USERS.user_id'))
 
 
 class IGS_COURSE_ENQ_PAYMENT(Base):

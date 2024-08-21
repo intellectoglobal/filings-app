@@ -7,17 +7,18 @@ class IGS_JOB_SUPPORT(BaseModel):
     candidate_name: str
     mobile: int
     technology: str
-    start_date: date
-    followup_date: date
     resource: str
     status: str
     feedback: str
     created_by: str = "admin"
     updated_by: str = "admin"
-    created_at: Optional[datetime] = None 
-    updated_at: Optional[datetime] = None 
+    created_at: Optional[datetime]  
+    updated_at: Optional[datetime]
     payment_period: str
     date_of_enquiry : date
+    start_date: Optional[date] = None
+    followup_date: Optional[date] = None
+    user_id : int = None
 
     class Config:
         orm_mode = True

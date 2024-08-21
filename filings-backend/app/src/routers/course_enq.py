@@ -1,5 +1,5 @@
 from typing import List
-from fastapi import APIRouter, Depends,status
+from fastapi import APIRouter, Depends, Path,status
 from sqlalchemy.orm import Session
 from ..dependencies import get_db
 from ..services.course_enq import service, schemas
@@ -14,9 +14,9 @@ router = APIRouter(
 async def course_enquiry(request:schemas.IGS_COURSE_ENQ,  db: Session = Depends(get_db)):
     return service.create_course_enquiry(db=db , request=request)
 
-@router.get("/course-enquiry-all")
-def request_course_enquiry(db: Session = Depends(get_db)):
-    return service.get_course_enquiry(db=db)
+@router.get("/course-enquiry-all/{user_id}")
+def request_course_enquiry(user_id: int = Path(...), db: Session = Depends(get_db)):
+    return service.get_course_enquiry(db=db, user_id=user_id)
 
 @router.put("/course-enquiry-update")
 async def course_enquiry_update(request:schemas.IGS_COURSE_ENQ_ID,  db: Session = Depends(get_db)):

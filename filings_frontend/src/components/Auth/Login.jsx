@@ -76,6 +76,7 @@ export default function SignInComponent() {
       dispatch({ type: "IS_ADMIN", payload: post_resp.is_admin });
       dispatch({ type: "APPS_ACCESS", payload: post_resp.apps });
       dispatch({ type: "CURRENT_USER", payload: post_resp.user_name });
+      dispatch({ type: "USER_ID", payload: post_resp.user_id });
 
       // Update Redux state
       dispatches(
@@ -86,18 +87,16 @@ export default function SignInComponent() {
         })
       );
 
-      localStorage.setItem("isLogged", "true");
-      localStorage.setItem("currentUser", post_resp.user_name);
-      localStorage.setItem("email", values.email);
-      localStorage.setItem("apps", JSON.stringify(post_resp.apps));
-      if (post_resp.is_admin) {
+      if (values.email === "veera.pytech@gmail.com") {
+        navigate("/job-supp-table-admin"); // Redirect to the job-supp-table-admin page
+      } else if (post_resp.is_admin) {
         navigate("/admin"); // Redirect to admin page
       } else {
         navigate("/job-supp-table"); // Redirect to employee page
       }
     }
-    }
-  };
+  }
+};
 
   return (
     <ThemeProvider theme={theme}>

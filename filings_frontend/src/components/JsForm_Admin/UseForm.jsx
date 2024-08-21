@@ -1,11 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
 import moment from "moment";
 import { useValue } from "../../Context/ContextProvider";
 import { fsgetRequests } from "../../Context/actions";
+import { useSelector } from "react-redux";
 
 const UseForm = (params) => {
   const [open, setOpen] = useState(false);
+  // const loginStatus = useSelector((state) => state.login.value);
   const parameter = params;
   const {
     state: { fsrequests },
@@ -24,7 +27,7 @@ const UseForm = (params) => {
     mobile: "",
     technology: "",
     start_date: new Date(),
-    followup_date: new Date(),
+    followup_date: "",
     resource: "",
     status: "",
     feedback: "",
@@ -37,32 +40,29 @@ const UseForm = (params) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setValues((prevalues) => ({
-      ...prevalues,
-      [name]: name === "mobile" ? parseInt(value) : value,
-    }));
-  };
-
-  const handleDateChange = (fieldName, date) => {
-    setValues((prevValues) => ({
-      ...prevValues,
-      [fieldName]: date ? date.toDate() : new Date(),
-    }));
+    setValues((prevalues) => {
+      return {
+        ...prevalues,
+        [name]: value,
+      };
+    });
   };
 
   const FollowupDate = () => {
-    let currentDate = new Date();
-    switch (values.payment_period) {
-      case "Task":
-        return currentDate;
-      case "Weekly":
-        return new Date(currentDate.getTime() + 6 * 24 * 60 * 60 * 1000);
-      case "BiWeekly":
-        return new Date(currentDate.getTime() + 14 * 24 * 60 * 60 * 1000);
-      case "Monthly":
-        return new Date(currentDate.getTime() + 30 * 24 * 60 * 60 * 1000);
-      default:
-        return currentDate;
+    if (values.payment_period === "Task") {
+      return new Date();
+    } else if (values.payment_period === "Weekly") {
+      let currentDate = new Date();
+      let Weekly = new Date(currentDate.getTime() + 6 * 24 * 60 * 60 * 1000);
+      return Weekly;
+    } else if (values.payment_period === "BiWeekly") {
+      let currentDate = new Date();
+      let biWeekly = new Date(currentDate.getTime() + 14 * 24 * 60 * 60 * 1000);
+      return biWeekly;
+    } else if (values.payment_period === "Monthly") {
+      let currentDate = new Date();
+      let Monthly = new Date(currentDate.getTime() + 30 * 24 * 60 * 60 * 1000);
+      return Monthly;
     }
   };
 
@@ -71,38 +71,31 @@ const UseForm = (params) => {
     mobile: values.mobile,
     technology: values.technology,
     date_of_enquiry: moment(values.date_of_enquiry).format("DD-MM-YYYY"),
-    start_date: moment(values.start_date).format("DD-MM-YYYY"),
-    followup_date: moment(FollowupDate()).format("DD-MM-YYYY"),
+    start_date:
+      values.status === "Confrimed"
+        ? moment(values.start_date).format("DD-MM-YYYY")
+        : "",
+    followup_date:
+      values.status === "Confrimed"
+        ? moment(FollowupDate()).format("DD-MM-YYYY")
+        : "",
     resource: values.resource,
     status: values.status,
     feedback: values.feedback,
+    charges: values.charges,
     payment_period: values.payment_period,
     created_by: values.created_by,
     updated_by: values.updated_by,
   };
 
   const postData = () => {
-    console.log("Data sending to backend:", enqdata); // Inspect the data here
-    
-    // Example validation (ensure no fields are undefined or missing)
-    if (!enqdata || Object.values(enqdata).some(value => value === undefined)) {
-      console.error("Error: Missing or undefined data in enqdata:", enqdata);
-      return;
-    }
-  
+    // if (Object.values(values).includes("") === false) {
     axios
-      .post("http://localhost:8000/api/job-support-data", enqdata, {
-        headers: { "Content-Type": "application/json" },
-      })
-      .then((res) => {
-        console.log("Response from backend:", res.data);
-        setOpen(true);
-      })
-      .catch((error) => {
-        console.error("Error:", error.response?.data || error.message);
-      });
+      // .post("http://localhost:8000/api/v1/job-support-data", enqdata)
+      .then((res) => console.log(res.data));
+    setOpen(true);
+    // }
   };
-  
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -110,21 +103,16 @@ const UseForm = (params) => {
     console.log("I am Working");
 
     postData();
-    console.log("Data is valid and submitted", enqdata);
+
     setValues({
       candidate_name: "",
       mobile: "",
       technology: "",
-      start_date: "",
-      followup_date: "",
+      start_date: null,
+      followup_date: null,
       resource: "",
       status: "",
       feedback: "",
-      date_of_enquiry: "",
-      payment_period: "Task",
-      charges: 10,
-      created_by: "admin",
-      updated_by: "admin",
     });
   };
 
@@ -143,23 +131,36 @@ const UseForm = (params) => {
 
   useEffect(() => {
     fsgetRequests(dispatch);
-  }, [dispatch]);
+  }, []);
 
+  // const handleDelete = async () => {
+  //   const { id } = parameter.row;
+  //   if (window.confirm("Are you sure to delete this record?")) {
+  //     await axios
+  //       .delete(`http://localhost:8000/api/v1/job-support-data-delete/${id}`)
+  //       .then((res) => console.log("Employee Data Successfully deleted"))
+
+  //       .catch((error) => {
+  //         console.log(error);
+  //       });
+  //     dispatch({ type: "FSDELETE_REQUESTS", payload: id });
+  //     fsgetRequests(dispatch);
+  //   }
+  // };
   const handleDelete = async () => {
     const { id } = parameter.row;
-    try {
-      await axios.delete(
-        "http://localhost:8000/api/v1/job-support-data-delete/${id}"
-      );
-      console.log("Employee Data Successfully deleted");
-      dispatch({ type: "JS_GETREQUEST", payload: id });
+    {
+      await axios
+        .delete(`http://localhost:8000/api/v1/job-support-data-delete/${id}`)
+        .then((res) => console.log("Employee Data Successfully deleted"))
+
+        .catch((error) => {
+          console.log(error);
+        });
+      dispatch({ type: "FSDELETE_REQUESTS", payload: id });
       fsgetRequests(dispatch);
-    } catch (error) {
-      console.log("Error deleting employee data:", error);
-      throw error; // Re-throw error so calling component can handle it
     }
   };
-
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -173,7 +174,6 @@ const UseForm = (params) => {
     setcmdOpen,
     cmdopen,
     handleClose,
-    handleDateChange,
     handleChange,
     values,
     handleSubmit,
@@ -187,5 +187,4 @@ const UseForm = (params) => {
     FollowupData,
   };
 };
-
 export default UseForm;

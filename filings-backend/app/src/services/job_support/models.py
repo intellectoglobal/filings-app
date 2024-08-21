@@ -11,8 +11,6 @@ class IGS_JOB_SUPPORT(Base):
     candidate_name = Column(String)
     mobile = Column(BigInteger)
     technology = Column(String)
-    start_date = Column(String)
-    followup_date = Column(String)
     resource = Column(String)
     status = Column(String)
     feedback = Column(String)
@@ -24,6 +22,9 @@ class IGS_JOB_SUPPORT(Base):
     date_of_enquiry = Column(String)
     payment = relationship("JOB_SUPPORT_PAYMENT")
     comment = relationship("JOB_SUPPORT_COMMENTS")
+    start_date = Column(String,  nullable=True)
+    followup_date = Column(String,  nullable=True)
+    user_id = Column(Integer, ForeignKey('IGS_USERS.user_id'))
 
 
 class JOB_SUPPORT_PAYMENT(Base):
