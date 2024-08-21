@@ -27,6 +27,7 @@ const JobSupportForm = () => {
   const {
     values,
     handleChange,
+    handleDateChange,
     handleSubmit,
     setValues,
     clearFields,
@@ -34,6 +35,7 @@ const JobSupportForm = () => {
     setOpen,
     handleClose,
   } = UseForm();
+  //console.log("updated values ::", values)
   const {
     state: { isLogged },
   } = useValue();
@@ -175,6 +177,28 @@ const JobSupportForm = () => {
                 alignItems="inherit"
               >
                 <Grid style={{ display: "flex" }}>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      orientation="landscape"
+                      label="Date Of Enquiry"
+                      openTo="day"
+                      format="dd-MM-yyyy"
+                      views={["day"]}
+                      value={values.date_of_enquiry}
+                      onChange={(date) =>
+                        handleDateChange("date_of_enquiry", date)
+                      }
+                      renderInput={(params) => (
+                        <TextValidator
+                          color="green"
+                          size="small"
+                          {...params}
+                          helperText={null}
+                          fullWidth
+                        />
+                      )}
+                    />
+                  </LocalizationProvider>
                   <TextValidator
                     label="Candidate name"
                     size="small"
@@ -184,7 +208,7 @@ const JobSupportForm = () => {
                     required={true}
                     value={values.candidate_name}
                     onChange={handleChange}
-                    validators={["matchRegexp:^[A-Za-z.]*$", "required"]}
+                    validators={["matchRegexp:^[A-Za-z. ]*$", "required"]}
                     errorMessages={[
                       "Only alphabets and period are allowed",
                       "This field is required",
@@ -200,7 +224,7 @@ const JobSupportForm = () => {
                     required={true}
                     value={values.technology}
                     onChange={handleChange}
-                    validators={["matchRegexp:^[A-Za-z.]*$", "required"]}
+                    validators={["matchRegexp:^[A-Za-z. ]*$", "required"]}
                     errorMessages={[
                       "Only alphabets and period are allowed",
                       "This field is required",
@@ -215,7 +239,7 @@ const JobSupportForm = () => {
                     required={true}
                     value={values.resource}
                     onChange={handleChange}
-                    validators={["matchRegexp:^[A-Za-z.]*$", "required"]}
+                    validators={["matchRegexp:^[A-Za-z. ]*$", "required"]}
                     errorMessages={[
                       "Only alphabets and period are allowed",
                       "This field is required",
@@ -259,6 +283,48 @@ const JobSupportForm = () => {
                       ))}
                     </Select>
                   </FormControl>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      orientation="landscape"
+                      label="Start Date"
+                      openTo="day"
+                      format="dd-MM-yyyy"
+                      views={["day"]}
+                      value={values.start_date}
+                      onChange={(date) => handleDateChange("start_date", date)}
+                      renderInput={(params) => (
+                        <TextValidator
+                          color="green"
+                          size="small"
+                          {...params}
+                          helperText={null}
+                          fullWidth
+                        />
+                      )}
+                    />
+                  </LocalizationProvider>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      orientation="landscape"
+                      label="Follow Up Date"
+                      openTo="day"
+                      format="dd-MM-yyyy"
+                      views={["day"]}
+                      value={values.followup_date}
+                      onChange={(date) =>
+                        handleDateChange("followup_date", date)
+                      }
+                      renderInput={(params) => (
+                        <TextValidator
+                          color="green"
+                          size="small"
+                          {...params}
+                          helperText={null}
+                          fullWidth
+                        />
+                      )}
+                    />
+                  </LocalizationProvider>
                   <TextValidator
                     label="Feedback"
                     size="small"
@@ -269,7 +335,7 @@ const JobSupportForm = () => {
                     required={true}
                     value={values.feedback}
                     onChange={handleChange}
-                    validators={["matchRegexp:^[A-Za-z.]*$", "required"]}
+                    validators={["matchRegexp:^[A-Za-z. ]*$", "required"]}
                     errorMessages={[
                       "Only alphabets and period are allowed",
                       "This field is required",

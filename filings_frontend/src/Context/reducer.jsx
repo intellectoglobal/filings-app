@@ -72,7 +72,7 @@ const reducer = (state, action) => {
     case "JS_GETREQUEST":
       return {
         ...state,
-        fsrequests: action.payload,
+        fsrequests: Array.isArray(action.payload) ? action.payload : [],
       };
     case "ENQ_GETREQUEST":
       return {

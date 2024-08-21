@@ -320,7 +320,7 @@ const JobSupportResourceTable = () => {
               columns={enqColumns}
               rows={ConfrimedData}
               getRowId={(row) => row.id}
-              rowsPerPageOptions={[10, 20, 30]}
+              rowsPerPageOptions={[10, 20, 30, 50, 100]}
               components={{ Toolbar: CustomToolbar }}
               disableColumnMenu
               componentsProps={{
@@ -332,8 +332,7 @@ const JobSupportResourceTable = () => {
                 },
                 panel: {
                   sx: {
-                    "& .MuiDataGrid-filterForm": {
-                    },
+                    "& .MuiDataGrid-filterForm": {},
                     "& .MuiDataGrid-paper": {
                       boxShadow: "none !important",
                     },

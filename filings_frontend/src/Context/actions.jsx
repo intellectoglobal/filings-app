@@ -21,9 +21,15 @@ export const fsgetRequests = async (dispatch) => {
     "http://localhost:8000/api/v1/job-support-data-all"
   );
   const content = await jsdata.data;
-  if (content) {
-    dispatch({ type: "JS_GETREQUEST", payload: content });
-  }
+  console.log(content);
+   if (Array.isArray(content)) {
+     dispatch({ type: "JS_GETREQUEST", payload: content });
+   } else {
+     console.error("Expected an array but received:", content);
+   }
+  // if (content) {
+  //   dispatch({ type: "JS_GETREQUEST", payload: content });
+  // }
 };
 
 export const enqgetRequests = async (dispatch) => {

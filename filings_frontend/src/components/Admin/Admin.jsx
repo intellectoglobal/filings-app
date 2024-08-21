@@ -31,7 +31,6 @@ const muiCache = createCache({
 });
 
 export const EnqAdmin = (props) => {
-  
   const {
     state: { isLogged },
   } = useValue();
@@ -295,7 +294,7 @@ export const EnqAdmin = (props) => {
               columns={enqColumns}
               rows={requests}
               getRowId={(row) => row.req_id}
-              rowsPerPageOptions={[10, 20, 30]}
+              rowsPerPageOptions={[10, 20, 30, 50, 100]}
               pageSize={pageSize}
               onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
               components={{ Toolbar: CustomToolbar }}
@@ -330,5 +329,4 @@ export const EnqAdmin = (props) => {
   ) : (
     login()
   );
-  
 };

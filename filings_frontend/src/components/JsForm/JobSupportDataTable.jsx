@@ -20,6 +20,7 @@ import UseForm from "./UseForm";
 import JSformActions from "./JSformActions";
 import { useValue } from "../../Context/ContextProvider";
 import RefreshIcon from "@mui/icons-material/Refresh";
+import { fsgetRequests } from "../../Context/actions";
 
 const JobSupportDataTable = () => {
   const {
@@ -32,24 +33,18 @@ const JobSupportDataTable = () => {
 
   const [data, setData] = useState([]);
   const [refresh, setRefresh] = useState(0);
+  const {
+    state: { fsrequests },
+    dispatch
+  } = useValue();
 
   const handleRefresh = async () => {
-    console.log("refreshed");
-    console.log("refresh value", refresh);
-    setRefresh((prev) => prev + 1);
-    try {
-      const response = await fetch(
-        "http://localhost:8000/api/v1/job-support-data-all"
-      );
-      const result = await response.json();
-      setData(result);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
+    await fsgetRequests(dispatch)
   };
+  console.log("values came from the fsrequests ::", fsrequests)
 
   useEffect(() => {
-    handleRefresh(); // Fetch initial data on component mount
+   if(fsrequests.length === 0) handleRefresh()
   }, []);
 
   const inputBox = {
@@ -142,6 +137,7 @@ const JobSupportDataTable = () => {
           editId={editId}
           setEditId={setEditId}
           page={Table}
+          fetchDetails={handleRefresh}
         />
       ),
     },
@@ -313,9 +309,9 @@ const JobSupportDataTable = () => {
             <DataGrid
               sx={{ border: 0 }}
               columns={enqColumns}
-              rows={data}
+              rows={fsrequests}
               getRowId={(row) => row.id}
-              rowsPerPageOptions={[10, 20, 30]}
+              rowsPerPageOptions={[10, 20, 30, 50, 100]}
               components={{ Toolbar: CustomToolbar }}
               disableColumnMenu
               componentsProps={{

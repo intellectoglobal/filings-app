@@ -1,12 +1,17 @@
+
 import { useState, useEffect } from "react";
 import axios from "axios";
 import moment from "moment";
 import { useValue } from "../../../Context/ContextProvider";
 import { fsgetRequests } from "../../../Context/actions";
 
-const UpdateLogics = ({ params, page, fetchDetails }) => {
-  const [values, setValues] = useState(params.row);
-  const paymentsLength = params.row.payment.length;
+const UpdateLogics = ({ params = {}, page = "Main" }) => {
+  // Default the params.row to an empty object if it's undefined
+  const [values, setValues] = useState(params.row || {});
+
+  // Handle cases where payment array might be empty or undefined
+  const paymentsLength = params.row?.payment?.length || 0;
+
   const [paymentsData, setPaymentsData] = useState(() => {
     if (paymentsLength !== 0) {
       return params.row.payment.map((list) => {
@@ -59,12 +64,23 @@ const UpdateLogics = ({ params, page, fetchDetails }) => {
     }
   });
   const { dispatch } = useValue();
+
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setValues((preValues) => {
       return { ...preValues, [name]: value };
     });
   };
+
+  const handleDateChange = (date) => {
+    setValues({
+      ...values,
+      followup_call_date: date ? date.toString() : "",
+    });
+  };
+
+
   const handlePaymentChange = (e) => {
     const { name, value } = e.target;
     setPayment((preValues) => {
@@ -142,32 +158,40 @@ const UpdateLogics = ({ params, page, fetchDetails }) => {
         : paymentsData[0].resource_payment_date,
   };
 
-  const editedData = {
-    id: params.id,
-    candidate_name: values.candidate_name,
-    mobile: values.mobile,
-    technology: values.technology,
-    date_of_enquiry: values.date_of_enquiry,
-    start_date:
-      values.status === "Confrimed"
-        ? moment(new Date()).format("DD-MM-YYYY")
-        : "",
-    followup_date:
-      values.status === "Confrimed" && values.payment_period !== ""
-        ? moment(FollowupDate()).format("DD-MM-YYYY")
-        : "",
-    resource: values.resource,
-    status: values.status,
-    feedback: values.feedback,
-    charges: values.charges,
-    payment_period: values.payment_period,
-    created_by: values.created_by,
-    updated_by: values.updated_by,
-  };
+const editedData = {
+  id: params.id || "",
+  candidate_name: values.candidate_name || "",
+  mobile: values.mobile || "",
+  technology: values.technology || "",
+  date_of_enquiry: values.date_of_enquiry || "",
+  start_date:
+    values.status === "Confirmed" ? moment().format("DD-MM-YYYY") : "",
+  followup_date:
+    values.status === "Confirmed" && values.payment_period
+      ? moment(FollowupDate()).format("DD-MM-YYYY")
+      : "",
+  resource: values.resource || "",
+  status: values.status || "",
+  feedback: values.feedback || "",
+  charges: values.charges || 0,
+  payment_period: values.payment_period || "",
+  created_by: values.created_by || "",
+  updated_by: values.updated_by || "",
+};
 
   const editData = () => {
+    console.log("Params: ", params);
+    console.log("Values: ", values);
+    console.log("Inside editedData" + editedData.FollowupDate);
+    console.log("Inside editedData" + editedData.candidate_name);
+    console.log("Inside editedData" + editedData.charges);
+    console.log("Inside editedData" + editedData.created_by);
+    console.log("Inside editedData" + editedData.date_of_enquiry);
+    console.log("Inside editedData" + editedData.followup_date);
+    console.log("Inside editedData" + editedData.resource);
+    console.log("Inside editedData" + editedData.status);
     axios
-      .put(`http://localhost:8000/api/v1/job-support-data-update`, editedData)
+      .put("http://localhost:8000/api/v1/course-enquiry-update", editedData)
       .then((res) => {
         console.log(res.data);
         console.log("Data Successfully updated");
@@ -176,37 +200,37 @@ const UpdateLogics = ({ params, page, fetchDetails }) => {
         console.log(error);
       });
   };
-  const paymentRequests = () => {
-    if (paymentsLength === 0) {
-      return axios
-        .post(
-          `http://localhost:8000/api/v1/job-support-paymnet-data`,
-          paymentData
-        )
-        .then((res) => {
-          console.log(res.data);
-          console.log("paymentData Successfully Posted");
-          console.log(paymentData);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    } else {
-      return axios
-        .put(
-          `http://localhost:8000/api/v1/job-support-payment-update`,
-          paymentUpdateData
-        )
-        .then((res) => {
-          console.log(res.data);
-          console.log("paymentData Successfully Updated");
-          console.log(paymentUpdateData);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  };
+  // const paymentRequests = () => {
+  //   if (paymentsLength === 0) {
+  //     return axios
+  //       .post(
+  //         "http://localhost:8000/api/v1/course-enquiry-payment-data",
+  //         paymentData
+  //       )
+  //       .then((res) => {
+  //         console.log(res.data);
+  //         console.log("paymentData Successfully Posted");
+  //         console.log(paymentData);
+  //       })
+  //       .catch((error) => {
+  //         console.log(error);
+  //       });
+  //   } else {
+  //     return axios
+  //       .put(
+  //         "http://localhost:8000/api/v1/course-enquiry-payment-update",
+  //         paymentUpdateData
+  //       )
+  //       .then((res) => {
+  //         console.log(res.data);
+  //         console.log("paymentData Successfully Updated");
+  //         console.log(paymentUpdateData);
+  //       })
+  //       .catch((error) => {
+  //         console.log(error);
+  //       });
+  //   }
+  // };
 
   // const paymentGetData = () => {
   //   axios.get("http://localhost:8000/api/v1/job-support-payment-data-all")
@@ -217,11 +241,26 @@ const UpdateLogics = ({ params, page, fetchDetails }) => {
   // },[])
 
   const handleSubmit = () => {
-    editData();
-    paymentRequests();
+     editData()
+       .then(() => setSuccess(true)) // Set success to true if update is successful
+       .catch((error) => {
+         console.log("Update failed", error);
+         setSuccess(false); // Set success to false if there's an error
+       });
+    // paymentRequests();
     fsgetRequests(dispatch);
-    fetchDetails();
   };
+
+  useEffect(() => {
+    // Example: Fetching initial data and setting it
+    if (params.id) {
+      axios
+        .get(`/api/v1/course-enquiry/${params.id}`)
+        .then((response) => setValues(response.data))
+        .catch((error) => console.error("Error fetching data", error));
+    }
+  }, [params.id]);
+
 
   return {
     payment,
@@ -229,6 +268,7 @@ const UpdateLogics = ({ params, page, fetchDetails }) => {
     handleChange,
     handlePaymentChange,
     handleSubmit,
+    handleDateChange
   };
 };
 export default UpdateLogics;

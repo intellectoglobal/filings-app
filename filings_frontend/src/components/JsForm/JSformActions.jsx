@@ -24,18 +24,30 @@ import { green } from "@mui/material/colors";
 import axios from "axios";
 import UseForm from "./UseForm";
 import JSUpdateForm from "./Update Form/JSUpdateForm";
+import { useNavigate } from "react-router-dom";
 
-const JSformActions = ({ params, setEditId, editId, page, baseUrl }) => {
+const JSformActions = ({
+  params,
+  setEditId,
+  editId,
+  page,
+  baseUrl,
+  onDelete, // Add onDelete prop
+  fetchDetails,
+}) => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [open, setOpen] = useState(false);
+  const [openEditForm, setOpenEditForm] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: "",
     severity: "success",
   });
+  const navigate = useNavigate();
 
+  // Use the hook to get handleDelete
   const { handleDelete } = UseForm(params);
 
   const handleClickOpen = () => {
@@ -46,10 +58,10 @@ const JSformActions = ({ params, setEditId, editId, page, baseUrl }) => {
     const editedRow = params.row;
     setLoading(true);
     axios
-      .put(`http://localhost:8000/api/v1/job-support-data-update`, editedRow)
+      .put(`${baseUrl}/job-support-data-update`, editedRow)
       .then((res) => {
         console.log(res.data);
-        console.log("Empdata Successfully updated");
+        console.log("Data successfully updated");
         setSuccess(true);
       })
       .catch((error) => {
@@ -63,6 +75,7 @@ const JSformActions = ({ params, setEditId, editId, page, baseUrl }) => {
       .finally(() => {
         setLoading(false);
         setEditId(null);
+        fetchDetails();
       });
   };
 
@@ -93,33 +106,32 @@ const JSformActions = ({ params, setEditId, editId, page, baseUrl }) => {
   };
 
   const handleDeleteConfirmed = async () => {
-    handleDelete();
-    setOpenDialog(false);
     setLoading(true);
-    try {
-      const payLaod = JSON.stringify(params.row);
-      const result = await fetch(`http://localhost:8000/api/v1/req-data-delete`, {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: payLaod
-      });
+    console.log(params);
+    // try {
+    await handleDelete(params.row.id); // Call the handleDelete function from UseForm
+    setOpenDialog(false);
+    handleRefresh();
 
-      if (!result.ok) throw new Error("Failed to delete the record");
-
-      setSnackbar({
-        open: true,
-        message: "Record deleted successfully",
-        severity: "success",
-      });
-    } catch (error) {
-      setSnackbar({
-        open: true,
-        message: error.message,
-        severity: "error",
-      });
-    } finally {
-      setLoading(false);
-    }
+    // setSnackbar({
+    //   open: true,
+    //   message: "Record deleted successfully",
+    //   severity: "success",
+    // });
+    // if (onDelete) {
+    //   onDelete(params.row.id); // Notify parent to handle data repopulation
+    // }
+    // navigate("/job-supp-table");
+    // } catch (error) {
+    //   setSnackbar({
+    //     open: true,
+    //     message: error.message,
+    //     severity: "error",
+    //   });
+    // } finally {
+    //   setLoading(false);
+    //   setOpenDialog(false);
+    // }
   };
 
   return (
@@ -179,15 +191,16 @@ const JSformActions = ({ params, setEditId, editId, page, baseUrl }) => {
               color="secondary"
               sx={{ boxShadow: 0 }}
               aria-label="edit"
-              onClick={handleClickOpen}
+              onClick={() => setOpenEditForm(true)}
             >
               <EditOutlined />
             </IconButton>
             <JSUpdateForm
-              open={open}
-              setOpen={setOpen}
+              open={openEditForm}
+              setOpen={setOpenEditForm}
               params={params}
               page={page}
+              fetchDetails={fetchDetails}
             />
             <IconButton
               color="teritiary"

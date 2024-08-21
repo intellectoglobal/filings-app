@@ -19,6 +19,7 @@ import { UserCreateForm } from "./components/Forms/UserCreate";
 import EnquiryFormDataTable from "./components/EnquiryForm/EnquiryFormDataTable";
 import HomePage from "./components/Home/Home";
 import SetNewPwd from "./components/Auth/SetNewPwd";
+import UpdateForm from "./components/EnquiryForm/Update Form/EnqUpdateForm";
 function App() {
     // const isLoggedIn = getState().isLoggedIn
 
@@ -40,13 +41,23 @@ function App() {
           <Route path="/job-supp-form" element={<JobSupportForm />} />
           <Route path="/enquiry-form" element={<EnquiryForm />} />
           <Route path="/job-supp-table" element={<JobSupportDataTable />} />
-          <Route path="/job-supp-confrimed-table" element={<JobSupportConfrimedTable />} />
-          <Route path="/job-supp-resource-table" element={<JobSupportResourceTable />} />
-          <Route path="/js-followup-table" element={<JobSupportFollowUpTable />} />
+          <Route
+            path="/job-supp-confrimed-table"
+            element={<JobSupportConfrimedTable />}
+          />
+          <Route
+            path="/job-supp-resource-table"
+            element={<JobSupportResourceTable />}
+          />
+          <Route
+            path="/js-followup-table"
+            element={<JobSupportFollowUpTable />}
+          />
           <Route path="/enquiry-table" element={<EnquiryFormDataTable />} />
           <Route path="/admin" element={<AdminList />} />
           <Route path="/user-form" element={<UserCreateForm />} />
           <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<UpdateForm />} />
           {/* <Route
             path="/"
             element={
