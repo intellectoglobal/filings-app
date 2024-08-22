@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 from . import models, schemas
 from sqlalchemy import update,delete
+from sqlalchemy.exc import SQLAlchemyError
 
 def create_course_enquiry(db: Session, request: schemas.IGS_COURSE_ENQ):
     db_req = models.IGS_COURSE_ENQ(**request.dict())

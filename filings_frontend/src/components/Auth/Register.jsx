@@ -28,13 +28,13 @@ export default function SignUpComponent() {
     });
     const navigate = useNavigate();
 
-    const handleChange = (event) => {
-      setValues({ ...values, [event.target.name]: event.target.value });
-    };
+  const handleChange = (event) => {
+    setValues({ ...values, [event.target.name]: event.target.value });
+  };
 
-    const handleSubmit = async (event) => {
-      event.preventDefault();
-      console.log(values)
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    console.log(values);
 
       const res = await fetch("http://localhost:8000/api/register", {
         method: "POST",

@@ -12,7 +12,6 @@ import {
   IconButton,
   Snackbar,
   Stack,
-  Typography,
   Alert,
 } from "@mui/material";
 import {
@@ -25,20 +24,19 @@ import { green } from "@mui/material/colors";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import { useValue } from "../../Context/ContextProvider";
-import UserUpdate from "./Update Form/UserUpdate"; // Import the UserUpdate component
+import UserUpdate from "./Update Form/UserUpdate";
 
 export const UsersActions = ({ params, rowId, setRowId, fetchAllUser }) => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [error, setError] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: "",
     severity: "success",
   });
-  const [updateDialogOpen, setUpdateDialogOpen] = useState(false); // Manage visibility of UserUpdate form
-  const [currentUserId, setCurrentUserId] = useState(null); // Store the current user ID
+  const [updateDialogOpen, setUpdateDialogOpen] = useState(false);
+  const [currentUserId, setCurrentUserId] = useState(null);
 
   const {
     state: { isLogged },
@@ -56,9 +54,6 @@ export const UsersActions = ({ params, rowId, setRowId, fetchAllUser }) => {
         primary: {
           main: "#094067",
         },
-        green: {
-          main: "#094067",
-        },
         secondary: {
           main: "#90b4ce",
         },
@@ -67,16 +62,29 @@ export const UsersActions = ({ params, rowId, setRowId, fetchAllUser }) => {
         },
       },
     });
+
+  const fetchUserList = async () => {
+    try {
+      const response = await axios.get("http://localhost:8000/api/users-data-all");
+      if (response.status === 200) {
+        const users = response.data;
+        dispatch({ type: "UPDATE_USERS", payload: users });
+      } else {
+        throw new Error("Failed to fetch users");
+      }
+    } catch (error) {
+      setSnackbar({ open: true, message: error.message, severity: "error" });
+    }
+  };
+
     console.log("params from the admin ::", params)
   const handleEdit = () => {
-    console.log("Params object:", params);
-    console.log("Editing User ID:", params.id);
-    setCurrentUserId(params.id); // Set the current user ID
-    setUpdateDialogOpen(true); // Open the update form dialog
+    setCurrentUserId(params.id);
+    setUpdateDialogOpen(true);
   };
 
   const handleDelete = async () => {
-    const id = params.id; // Extract the ID from the params object
+    const id = params.id;
     setOpenDialog(false);
     setLoading(true);
 
@@ -88,12 +96,14 @@ export const UsersActions = ({ params, rowId, setRowId, fetchAllUser }) => {
 
       if (!result.ok) throw new Error("Failed to delete the record");
 
-      dispatch({ type: "DELETE_REQUESTS", payload: id });
       setSnackbar({
         open: true,
         message: "Record deleted successfully",
         severity: "success",
       });
+
+      await fetchUserList();
+      navigate("/admin");
     } catch (error) {
       setSnackbar({ open: true, message: error.message, severity: "error" });
     } finally {
@@ -101,30 +111,31 @@ export const UsersActions = ({ params, rowId, setRowId, fetchAllUser }) => {
     }
   };
 
-
   const handleSubmit = async () => {
     setLoading(true);
-    const data = params.row;
-
     try {
-      const result = await fetch(
-        "http://localhost:8000/api/v1/req-data-update",
+      const response = await axios.put(
+        `http://localhost:8000/api/users/${rowId}`,
         {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
+          name: params.name,
+          email: params.email,
+          isAdmin: params.isAdmin,
         }
       );
 
-      if (!result.ok) throw new Error("Failed to update the record");
-
-      setSuccess(true);
-      setRowId(null);
-      setSnackbar({
-        open: true,
-        message: "Record updated successfully",
-        severity: "success",
-      });
+      if (response.status === 200) {
+        setSuccess(true);
+        setSnackbar({
+          open: true,
+          message: "User updated successfully",
+          severity: "success",
+        });
+        await fetchUserList();
+        navigate("/admin");
+        
+      } else {
+        throw new Error("Failed to update the user");
+      }
     } catch (error) {
       setSnackbar({ open: true, message: error.message, severity: "error" });
     } finally {
@@ -133,8 +144,8 @@ export const UsersActions = ({ params, rowId, setRowId, fetchAllUser }) => {
   };
 
   useEffect(() => {
-    if (rowId === params.id && success) setSuccess(false);
-  }, [rowId, success, params.id]);
+    fetchUserList();
+  }, []);
 
   return isLogged ? (
     <ThemeProvider theme={getMuiTheme()}>
@@ -153,7 +164,7 @@ export const UsersActions = ({ params, rowId, setRowId, fetchAllUser }) => {
               color="primary"
               sx={{ width: 40, height: 40 }}
               disabled={params.id !== rowId || loading}
-              onClick={handleSubmit}
+              onClick={handleSubmit} // Use the handleSubmit function
             >
               <SaveOutlined />
             </IconButton>
@@ -173,7 +184,7 @@ export const UsersActions = ({ params, rowId, setRowId, fetchAllUser }) => {
             size="small"
             color="secondary"
             sx={{ boxShadow: 0 }}
-            onClick={handleEdit} // Open the update form dialog
+            onClick={handleEdit}
           >
             <EditOutlined />
           </IconButton>
@@ -187,6 +198,11 @@ export const UsersActions = ({ params, rowId, setRowId, fetchAllUser }) => {
         </Stack>
       </Box>
 
+      <UserUpdate
+        open={updateDialogOpen}
+        setOpen={setUpdateDialogOpen}
+        userId={currentUserId}
+      />
       {/* UserUpdate Dialog */}
       {updateDialogOpen && (
         <UserUpdate

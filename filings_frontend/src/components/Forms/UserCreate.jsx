@@ -109,7 +109,7 @@ export const UserCreateForm = (props) => {
       .then((e) => {
         console.log(e);
         // getUsers(dispatch);
-        // navigate("/admin");
+        navigate("/admin");
       })
       .catch((err) => {
         setError(err.response.data.errors[0]);

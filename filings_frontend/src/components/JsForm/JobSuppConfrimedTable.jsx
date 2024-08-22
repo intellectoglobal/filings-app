@@ -21,6 +21,7 @@ import JSformActions from "./JSformActions";
 import { renderEndDateCell } from "./JScustomRender";
 import { useValue } from "../../Context/ContextProvider";
 import CommentsDialog from "./CommentsList/CommentsDialog";
+import RefreshIcon from "@mui/icons-material/Refresh";
 
 const JobSupportConfrimedTable = () => {
   const {
@@ -30,6 +31,30 @@ const JobSupportConfrimedTable = () => {
   const login = () => {
     navigate("/login");
   };
+
+  const [refresh, setRefresh] = useState(0);
+  const handleRefresh = async () => {
+    console.log("refreshed");
+    // setRefresh((prev) => prev + 1);
+    try {
+      const response = await fetch(
+        "http://localhost:8000/api/v1/job-support-data-all"
+      );
+      const result = await response.json();
+
+      // Filter candidates with status "Confirmed"
+      const confirmedCandidates = result.filter(
+        (candidate) => candidate.status === "Confirmed"
+      );
+      setData(confirmedCandidates); // Assuming setData updates the state that holds the candidate data
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  // useEffect(() => {
+  //   handleRefresh(); // Fetch initial data on component mount
+  // }, []);
+
   const inputBox = {
     "& .MuiDataGrid-toolbarQuickFilter": {
       "& .MuiTextField-root": {
@@ -394,6 +419,14 @@ const JobSupportConfrimedTable = () => {
               >
                 Add
               </Button>
+              <Button
+                startIcon={<RefreshIcon />}
+                // onClick={onRefresh}
+                onClick={handleRefresh}
+                sx={{ ml: 2, bgcolor: "#FFFFFF" }}
+              >
+                Refresh
+              </Button>
             </div>
           </div>
           <Box height={595}>
@@ -402,7 +435,7 @@ const JobSupportConfrimedTable = () => {
               columns={enqColumns}
               rows={ConfrimedData}
               getRowId={(row) => row.id}
-              rowsPerPageOptions={[10, 20, 30]}
+              rowsPerPageOptions={[10, 20, 30, 50, 100]}
               components={{ Toolbar: CustomToolbar }}
               disableColumnMenu
               componentsProps={{

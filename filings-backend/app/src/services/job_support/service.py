@@ -15,6 +15,10 @@ def create_request(db: Session, request: schemas.IGS_JOB_SUPPORT):
 def get_all(db: Session):
     return db.query(models.IGS_JOB_SUPPORT).all()
 
+def get_followUp_data(db: Session):
+    return db.query(models.IGS_JOB_SUPPORT).filter(models.IGS_JOB_SUPPORT.status == 'Follow Up').all()
+
+
 def get_requests(db: Session):
     return db.query(models.IGS_JOB_SUPPORT).options(joinedload(models.IGS_JOB_SUPPORT.payment), joinedload(models.IGS_JOB_SUPPORT.comment)).all()
 

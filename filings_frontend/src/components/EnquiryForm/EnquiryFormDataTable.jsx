@@ -18,8 +18,23 @@ import { Link, useNavigate } from "react-router-dom";
 import UseForm from "./UseForm";
 import EnqFormActions from "./EnqFormActions";
 import { useValue } from "../../Context/ContextProvider";
+import RefreshIcon from "@mui/icons-material/Refresh";
 
 const EnquiryFormDataTable = () => {
+  const [refresh, setRefresh] = useState(0);
+  const handleRefresh = async () => {
+    console.log("refreshed");
+    setRefresh((prev) => prev + 1);
+
+    try {
+      const response = await fetch(
+        "http://localhost:8000/api/v1/course-enquiry-all"
+      );
+      const result = await response.json();
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
   const inputBox = {
     "& .MuiDataGrid-toolbarQuickFilter": {
       "& .MuiTextField-root": {
@@ -317,11 +332,19 @@ const EnquiryFormDataTable = () => {
                 color="secondary"
                 sx={{ height: "30px", width: "40px", color: "#FFFFFE" }}
                 startIcon={<AddIcon />}
-                onClick={window.scrollTo(0, 0)}
+                // onClick={window.scrollTo(0, 0)}
                 variant="contained"
               >
                 Add
               </Button>
+              {/* <Button
+                startIcon={<RefreshIcon />}
+                // onClick={onRefresh}
+                onClick={handleRefresh}
+                sx={{ ml: 2, bgcolor: "#FFFFFF" }}
+              >
+                Refresh
+              </Button> */}
             </div>
           </div>
           <Box height={595}>

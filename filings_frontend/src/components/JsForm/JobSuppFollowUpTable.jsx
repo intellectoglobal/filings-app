@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState,useEffect, useRef } from "react";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -20,6 +20,7 @@ import UseForm from "./UseForm";
 import JSformActions from "./JSformActions";
 import { renderEndDateCell } from "./JScustomRender";
 import { useValue } from "../../Context/ContextProvider";
+import RefreshIcon from "@mui/icons-material/Refresh";
 
 const JobSupportFollowUpTable = () => {
   const {
@@ -29,6 +30,33 @@ const JobSupportFollowUpTable = () => {
   const login = () => {
     navigate("/login");
   };
+
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:8000/api/v1/job-support-data-all"
+        );
+        const result = await response.json();
+        console.log("Fetched data:", result); // Log fetched data
+
+        // Filter candidates with status "Follow Up"
+        const followUpCandidates = result.filter(
+          (candidate) => candidate.status === "Follow Up"
+        );
+        console.log("Filtered data:", followUpCandidates); // Log filtered data
+        setData(followUpCandidates);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []); // Empty dependency array ensures this runs once on component mount
+
+
   const inputBox = {
     "& .MuiDataGrid-toolbarQuickFilter": {
       "& .MuiTextField-root": {
@@ -105,7 +133,7 @@ const JobSupportFollowUpTable = () => {
     });
 
   const [editId, setEditId] = useState(null);
-  const {  FollowupData } = UseForm();
+  const { FollowupData } = UseForm();
   // const [rowEditStatus, setRowEditStatus] = useState({});
   // const handleRowEditStart = (params) => {
   //   setRowEditStatus({
@@ -129,124 +157,128 @@ const JobSupportFollowUpTable = () => {
   //   });
   //   setEditId(null);
   // };
-  const Table = "Main"
-  const enqColumns = useMemo(() => [
-    {
-      field: "actions",
-      headerName: "Actions",
-      type: "actions",
-      width: 120,
-      filterable: true,
-      renderCell: (params) => (
-        <JSformActions
-          params={params}
-          editId={editId}
-          setEditId={setEditId}
-          page={Table}
-          // rowEditStatus={rowEditStatus}
-          // onRowEditStart={handleRowEditStart}
-          // onRowEditStop={handleRowEditStop}
-          // onRowEditCancel={handleRowEditCancel} //success, setSuccess
-        />
-      ),
-    },
-    // {
-    //   field: "id",
-    //   headerName: "ID",
-    //   width: 100,
-    //   sortable: false,
-    //   headerAlign: "center",
-    //   align: "center",
-    //   filterable: true,
-    // },
-    {
-      field: "date_of_enquiry",
-      headerAlign: "center",
-      align: "center",
-     // editable: true,
-      filterable: true,
-      headerName: "Start Date",
-      width: 120,
-    },
-    {
-      field: "candidate_name",
-      headerAlign: "center",
-      editable: true,
-      align: "center",
-      headerName: "Name",
-      width: 100,
-      filterable: false,
-    },
-    // {
-    //   field: "mobile",
-    //   headerAlign: "center",
-    //   align: "center",
-    //   editable: true,
-    //   headerName: "Mobile",
-    //   width: 100,
-    //   filterable: true,
-    // },
-    {
-      field: "technology",
-      headerName: "Technology",
-      editable: true,
-      headerAlign: "center",
-      align: "center",
-      width: 160,
-      sortable: true,
-      filterable: true,
-    },
-    {
-      field: "resource",
-      headerName: "Resource",
-      editable: true,
-      headerAlign: "center",
-      align: "center",
-      width: 100,
-      sortable: true,
-      filterable: true,
-    },
-    {
-      field: "status",
-      headerName: "Status",
-      editable: true,
-      width: 100,
-      type: "singleSelect",
-      headerAlign: "center",
-      align: "center",
-      valueOptions: [
-        "Cannot Provide Support",
-        "Confrimed",
-        "Demo Completed",
-        "Demo Scheduled",
-        "Demo Yet to Schedule",
-        "Follow Up",
-        "Not Interested",
-        "Resource Not Available",
-        "Waiting For Response",
-      ],
-      filterable: false,
-    },
-    {
-      field: "feedback",
-     // editable: true,
-      headerName: "Feedback",
-      width: 180,
-      headerAlign: "center",
-      filterable: false,
-      align: "center",
-    },
-    {
-      field: "followup_date",
-      //editable: true,
-      headerName: "Followup Date",
-      width: 180,
-      headerAlign: "center",
-      align: "center",
-      filterable: false,
-      renderCell: renderEndDateCell,
-    },
-  ]);
+  const Table = "Main";
+  const enqColumns = useMemo(
+    () => [
+      {
+        field: "actions",
+        headerName: "Actions",
+        type: "actions",
+        width: 120,
+        filterable: true,
+        renderCell: (params) => (
+          <JSformActions
+            params={params}
+            editId={editId}
+            setEditId={setEditId}
+            page={Table}
+
+            // rowEditStatus={rowEditStatus}
+            // onRowEditStart={handleRowEditStart}
+            // onRowEditStop={handleRowEditStop}
+            // onRowEditCancel={handleRowEditCancel} //success, setSuccess
+          />
+        ),
+      },
+      // {
+      //   field: "id",
+      //   headerName: "ID",
+      //   width: 100,
+      //   sortable: false,
+      //   headerAlign: "center",
+      //   align: "center",
+      //   filterable: true,
+      // },
+      {
+        field: "date_of_enquiry",
+        headerAlign: "center",
+        align: "center",
+        // editable: true,
+        filterable: true,
+        headerName: "Start Date",
+        width: 120,
+      },
+      {
+        field: "candidate_name",
+        headerAlign: "center",
+        editable: true,
+        align: "center",
+        headerName: "Name",
+        width: 100,
+        filterable: false,
+      },
+      // {
+      //   field: "mobile",
+      //   headerAlign: "center",
+      //   align: "center",
+      //   editable: true,
+      //   headerName: "Mobile",
+      //   width: 100,
+      //   filterable: true,
+      // },
+      {
+        field: "technology",
+        headerName: "Technology",
+        editable: true,
+        headerAlign: "center",
+        align: "center",
+        width: 160,
+        sortable: true,
+        filterable: true,
+      },
+      {
+        field: "resource",
+        headerName: "Resource",
+        editable: true,
+        headerAlign: "center",
+        align: "center",
+        width: 100,
+        sortable: true,
+        filterable: true,
+      },
+      {
+        field: "status",
+        headerName: "Status",
+        editable: true,
+        width: 100,
+        type: "singleSelect",
+        headerAlign: "center",
+        align: "center",
+        valueOptions: [
+          "Cannot Provide Support",
+          "Confrimed",
+          "Demo Completed",
+          "Demo Scheduled",
+          "Demo Yet to Schedule",
+          "Follow Up",
+          "Not Interested",
+          "Resource Not Available",
+          "Waiting For Response",
+        ],
+        filterable: false,
+      },
+      {
+        field: "feedback",
+        // editable: true,
+        headerName: "Feedback",
+        width: 180,
+        headerAlign: "center",
+        filterable: false,
+        align: "center",
+      },
+      {
+        field: "followup_date",
+        //editable: true,
+        headerName: "Followup Date",
+        width: 180,
+        headerAlign: "center",
+        align: "center",
+        filterable: false,
+        renderCell: renderEndDateCell,
+      },
+    ],
+    [editId]
+  );
   function CustomToolbar() {
     return (
       <GridToolbarContainer sx={{ background: "#000000" }}>
@@ -325,15 +357,23 @@ const JobSupportFollowUpTable = () => {
               >
                 Add
               </Button>
+              {/* <Button
+                startIcon={<RefreshIcon />}
+                // onClick={onRefresh}
+                onClick={handleRefresh}
+                sx={{ ml: 2, bgcolor: "#FFFFFF" }}
+              >
+                Refresh
+              </Button> */}
             </div>
           </div>
           <Box height={595}>
             <DataGrid
               sx={{ border: 0 }}
               columns={enqColumns}
-              rows={ FollowupData }
+              rows={FollowupData}
               getRowId={(row) => row.id}
-              rowsPerPageOptions={[10, 20, 30]}
+              rowsPerPageOptions={[10, 20, 30, 50, 100]}
               components={{ Toolbar: CustomToolbar }}
               disableColumnMenu
               componentsProps={{

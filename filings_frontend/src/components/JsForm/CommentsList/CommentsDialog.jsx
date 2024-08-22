@@ -89,7 +89,7 @@ const CommentsDialog = ({ open, setOpen, params, rowId, CData }) => {
     }
     console.log("params", cmdData);
     cmdgetRequests(dispatch);
-    setOpen(false)
+    setOpen(false);
   };
 
   useEffect(() => {
@@ -136,7 +136,11 @@ const CommentsDialog = ({ open, setOpen, params, rowId, CData }) => {
                     justify="center"
                     alignItems="center"
                   >
-                    <CommentsDataTable params={params.row} rowId={rowId} today={today}  />
+                    <CommentsDataTable
+                      params={params.row}
+                      rowId={rowId}
+                      today={today}
+                    />
                     <TextValidator
                       label="New Comment"
                       size="small"

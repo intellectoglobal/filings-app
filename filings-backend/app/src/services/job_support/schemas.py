@@ -1,10 +1,10 @@
-from pydantic import BaseModel
+from pydantic import BaseModel,validator
 from datetime import datetime,date
 from typing import Optional
 
 class IGS_JOB_SUPPORT(BaseModel):
 
-    candidate_name: str
+    candidate_name: str  
     mobile: int
     technology: str
     resource: str
@@ -14,12 +14,23 @@ class IGS_JOB_SUPPORT(BaseModel):
     updated_by: str = "admin"
     created_at: Optional[datetime]  
     updated_at: Optional[datetime]
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
     payment_period: str
     date_of_enquiry : date
     start_date: Optional[date] = None
     followup_date: Optional[date] = None
     user_id : int = None
 
+
+    @validator('start_date', 'followup_date', 'date_of_enquiry', pre=True)
+    def parse_date(cls, v):
+        try:
+            return datetime.strptime(v, '%d-%m-%Y').date()
+        except ValueError:
+            raise ValueError('Invalid date format. Expected DD-MM-YYYY')
+    
+    
     class Config:
         orm_mode = True
 

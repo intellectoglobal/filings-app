@@ -4,7 +4,7 @@ import moment from "moment";
 import { useValue } from "../../../Context/ContextProvider";
 import { fsgetRequests } from "../../../Context/actions";
 
-const UpdateLogics = ({ params, page }) => {
+const UpdateLogics = ({ params, page, fetchDetails }) => {
   const [values, setValues] = useState(params.row);
   const paymentsLength = params.row.payment.length;
   const [paymentsData, setPaymentsData] = useState(() => {
@@ -220,6 +220,7 @@ const UpdateLogics = ({ params, page }) => {
     editData();
     paymentRequests();
     fsgetRequests(dispatch);
+    fetchDetails();
   };
 
   return {

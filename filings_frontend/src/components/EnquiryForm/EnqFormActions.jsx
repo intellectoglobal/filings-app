@@ -23,12 +23,15 @@ import UseForm from "./UseForm";
 import { useValue } from "../../Context/ContextProvider";
 import { useNavigate } from "react-router-dom";
 import UpdateForm from "./Update Form/EnqUpdateForm"; // Import the update form
+import UpdateForm from "./Update Form/EnqUpdateForm"; // Import the update form
 
+const EnqFormActions = ({ params, setEditId, editId, page }) => {
 const EnqFormActions = ({ params, setEditId, editId, page }) => {
   const { handleDelete: useFormDelete } = UseForm(params);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
+  const [openEditDialog, setOpenEditDialog] = useState(false); // State for managing the edit dialog
   const [openEditDialog, setOpenEditDialog] = useState(false); // State for managing the edit dialog
   const navigate = useNavigate();
   const {
@@ -44,6 +47,7 @@ const EnqFormActions = ({ params, setEditId, editId, page }) => {
     setLoading(true);
     axios
       .put("http://localhost:8000/api/v1/course-enquiry-update", editedRow)
+      .put("http://localhost:8000/api/v1/course-enquiry-update", editedRow)
       .then((res) => {
         console.log(res.data);
         console.log("Empdata Successfully updated");
@@ -56,6 +60,14 @@ const EnqFormActions = ({ params, setEditId, editId, page }) => {
       .finally(() => {
         setLoading(false);
       });
+  };
+
+  const handleClickOpenEditDialog = () => {
+    setOpenEditDialog(true); // Open the edit dialog
+  };
+
+  const handleCloseEditDialog = () => {
+    setOpenEditDialog(false); // Close the edit dialog
   };
 
   const handleClickOpenEditDialog = () => {
@@ -121,6 +133,7 @@ const EnqFormActions = ({ params, setEditId, editId, page }) => {
                   boxShadow: 0,
                   bgcolor: green[500],
                   "&:hover": { bgcolor: green[300] },
+                  "&:hover": { bgcolor: green[300] },
                 }}
                 onClick={() => {
                   setSuccess(false);
@@ -160,9 +173,11 @@ const EnqFormActions = ({ params, setEditId, editId, page }) => {
               color="secondary"
               sx={{ boxShadow: 0 }}
               onClick={handleClickOpenEditDialog} // Trigger the edit dialog
+              onClick={handleClickOpenEditDialog} // Trigger the edit dialog
             >
               <EditOutlined />
             </IconButton>
+
 
             <IconButton
               color="teritiary"
@@ -170,12 +185,32 @@ const EnqFormActions = ({ params, setEditId, editId, page }) => {
               size="small"
               aria-label="delete"
               onClick={handleDeleteDialogOpen}
+              onClick={handleDeleteDialogOpen}
             >
               <DeleteOutlined />
             </IconButton>
           </Stack>
         </Box>
 
+        {/* Edit Dialog */}
+        <Dialog open={openEditDialog} onClose={handleCloseEditDialog}>
+          <DialogTitle sx={{ fontWeight: "bold" }}>Edit Record</DialogTitle>
+          <DialogContent>
+            <UpdateForm
+              open={openEditDialog}
+              setOpen={setOpenEditDialog}
+              params={params}
+              page={page}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseEditDialog} color="primary">
+              Close
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        <Dialog open={openDialog} onClose={handleDeleteDialogClose}>
         {/* Edit Dialog */}
         <Dialog open={openEditDialog} onClose={handleCloseEditDialog}>
           <DialogTitle sx={{ fontWeight: "bold" }}>Edit Record</DialogTitle>
@@ -203,6 +238,7 @@ const EnqFormActions = ({ params, setEditId, editId, page }) => {
           </DialogContent>
           <DialogActions>
             <Button onClick={handleDeleteDialogClose} color="primary">
+            <Button onClick={handleDeleteDialogClose} color="primary">
               Cancel
             </Button>
             <Button
@@ -210,6 +246,7 @@ const EnqFormActions = ({ params, setEditId, editId, page }) => {
                 background: "#ef4565",
                 color: "white",
                 "&:hover": {
+                  background: "#ef4565",
                   background: "#ef4565",
                 },
               }}

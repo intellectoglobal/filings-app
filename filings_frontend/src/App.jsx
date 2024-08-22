@@ -26,6 +26,9 @@ import SetNewPwd from "./components/Auth/SetNewPwd";
 import UpdateForm from "./components/EnquiryForm/Update Form/EnqUpdateForm.jsx";
 function App() {
     // const isLoggedIn = getState().isLoggedIn
+
+    
+
   return (
     <BrowserRouter>
       <HeaderBar>
@@ -55,6 +58,7 @@ function App() {
           <Route path="/user-form" element={<UserCreateForm />} />
           <Route path="/" element={<HomePage />} />
           <Route path="/" element={<UpdateForm />} />
+          <Route path="/" element={<UpdateForm />} />
           {/* <Route
             path="/"
             element={
@@ -71,3 +75,5 @@ function App() {
 }
 
 export default App;
+
+

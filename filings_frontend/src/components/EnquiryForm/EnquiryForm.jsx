@@ -288,6 +288,7 @@ const EnquiryForm = () => {
                     color="green"
                     type="number"
                     name="mobile"
+                    maxlength={10}
                     required={true}
                     value={values.mobile}
                     onChange={handleChange}

@@ -1,4 +1,5 @@
 from sqlalchemy import Column,String,Integer,BigInteger, ForeignKey, func, event
+from sqlalchemy import Column,String,Integer,BigInteger, ForeignKey, func, event
 from ...database import Base
 
 class IGS_COURSE_ENQ(Base):

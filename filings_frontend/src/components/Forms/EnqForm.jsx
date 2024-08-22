@@ -80,30 +80,87 @@ export const EnqForm = (props) => {
   };
   const quaters = ["Q1", "Q2", "Q3", "Q4"];
 
+const validateInput = (name, value) => {
+  let error = "";
+
+  switch (name) {
+    case "mobile":
+      // Check if value starts with '+' and is followed by digits
+      if (value.startsWith("+")) {
+        // Validate the rest of the string after '+'
+        if (!/^\+\d*$/.test(value)) {
+          error = 'Mobile number must be numeric and start with a "+"';
+        } else if (value.length < 11 || value.length > 11) {
+          // Length check: + plus 10-13 digits
+          error = 'Mobile number must be between 10 and 13 digits after "+"';
+        }
+      } else if (!/^\d*$/.test(value)) {
+        // Validate if not starting with '+'
+        error = "Mobile number must be numeric";
+      } else if (value.length < 0 || value.length > 10) {
+        error = "Mobile number must be between 10 and 13 digits";
+      }
+      break;
+    // Add more validation cases as needed
+    switch (name) {
+    case 'pincode':
+      // Check if value is exactly 6 digits
+      if (!/^[1-9][0-9]{5}$/.test(value)) {
+        error = 'Pincode must be exactly 6 digits';
+        if (!/^\d{6}$/.test(value)) {
+          error = "Pincode must be exactly 6 digits";
+        } else if (value.length < 0 || value.length > 6) {
+          error = "pincode number must be 6 digits";
+        }
+      }
+      break;
+    }
+    // Add more validation cases as needed
+    
+    default:
+      break;
+  }
+
+  return error;
+};
+
+
   const handleChangeInfo = (e, service) => {
     const { name, value } = e.target;
 
-    switch (service) {
-      case "user":
-        setInfo((prev) => ({ ...prev, [name]: value }));
-        break;
-      case "gst":
-        setGstInfo((prev) => ({ ...prev, [name]: value }));
-        break;
-      case "newgst":
-        setnewGstInfo((prev) => ({ ...prev, [name]: value }));
-        break;
-      case "pan":
-        setPanInfo((prev) => ({ ...prev, [name]: value }));
-        break;
-      case "tax":
-        setTaxInfo((prev) => ({ ...prev, [name]: value }));
-        break;
-      default:
-        break;
+    // Validate input
+    const error = validateInput(name, value);
+
+    if (!error) {
+      // No errors, update state
+      switch (service) {
+        case "user":
+          setInfo((prev) => ({ ...prev, [name]: value }));
+          break;
+        case "gst":
+          setGstInfo((prev) => ({ ...prev, [name]: value }));
+          break;
+        case "newgst":
+          setnewGstInfo((prev) => ({ ...prev, [name]: value }));
+          break;
+        case "pan":
+          setPanInfo((prev) => ({ ...prev, [name]: value }));
+          break;
+        case "tax":
+          setTaxInfo((prev) => ({ ...prev, [name]: value }));
+          break;
+        default:
+          break;
+      }
+      // Clear any previous error
+      setErrors((prev) => ({ ...prev, [name]: "" }));
+    } else {
+      // Set error message
+      setErrors((prev) => ({ ...prev, [name]: error }));
+      console.error("Validation failed:", error);
     }
   };
-  const handleClear=()=>{
+  const handleClear = () => {
     setInfo({
       req_id: "",
       first_name: "",
@@ -112,6 +169,11 @@ export const EnqForm = (props) => {
       email: "",
       address: "",
       city: "",
+      pincode: "",
+      errorMessages:"",
+    });
+    setErrors({
+      mobile: "",
       pincode: "",
     });
   }
@@ -367,14 +429,26 @@ export const EnqForm = (props) => {
                 <TextValidator
                   label="Mobile"
                   name="mobile"
-                  validators={["isNumber"]}
-                  errorMessages={["Please enter 10 digit Mobile number"]}
-                  value={userinfo.mobile}
-                  required={true}
-                  onChange={(e) => handleChangeInfo(e, "user")}
-                  size="small"
                   color="green"
-                  type="text"
+                  value={userinfo.mobile}
+                  onChange={(e) => handleChangeInfo(e, "user")}
+                  validators={[
+                    "required",
+                    "isNumber",
+                    "minStringLength:10",
+                    // "maxStringLength:13",
+                  ]}
+                  errorMessages={[
+                    "required",
+                    "Please enter a valid number",
+                    "Mobile number must be at least 10 digits",
+                    "Mobile number must be at most 13 digits",
+                  ]}
+                  required={true}
+                  size="small"
+                  variant="outlined"
+                  error={errors.mobile}
+                  fullWidth
                 />
                 <TextValidator
                   label="Email"
@@ -417,13 +491,21 @@ export const EnqForm = (props) => {
                   value={userinfo.pincode}
                   onChange={(e) => handleChangeInfo(e, "user")}
                   color="green"
-                  validators={["isNumber", "matchRegexp:^[1-9][0-9]{5}$"]}
+                  validators={[
+                    "required",
+                    "isNumber",
+                    "matchRegexp:^[1-9][0-9]{5}$",
+                  ]}
                   errorMessages={[
-                    "Please enter 6 digit Pincode",
-                    "Please enter 6 digit Pincode",
+                    "Pincode is required",
+                    "Pincode must be numeric",
+                    "Pincode must be exactly 6 digits",
                   ]}
                   type="text"
-                  // required={true}
+                  required={true}
+                  variant="outlined"
+                  fullWidth
+                  inputProps={{ maxLength: 6 }} // Restrict input length to 6 characters
                 />
               </Grid>
               <Grid style={{ display: "flex" }}>
@@ -737,9 +819,12 @@ export const EnqForm = (props) => {
                   Cancel
                 </Button>
 
-
-                <Button variant="outlined" color="green" type="reset" onClick={handleClear}>
-
+                <Button
+                  variant="outlined"
+                  color="green"
+                  type="reset"
+                  onClick={handleClear}
+                >
                   Clear
                 </Button>
               </Stack>

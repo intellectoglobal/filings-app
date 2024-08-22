@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useMemo } from "react";
+
 // import RefreshIcon from '@mui/icons-material/Refresh';
 import {
   DataGrid,
@@ -19,6 +19,8 @@ import { Link, useNavigate } from "react-router-dom";
 import UseForm from "./UseForm";
 import JSformActions from "./JSformActions";
 import { useValue } from "../../Context/ContextProvider";
+import RefreshIcon from "@mui/icons-material/Refresh";
+import { fsgetRequests } from "../../Context/actions";
 
 const JobSupportDataTable = () => {
   const {
@@ -28,11 +30,23 @@ const JobSupportDataTable = () => {
   const login = () => {
     navigate("/login");
   };
-  // const [refresh, setRefresh] = useState(0);
-  //  const handleRefresh = () => {
-  //   console.log('refreshed')
-  //    setRefresh((prev) => prev + 1);
-  //  };
+
+  const [data, setData] = useState([]);
+  const [refresh, setRefresh] = useState(0);
+  const {
+    state: { fsrequests },
+    dispatch
+  } = useValue();
+
+  const handleRefresh = async () => {
+    await fsgetRequests(dispatch)
+  };
+  console.log("values came from the fsrequests ::", fsrequests)
+
+  useEffect(() => {
+   if(fsrequests.length === 0) handleRefresh()
+  }, []);
+
   const inputBox = {
     "& .MuiDataGrid-toolbarQuickFilter": {
       "& .MuiTextField-root": {
@@ -58,7 +72,6 @@ const JobSupportDataTable = () => {
       backgroundColor: "rgba(145, 158, 171, 0.12)",
       borderRadius: "10px",
     },
-    "& .MuiDataGrid-main ": {},
     margin: "0 auto",
     width: "100%",
     "& .MuiTextField-root": {
@@ -89,6 +102,7 @@ const JobSupportDataTable = () => {
     borderRadius: "12px",
     padding: "30px",
   };
+
   const getMuiTheme = () =>
     createTheme({
       palette: {
@@ -106,9 +120,9 @@ const JobSupportDataTable = () => {
         },
       },
     });
-  const Table = "Main"
+
+  const Table = "Main";
   const [editId, setEditId] = useState(null);
-  const { fsrequests } = UseForm();
 
   const enqColumns = useMemo(() => [
     {
@@ -123,6 +137,7 @@ const JobSupportDataTable = () => {
           editId={editId}
           setEditId={setEditId}
           page={Table}
+          fetchDetails={handleRefresh}
         />
       ),
     },
@@ -175,14 +190,13 @@ const JobSupportDataTable = () => {
     {
       field: "status",
       headerName: "Status",
-  
       width: 100,
       type: "singleSelect",
       headerAlign: "center",
       align: "center",
       valueOptions: [
         "Cannot Provide Support",
-        "Confrimed",
+        "Confirmed",
         "Demo Completed",
         "Demo Scheduled",
         "Demo Yet to Schedule",
@@ -203,6 +217,7 @@ const JobSupportDataTable = () => {
       align: "center",
     },
   ]);
+
   function CustomToolbar() {
     return (
       <GridToolbarContainer sx={{ background: "#000000" }}>
@@ -276,11 +291,18 @@ const JobSupportDataTable = () => {
                 color="secondary"
                 sx={{ height: "30px", width: "40px", color: "#FFFFFE" }}
                 startIcon={<AddIcon />}
-                onClick={window.scrollTo(0, 0)}
+                onClick={() => window.scrollTo(0, 0)}
                 variant="contained"
               >
                 Add
               </Button>
+              {/* <Button
+                startIcon={<RefreshIcon />}
+                onClick={handleRefresh}
+                sx={{ ml: 2, bgcolor: "#FFFFFF" }}
+              >
+                Refresh
+              </Button> */}
             </div>
           </div>
           <Box height={595}>
@@ -289,7 +311,7 @@ const JobSupportDataTable = () => {
               columns={enqColumns}
               rows={fsrequests}
               getRowId={(row) => row.id}
-              rowsPerPageOptions={[10, 20, 30]}
+              rowsPerPageOptions={[10, 20, 30, 50, 100]}
               components={{ Toolbar: CustomToolbar }}
               disableColumnMenu
               componentsProps={{
@@ -301,8 +323,7 @@ const JobSupportDataTable = () => {
                 },
                 panel: {
                   sx: {
-                    "& .MuiDataGrid-filterForm": {
-                    },
+                    "& .MuiDataGrid-filterForm": {},
                     "& .MuiDataGrid-paper": {
                       boxShadow: "none !important",
                     },

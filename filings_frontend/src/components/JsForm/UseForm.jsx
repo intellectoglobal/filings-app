@@ -82,14 +82,7 @@ const UseForm = (params) => {
   };
 
   const postData = () => {
-    console.log("Data sending to backend:", enqdata); // Inspect the data here
-    
-    // Example validation (ensure no fields are undefined or missing)
-    if (!enqdata || Object.values(enqdata).some(value => value === undefined)) {
-      console.error("Error: Missing or undefined data in enqdata:", enqdata);
-      return;
-    }
-  
+    // if (Object.values(values).includes("") === false) {
     axios
       .post("http://localhost:8000/api/job-support-data", enqdata, {
         headers: { "Content-Type": "application/json" },
@@ -106,9 +99,6 @@ const UseForm = (params) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(values);
-    console.log("I am Working");
-
     postData();
     console.log("Data is valid and submitted", enqdata);
     setValues({
@@ -143,16 +133,33 @@ const UseForm = (params) => {
 
   useEffect(() => {
     fsgetRequests(dispatch);
-  }, [dispatch]);
+  }, []);
 
+  // const handleDelete = async () => {
+  //   const { id } = parameter.row;
+  //   if (window.confirm("Are you sure to delete this record?")) {
+  //     await axios
+  //       .delete(`http://localhost:8000/api/v1/job-support-data-delete/${id}`)
+  //       .then((res) => console.log("Employee Data Successfully deleted"))
+
+  //       .catch((error) => {
+  //         console.log(error);
+  //       });
+  //     dispatch({ type: "FSDELETE_REQUESTS", payload: id });
+  //     fsgetRequests(dispatch);
+  //   }
+  // };
   const handleDelete = async () => {
     const { id } = parameter.row;
-    try {
-      await axios.delete(
-        "http://localhost:8000/api/v1/job-support-data-delete/${id}"
-      );
-      console.log("Employee Data Successfully deleted");
-      dispatch({ type: "JS_GETREQUEST", payload: id });
+    {
+      await axios
+        .delete(`http://localhost:8000/api/v1/job-support-data-delete/${id}`)
+        .then((res) => console.log("Employee Data Successfully deleted"))
+
+        .catch((error) => {
+          console.log(error);
+        });
+      dispatch({ type: "FSDELETE_REQUESTS", payload: id });
       fsgetRequests(dispatch);
     } catch (error) {
       console.log("Error deleting employee data:", error);
