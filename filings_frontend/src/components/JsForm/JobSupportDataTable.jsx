@@ -44,7 +44,8 @@ const JobSupportDataTable = () => {
   console.log("values came from the fsrequests ::", fsrequests)
 
   useEffect(() => {
-   if(fsrequests.length === 0) handleRefresh()
+  //  if(fsrequests.length === 0) 
+  handleRefresh()
   }, []);
 
   const inputBox = {

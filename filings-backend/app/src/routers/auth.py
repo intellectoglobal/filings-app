@@ -46,6 +46,10 @@ async def register(user:schemas.AdminUser,  db: Session = Depends(get_db)):
 def user(db: Session = Depends(get_db)):
     return service.get_user(db=db)
 
+@router.get("/users-data/{id}")
+def user(id: int,db: Session = Depends(get_db)):
+	print("inside user fetch")
+	return service.get_user_by_id(db=db, user_id=id)
 
 # @router.put("/users-update")  
 # async def users_update(request: schemas.User_GU,  db: Session = Depends(get_db)):
@@ -69,6 +73,7 @@ async def delete_user(id: int, db: Session = Depends(get_db)):
     
     service.delete_user(db=db, user=user)
     return {"detail": "User deleted successfully"}
+
 @router.put("/users-update")  
 async def users_update(request: schemas.User_GU,  db: Session = Depends(get_db)):
     return service.update_user(db=db, request=request)

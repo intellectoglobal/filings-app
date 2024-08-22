@@ -21,7 +21,7 @@ export const fsgetRequests = async (dispatch) => {
     "http://localhost:8000/api/v1/job-support-data-all"
   );
   const content = await jsdata.data;
-  console.log(content);
+  console.log("inside fsgetRequest"+content);
    if (Array.isArray(content)) {
      dispatch({ type: "JS_GETREQUEST", payload: content });
    } else {

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   Dialog,
   DialogTitle,
@@ -25,8 +25,6 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { useNavigate } from "react-router-dom";
 import UpdateLogics from "./EnqUpdateLogics";
 import { useValue } from "../../../Context/ContextProvider";
-import axios from "axios";
-
 
 const UpdateForm = ({ open, setOpen, params, page }) => {
   const {
@@ -34,15 +32,10 @@ const UpdateForm = ({ open, setOpen, params, page }) => {
     payment,
     handlePaymentChange,
     handleChange,
-    handleDateChange,
     handleSubmit,
     setValues,
     clearFields,
   } = UpdateLogics({ page, params });
-
-  // useEffect(()=>{
-  //   console.log(values)
-  // },[])
 
   const theme = createTheme({
     palette: {
@@ -114,62 +107,54 @@ const UpdateForm = ({ open, setOpen, params, page }) => {
               <Grid container spacing={2} direction="column">
                 <Grid item container spacing={2}>
                   <Grid item xs={12} sm={6}>
-                    <FormControl fullWidth size="small">
-                      <TextValidator
-                        label="Name"
-                        color="green"
-                        type="text"
-                        name="name"
-                        required={true}
-                        value={values.name}
-                        onChange={handleChange}
-                        validators={["matchRegexp:^[A-Za-z.]*$", "required"]}
-                        errorMessages={[
-                          "Only alphabets and period are allowed",
-                          "This field is required",
-                        ]}
-                      />
-                    </FormControl>
+                    <TextValidator
+                      label="Name"
+                      size="small"
+                      color="green"
+                      type="text"
+                      name="name"
+                      required
+                      value={values.name}
+                      onChange={handleChange}
+                      validators={["matchRegexp:^[A-Za-z.]*$", "required"]}
+                      errorMessages={[
+                        "Only alphabets and period are allowed",
+                        "This field is required",
+                      ]}
+                    />
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DatePicker
-                        orientation="landscape"
                         label="Follow Up Call Date"
-                        openTo="day"
-                        format="dd-MM-yyyy"
-                        views={["day"]}
+                        format="DD-MM-YYYY"
                         value={values.followup_call_date}
-                        // onChange={(e) => {
-                        //   const date = new Date(e);
-                        //   setValues({
-                        //     ...values,
-                        //     followup_call_date: `${date}`,
-                        //   });
-                        // }}
-                        onChange={(date) => handleDateChange(date)}
+                        onChange={(date) =>
+                          setValues({ ...values, followup_call_date: date })
+                        }
                         renderInput={(params) => (
-                          <FormControl fullWidth size="small">
-                            <TextValidator
-                              color="green"
-                              {...params}
-                              helperText={null}
-                            />
-                          </FormControl>
+                          <TextValidator
+                            color="green"
+                            size="small"
+                            {...params}
+                            helperText={null}
+                            fullWidth
+                          />
                         )}
                       />
                     </LocalizationProvider>
                   </Grid>
                 </Grid>
+
                 <Grid item container spacing={2}>
                   <Grid item xs={12} sm={6}>
                     <FormControl fullWidth size="small">
                       <InputLabel color="green">Follow Up Status</InputLabel>
                       <Select
-                        label="Follow Up Status*"
+                        label="Follow Up Status"
                         color="green"
                         name="followup_status"
-                        required={true}
+                        required
                         value={values.followup_status}
                         onChange={handleChange}
                       >
@@ -182,34 +167,34 @@ const UpdateForm = ({ open, setOpen, params, page }) => {
                     </FormControl>
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <FormControl fullWidth size="small">
-                      <TextValidator
-                        label="Comments"
-                        color="green"
-                        multiline
-                        type="text"
-                        name="comments"
-                        required={true}
-                        value={values.comments}
-                        onChange={handleChange}
-                        validators={["matchRegexp:^[A-Za-z.]*$", "required"]}
-                        errorMessages={[
-                          "Only alphabets and period are allowed",
-                          "This field is required",
-                        ]}
-                      />
-                    </FormControl>
+                    <TextValidator
+                      label="Comments"
+                      size="small"
+                      multiline
+                      color="green"
+                      type="text"
+                      name="comments"
+                      required
+                      value={values.comments}
+                      onChange={handleChange}
+                      validators={["matchRegexp:^[A-Za-z.]*$", "required"]}
+                      errorMessages={[
+                        "Only alphabets and period are allowed",
+                        "This field is required",
+                      ]}
+                    />
                   </Grid>
                 </Grid>
+
                 <Grid item container spacing={2}>
                   <Grid item xs={12} sm={6}>
                     <FormControl fullWidth size="small">
                       <InputLabel color="green">Enquired By</InputLabel>
                       <Select
-                        label="Enquired By*"
+                        label="Enquired By"
                         color="green"
                         name="enquiry_by"
-                        required={true}
+                        required
                         value={values.enquiry_by}
                         onChange={handleChange}
                       >
@@ -222,75 +207,73 @@ const UpdateForm = ({ open, setOpen, params, page }) => {
                     </FormControl>
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <FormControl fullWidth size="small">
-                      <TextValidator
-                        label="Mobile"
-                        color="green"
-                        type="number"
-                        name="mobile"
-                        required={true}
-                        value={values.mobile}
-                        onChange={handleChange}
-                        validators={["required", "matchRegexp:^[1-9][0-9]{9}$"]}
-                        errorMessages={[
-                          "Please enter 10 digit Mobile",
-                          "Please enter 10 digit Mobile",
-                        ]}
-                      />
-                    </FormControl>
+                    <TextValidator
+                      label="Mobile"
+                      size="small"
+                      color="green"
+                      type="number"
+                      name="mobile"
+                      required
+                      value={values.mobile}
+                      onChange={handleChange}
+                      validators={["required", "matchRegexp:^[1-9][0-9]{9}$"]}
+                      errorMessages={[
+                        "Please enter 10 digit Mobile",
+                        "Please enter 10 digit Mobile",
+                      ]}
+                    />
                   </Grid>
                 </Grid>
+
                 <Grid item container spacing={2}>
                   <Grid item xs={12} sm={6}>
-                    <FormControl fullWidth size="small">
-                      <TextValidator
-                        label="Location"
-                        color="green"
-                        type="text"
-                        name="location"
-                        required={true}
-                        value={values.location}
-                        onChange={handleChange}
-                      />
-                    </FormControl>
+                    <TextValidator
+                      label="Location"
+                      size="small"
+                      color="green"
+                      type="text"
+                      name="location"
+                      required
+                      value={values.location}
+                      onChange={handleChange}
+                    />
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <FormControl fullWidth size="small">
-                      <TextValidator
-                        label="Course"
-                        color="green"
-                        type="text"
-                        name="course"
-                        required={true}
-                        value={values.course}
-                        onChange={handleChange}
-                      />
-                    </FormControl>
+                    <TextValidator
+                      label="Course"
+                      size="small"
+                      color="green"
+                      type="text"
+                      name="course"
+                      required
+                      value={values.course}
+                      onChange={handleChange}
+                    />
                   </Grid>
                 </Grid>
+
                 <Grid item container spacing={2}>
                   <Grid item xs={12} sm={6}>
-                    <FormControl fullWidth size="small">
-                      <TextValidator
-                        label="Fee Structure"
-                        color="green"
-                        type="text"
-                        name="fee_structure"
-                        required={true}
-                        value={values.fee_structure}
-                        onChange={handleChange}
-                      />
-                    </FormControl>
+                    <TextValidator
+                      label="Fee Structure"
+                      size="small"
+                      color="green"
+                      type="text"
+                      name="fee_structure"
+                      required
+                      value={values.fee_structure}
+                      onChange={handleChange}
+                    />
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <FormControl fullWidth size="small">
                       <InputLabel color="green">Domain</InputLabel>
                       <Select
-                        label="Domain*"
+                        label="Domain"
                         color="green"
                         name="domain"
-                        required={true}
-                        value={values.experience_by}
+                        required
+                        value={values.domain}
                         onChange={handleChange}
                       >
                         {domain.map((val, index) => (
@@ -302,15 +285,16 @@ const UpdateForm = ({ open, setOpen, params, page }) => {
                     </FormControl>
                   </Grid>
                 </Grid>
+
                 <Grid item container spacing={2}>
                   <Grid item xs={12} sm={6}>
                     <FormControl fullWidth size="small">
                       <InputLabel color="green">Mode</InputLabel>
                       <Select
-                        label="Mode*"
+                        label="Mode"
                         color="green"
                         name="mode"
-                        required={true}
+                        required
                         value={values.mode}
                         onChange={handleChange}
                       >
@@ -323,33 +307,52 @@ const UpdateForm = ({ open, setOpen, params, page }) => {
                     </FormControl>
                   </Grid>
                   <Grid item xs={12} sm={6}>
+                    <TextValidator
+                      label="Assigned To"
+                      size="small"
+                      color="green"
+                      type="text"
+                      name="assigned_to"
+                      required
+                      value={values.assigned_to}
+                      onChange={handleChange}
+                      validators={["matchRegexp:^[A-Za-z.]*$", "required"]}
+                      errorMessages={[
+                        "Only alphabets and period are allowed",
+                        "This field is required",
+                      ]}
+                    />
+                  </Grid>
+                </Grid>
+
+                <Grid item container spacing={2}>
+                  <Grid item xs={12} sm={6}>
                     <FormControl fullWidth size="small">
-                      <InputLabel color="green">Payment Period</InputLabel>
+                      <InputLabel color="green">Payment Type</InputLabel>
                       <Select
-                        label="Payment Period*"
+                        label="Payment Type"
                         color="green"
-                        name="payment_period"
-                        required={true}
-                        value={values.payment_period}
-                        onChange={handleChange}
+                        name="payment_type"
+                        required
+                        value={values.payment_type}
+                        onChange={handlePaymentChange}
                       >
-                        <MenuItem value="Task">Task</MenuItem>
-                        <MenuItem value="Weekly">Weekly</MenuItem>
-                        <MenuItem value="BiWeekly">BiWeekly</MenuItem>
-                        <MenuItem value="Monthly">Monthly</MenuItem>
+                        {paymentValues.map((val, index) => (
+                          <MenuItem key={index} value={val}>
+                            {val}
+                          </MenuItem>
+                        ))}
                       </Select>
                     </FormControl>
                   </Grid>
-                </Grid>
-                <Grid item container spacing={2}>
                   <Grid item xs={12} sm={6}>
                     <FormControl fullWidth size="small">
                       <InputLabel color="green">Payment Status</InputLabel>
                       <Select
-                        label="Payment Status*"
+                        label="Payment Status"
                         color="green"
                         name="payment_status"
-                        required={true}
+                        required
                         value={values.payment_status}
                         onChange={handleChange}
                       >
@@ -362,43 +365,45 @@ const UpdateForm = ({ open, setOpen, params, page }) => {
                     </FormControl>
                   </Grid>
                 </Grid>
-                <Grid item container spacing={2} justifyContent="flex-end">
-                  <Grid item>
-                    <Button
-                      onClick={handleClose}
-                      variant="contained"
-                      sx={{
-                        backgroundColor: "#ef4565", // Match the first form's secondary color
-                        color: "#fff",
-                        "&:hover": {
-                          backgroundColor: "#d43a5b", // Darker shade for hover effect
-                        },
-                      }}
-                    >
-                      Close
-                    </Button>
-                  </Grid>
-                  <Grid item>
-                    <Button
-                      onClick={() => {
-                        {
-                          handleSubmit();
-                          setOpen(false);
-                        }
-                      }}
-                      type="submit"
-                      variant="contained"
-                      sx={{
-                        backgroundColor: "#094067", // Match the first form's primary color
-                        color: "#fff",
-                        "&:hover": {
-                          backgroundColor: "#072a5b", // Darker shade for hover effect
-                        },
-                      }}
-                    >
-                      Update
-                    </Button>
-                  </Grid>
+
+                <Grid
+                  container
+                  spacing={-2}
+                  justifyContent="flex-end"
+                  item
+                  xs={12}
+                  sm={6}
+                >
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="success"
+                    sx={{
+                      backgroundColor: "#094067", // Match the first form's primary color
+                      color: "#fff",
+                      "&:hover": {
+                        backgroundColor: "#072a5b", // Darker shade for hover effect
+                      },
+                    }}
+                  >
+                    Submit
+                  </Button>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Button
+                    onClick={handleClose}
+                    variant="contained"
+                    color="error"
+                    sx={{
+                      backgroundColor: "#094067", // Match the first form's primary color
+                      color: "#fff",
+                      "&:hover": {
+                        backgroundColor: "#072a5b", // Darker shade for hover effect
+                      },
+                    }}
+                  >
+                    Back
+                  </Button>
                 </Grid>
               </Grid>
             </Box>

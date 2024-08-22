@@ -26,7 +26,7 @@ import { useNavigate } from "react-router-dom";
 import { useValue } from "../../Context/ContextProvider";
 import UserUpdate from "./Update Form/UserUpdate";
 
-export const UsersActions = ({ params, rowId, setRowId }) => {
+export const UsersActions = ({ params, rowId, setRowId, fetchAllUser }) => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);

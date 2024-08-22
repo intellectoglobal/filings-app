@@ -21,10 +21,12 @@ import JSformActions from "./JSformActions";
 import { renderEndDateCell } from "./JScustomRender";
 import { useValue } from "../../Context/ContextProvider";
 import RefreshIcon from "@mui/icons-material/Refresh";
+import { fsgetRequests } from "../../Context/actions";
 
 const JobSupportFollowUpTable = () => {
   const {
     state: { isLogged },
+    dispatch,
   } = useValue();
   const navigate = useNavigate();
   const login = () => {
@@ -32,29 +34,6 @@ const JobSupportFollowUpTable = () => {
   };
 
   const [data, setData] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          "http://localhost:8000/api/v1/job-support-data-all"
-        );
-        const result = await response.json();
-        console.log("Fetched data:", result); // Log fetched data
-
-        // Filter candidates with status "Follow Up"
-        const followUpCandidates = result.filter(
-          (candidate) => candidate.status === "Follow Up"
-        );
-        console.log("Filtered data:", followUpCandidates); // Log filtered data
-        setData(followUpCandidates);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, []); // Empty dependency array ensures this runs once on component mount
 
 
   const inputBox = {
@@ -134,6 +113,10 @@ const JobSupportFollowUpTable = () => {
 
   const [editId, setEditId] = useState(null);
   const { FollowupData } = UseForm();
+
+  useEffect(() => {
+    fsgetRequests(dispatch);
+  }, [dispatch]);
   // const [rowEditStatus, setRowEditStatus] = useState({});
   // const handleRowEditStart = (params) => {
   //   setRowEditStatus({
@@ -172,6 +155,7 @@ const JobSupportFollowUpTable = () => {
             editId={editId}
             setEditId={setEditId}
             page={Table}
+            
 
             // rowEditStatus={rowEditStatus}
             // onRowEditStart={handleRowEditStart}

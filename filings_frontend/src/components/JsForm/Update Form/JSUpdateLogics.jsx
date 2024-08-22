@@ -4,8 +4,8 @@ import moment from "moment";
 import { useValue } from "../../../Context/ContextProvider";
 import { fsgetRequests } from "../../../Context/actions";
 
-const UpdateLogics = ({ params, page, fetchDetails }) => {
-  const [values, setValues] = useState(params.row);
+const UpdateLogics = ({ params, page, fetchDetails, closeForm }) => {
+  const [newValues, setNewValues] = useState(params.row);
   const paymentsLength = params.row.payment.length;
   const [paymentsData, setPaymentsData] = useState(() => {
     if (paymentsLength !== 0) {
@@ -61,7 +61,7 @@ const UpdateLogics = ({ params, page, fetchDetails }) => {
   const { dispatch } = useValue();
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setValues((preValues) => {
+    setNewValues((preValues) => {
       return { ...preValues, [name]: value };
     });
   };
@@ -73,17 +73,17 @@ const UpdateLogics = ({ params, page, fetchDetails }) => {
   };
 
   const FollowupDate = () => {
-    if (values.payment_period === "Task") {
+    if (newValues.payment_period === "Task") {
       return new Date();
-    } else if (values.payment_period === "Weekly") {
+    } else if (newValues.payment_period === "Weekly") {
       let currentDate = new Date();
       let Weekly = new Date(currentDate.getTime() + 6 * 24 * 60 * 60 * 1000);
       return Weekly;
-    } else if (values.payment_period === "BiWeekly") {
+    } else if (newValues.payment_period === "BiWeekly") {
       let currentDate = new Date();
       let biWeekly = new Date(currentDate.getTime() + 14 * 24 * 60 * 60 * 1000);
       return biWeekly;
-    } else if (values.payment_period === "Monthly") {
+    } else if (newValues.payment_period === "Monthly") {
       let currentDate = new Date();
       let Monthly = new Date(currentDate.getTime() + 30 * 24 * 60 * 60 * 1000);
       return Monthly;
@@ -144,25 +144,25 @@ const UpdateLogics = ({ params, page, fetchDetails }) => {
 
   const editedData = {
     id: params.id,
-    candidate_name: values.candidate_name,
-    mobile: values.mobile,
-    technology: values.technology,
-    date_of_enquiry: values.date_of_enquiry,
+    candidate_name: newValues.candidate_name,
+    mobile: newValues.mobile,
+    technology: newValues.technology,
+    date_of_enquiry: newValues.date_of_enquiry,
     start_date:
-      values.status === "Confrimed"
+      newValues.status === "Confrimed"
         ? moment(new Date()).format("DD-MM-YYYY")
         : "",
     followup_date:
-      values.status === "Confrimed" && values.payment_period !== ""
+      newValues.status === "Confrimed" && newValues.payment_period !== ""
         ? moment(FollowupDate()).format("DD-MM-YYYY")
         : "",
-    resource: values.resource,
-    status: values.status,
-    feedback: values.feedback,
-    charges: values.charges,
-    payment_period: values.payment_period,
-    created_by: values.created_by,
-    updated_by: values.updated_by,
+    resource: newValues.resource,
+    status: newValues.status,
+    feedback: newValues.feedback,
+    charges: newValues.charges,
+    payment_period: newValues.payment_period,
+    created_by: newValues.created_by,
+    updated_by: newValues.updated_by,
   };
 
   const editData = () => {
@@ -216,16 +216,24 @@ const UpdateLogics = ({ params, page, fetchDetails }) => {
   //   paymentGetData();
   // },[])
 
-  const handleSubmit = () => {
-    editData();
-    paymentRequests();
-    fsgetRequests(dispatch);
-    fetchDetails();
+  const handleSubmit = async() => {
+     try {
+       editData();
+       paymentRequests();
+       fsgetRequests(dispatch);
+       fetchDetails();
+       console.log("Before closing form"); // Debugging line
+       closeForm();
+       console.log("After closing form"); // Debugging line
+     } catch (error) {
+    console.error("Error during submission", error);
+  }
+
   };
 
   return {
     payment,
-    values,
+    newValues,
     handleChange,
     handlePaymentChange,
     handleSubmit,

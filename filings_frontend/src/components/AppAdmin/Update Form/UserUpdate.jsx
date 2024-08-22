@@ -7,56 +7,51 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
-  IconButton,
   Snackbar,
-  Stack,
   TextField,
   FormControl,
   InputLabel,
   Select,
   MenuItem,
   Typography,
-  Alert
+  Alert,
+  IconButton,
+  Checkbox,
+  ListItemText,
 } from "@mui/material";
-import { SaveOutlined, EditOutlined, DeleteOutlined } from "@mui/icons-material";
-import { green } from "@mui/material/colors";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
+import { useValue } from "../../../Context/ContextProvider";
+import { DeleteOutlined } from "@mui/icons-material";
 
-const UserUpdate = ({ open, setOpen, userId }) => {
+const UserUpdate = ({ open, setOpen, userId, fetchAllUser }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [error, setError] = useState(null);
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: "",
     severity: "success",
   });
-  
+  const { dispatch } = useValue();
+
   const theme = createTheme({
     palette: {
       primary: {
         main: "#094067",
       },
-      green: {
-        main: "#094067",
-      },
       secondary: {
         main: "#90b4ce",
-      },
-      teritiary: {
-        main: "#ef4565",
       },
     },
   });
 
   const navigate = useNavigate();
 
+  // Define all available apps
+  const allApps = ["Filings", "Admin", "Job-Support", "Course-Enquiry", "Job-Support-Admin"];
+
   useEffect(() => {
-    
     if (userId) {
       fetchUser(userId);
     }
@@ -65,13 +60,13 @@ const UserUpdate = ({ open, setOpen, userId }) => {
   const fetchUser = async (id) => {
     setLoading(true);
     try {
-      const response = await axios.get(`http://localhost:8000/api/v1/users/${id}`);
+      const response = await axios.get(`http://localhost:8000/api/users-data/${id}`);
       setUser(response.data);
     } catch (err) {
       console.error("Error fetching user data:", err);
       setSnackbar({
         open: true,
-        message: "Failed to fetch user data.",
+        message: `Failed to fetch user data: ${err.response?.data?.detail || err.message}`,
         severity: "error",
       });
     } finally {
@@ -80,23 +75,31 @@ const UserUpdate = ({ open, setOpen, userId }) => {
   };
 
   const handleChange = (e) => {
-    setUser({
-      ...user,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    if (name === "apps") {
+      setUser({
+        ...user,
+        [name]: typeof value === "string" ? value.split(",") : value,
+      });
+    } else {
+      setUser({
+        ...user,
+        [name]: value,
+      });
+    }
   };
 
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      await axios.put(`http://localhost:8000/api/v1/users/${userId}`, user);
+      await axios.put(`http://localhost:8000/api/users-update/${userId}`, user);
       setSnackbar({
         open: true,
         message: "User updated successfully.",
         severity: "success",
       });
-      setSuccess(true);
       setOpen(false); // Close the dialog on success
+      fetchAllUser(dispatch);
     } catch (err) {
       console.error("Error updating user data:", err);
       setSnackbar({
@@ -111,6 +114,17 @@ const UserUpdate = ({ open, setOpen, userId }) => {
 
   const handleCloseSnackbar = () => {
     setSnackbar({ ...snackbar, open: false });
+  };
+
+  // Compute missing apps
+  const missingApps = allApps.filter(app => !user?.apps?.includes(app));
+
+  // Handle removal of an app
+  const handleAppRemove = (appToRemove) => {
+    setUser({
+      ...user,
+      apps: user.apps.filter(app => app !== appToRemove),
+    });
   };
 
   return (
@@ -138,21 +152,13 @@ const UserUpdate = ({ open, setOpen, userId }) => {
                 fullWidth
                 margin="normal"
               />
-              <TextField
-                label="Password"
-                name="password"
-                type="password"
-                value={user.password || ""}
-                onChange={handleChange}
-                fullWidth
-                margin="normal"
-              />
               <FormControl fullWidth margin="normal">
                 <InputLabel>Status</InputLabel>
                 <Select
                   name="active_flag"
-                  value={user.active_flag || ""}
+                  value={user.active_flag !== undefined ? user.active_flag : ""}
                   onChange={handleChange}
+                  label="Admin" // Ensure label is linked to Select
                 >
                   <MenuItem value={true}>Active</MenuItem>
                   <MenuItem value={false}>Inactive</MenuItem>
@@ -162,13 +168,32 @@ const UserUpdate = ({ open, setOpen, userId }) => {
                 <InputLabel>Admin</InputLabel>
                 <Select
                   name="is_admin"
-                  value={user.is_admin || ""}
+                  value={user.is_admin !== undefined ? user.is_admin : ""}
                   onChange={handleChange}
+                  label="Admin"
                 >
                   <MenuItem value={true}>Yes</MenuItem>
                   <MenuItem value={false}>No</MenuItem>
                 </Select>
               </FormControl>
+              <FormControl fullWidth margin="normal">
+  <InputLabel>Apps</InputLabel>
+  <Select
+    name="apps"
+    multiple
+    value={user.apps || []}
+    onChange={handleChange}
+    label="Apps" // Ensure label is linked to Select
+    renderValue={(selected) => selected.join(", ")}
+  >
+    {allApps.map((app) => (
+      <MenuItem key={app} value={app}>
+        <Checkbox checked={user.apps?.includes(app) || false} />
+        <ListItemText primary={app} />
+      </MenuItem>
+    ))}
+  </Select>
+</FormControl>
             </Box>
           ) : (
             <Typography>No user data available</Typography>

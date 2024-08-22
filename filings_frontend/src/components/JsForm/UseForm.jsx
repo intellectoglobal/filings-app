@@ -70,9 +70,18 @@ const UseForm = (params) => {
     candidate_name: values.candidate_name,
     mobile: values.mobile,
     technology: values.technology,
-    date_of_enquiry: moment(values.date_of_enquiry).format("DD-MM-YYYY"),
-    start_date: moment(values.start_date).format("DD-MM-YYYY"),
-    followup_date: moment(FollowupDate()).format("DD-MM-YYYY"),
+    // date_of_enquiry: moment(values.date_of_enquiry).format("DD-MM-YYYY"),
+    // start_date: moment(values.start_date).format("DD-MM-YYYY"),
+    // followup_date: moment(FollowupDate()).format("DD-MM-YYYY"),
+    date_of_enquiry: values.date_of_enquiry
+      ? moment(values.date_of_enquiry).format("DD-MM-YYYY")
+      : "",
+    start_date: values.start_date
+      ? moment(values.start_date).format("DD-MM-YYYY")
+      : "",
+    followup_date: values.followup_date
+      ? moment(values.followup_date).format("DD-MM-YYYY")
+      : "",
     resource: values.resource,
     status: values.status,
     feedback: values.feedback,

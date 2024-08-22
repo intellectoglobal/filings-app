@@ -1,6 +1,12 @@
-from sqlalchemy import  Column, Integer, String, BOOLEAN , ARRAY, DateTime, func
+from sqlalchemy import  Column, Integer, String, BOOLEAN , ARRAY, DateTime, func, ForeignKey
 from ...dependencies import BaseModel
 
+class User_Role(BaseModel):
+    __tablename__ = 'IGS_USER_ROLE'
+
+    role_id = Column(Integer, primary_key=True, autoincrement=True)
+    role_name = Column(String(50), unique=True, nullable=False)
+    
 class User(BaseModel):
 	
 	__tablename__ = "IGS_USERS"
@@ -14,3 +20,4 @@ class User(BaseModel):
 	is_admin = Column(BOOLEAN)
 	apps = Column(ARRAY(String))
 	is_pwd_set = Column(BOOLEAN, default = False)
+	# role_id = Column(Integer, ForeignKey('roles.role_id'))

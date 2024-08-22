@@ -14,10 +14,20 @@ import { Grid, Stack } from "@mui/material";
 import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
 import green from "@material-ui/core/colors/green";
 import UpdateLogics from "./JSUpdateLogics";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import UseForm from "../UseForm";
 
 const JSUpdateForm = ({ open, setOpen, params, page, fetchDetails }) => {
-  const { values, payment, handlePaymentChange, handleChange, handleSubmit } =
-    UpdateLogics({ page, params, fetchDetails });
+  const { handleDateChange, values } = UseForm();
+  const { newValues, payment, handlePaymentChange, handleChange, handleSubmit } =
+    UpdateLogics({
+      page,
+      params,
+      fetchDetails,
+      closeForm: () => setOpen(false),
+    });
   const theme = createTheme({
     palette: {
       primary: {
@@ -34,7 +44,7 @@ const JSUpdateForm = ({ open, setOpen, params, page, fetchDetails }) => {
       },
     },
   });
-  const statusvalues = [
+  const statusnewValues = [
     "Cannot Provide Support",
     "Confrimed",
     "Demo Completed",
@@ -64,9 +74,9 @@ const JSUpdateForm = ({ open, setOpen, params, page, fetchDetails }) => {
           Update Form
         </DialogTitle>
         <DialogContent
-          // sx={{
-          //   height: values.status === "Confrimed" ? "450px" : "300px",
-          // }}
+        // sx={{
+        //   height: newValues.status === "Confrimed" ? "450px" : "300px",
+        // }}
         >
           <DialogContentText></DialogContentText>
           <Box mt={2}>
@@ -99,7 +109,7 @@ const JSUpdateForm = ({ open, setOpen, params, page, fetchDetails }) => {
                       type="text"
                       name="candidate_name"
                       required={true}
-                      value={values.candidate_name}
+                      value={newValues.candidate_name}
                       onChange={handleChange}
                     />
                     <TextValidator
@@ -108,7 +118,7 @@ const JSUpdateForm = ({ open, setOpen, params, page, fetchDetails }) => {
                       type="text"
                       name="technology"
                       required={true}
-                      value={values.technology}
+                      value={newValues.technology}
                       onChange={handleChange}
                     />
                   </Grid>
@@ -122,7 +132,7 @@ const JSUpdateForm = ({ open, setOpen, params, page, fetchDetails }) => {
                       type="number"
                       name="mobile"
                       required={true}
-                      value={values.mobile}
+                      value={newValues.mobile}
                       onChange={handleChange}
                     />
                     <TextValidator
@@ -131,7 +141,7 @@ const JSUpdateForm = ({ open, setOpen, params, page, fetchDetails }) => {
                       type="text"
                       name="resource"
                       required={true}
-                      value={values.resource}
+                      value={newValues.resource}
                       onChange={handleChange}
                     />
                   </Grid>
@@ -144,7 +154,7 @@ const JSUpdateForm = ({ open, setOpen, params, page, fetchDetails }) => {
                       type="text"
                       name="feedback"
                       required={true}
-                      value={values.feedback}
+                      value={newValues.feedback}
                       onChange={handleChange}
                     />
                     <FormControl sx={{ minWidth: "25ch" }} size="small">
@@ -158,10 +168,10 @@ const JSUpdateForm = ({ open, setOpen, params, page, fetchDetails }) => {
                         color="green"
                         name="status"
                         required={true}
-                        value={values.status}
+                        value={newValues.status}
                         onChange={handleChange}
                       >
-                        {statusvalues.map((val, index) => (
+                        {statusnewValues.map((val, index) => (
                           <MenuItem key={index} value={val}>
                             {val}
                           </MenuItem>
@@ -169,7 +179,7 @@ const JSUpdateForm = ({ open, setOpen, params, page, fetchDetails }) => {
                       </Select>
                     </FormControl>
                   </Grid>
-                  {values.status === "Confrimed" ? (
+                  {newValues.status === "Confrimed" ? (
                     <Grid
                       style={{ display: "flex", gap: "1rem", margin: "1rem" }}
                     >
@@ -184,7 +194,7 @@ const JSUpdateForm = ({ open, setOpen, params, page, fetchDetails }) => {
                           color="green"
                           required={true}
                           name="payment_period"
-                          value={values.payment_period}
+                          value={newValues.payment_period}
                           onChange={handleChange}
                         >
                           {paymentValues.map((val, index) => (
@@ -207,7 +217,39 @@ const JSUpdateForm = ({ open, setOpen, params, page, fetchDetails }) => {
                   ) : (
                     <></>
                   )}
-                  {values.status === "Confrimed" ? (
+                  {newValues.status === "Follow Up" ? (
+                    <Grid
+                      style={{ display: "flex", gap: "1rem", margin: "1rem" }}
+                    >
+                      <FormControl sx={{ minWidth: "25ch" }} size="small">
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                          <DatePicker
+                            orientation="landscape"
+                            label="Follow Up Date"
+                            openTo="day"
+                            format="dd-MM-yyyy"
+                            views={["day"]}
+                            value={values.followup_date}
+                            onChange={(date) =>
+                              handleDateChange("followup_date", date)
+                            }
+                            renderInput={(params) => (
+                              <TextValidator
+                                color="green"
+                                size="small"
+                                {...params}
+                                helperText={null}
+                                fullWidth
+                              />
+                            )}
+                          />
+                        </LocalizationProvider>
+                      </FormControl>
+                    </Grid>
+                  ) : (
+                    <></>
+                  )}
+                  {newValues.status === "Confrimed" ? (
                     <Grid
                       style={{ display: "flex", gap: "1rem", margin: "1rem" }}
                     >
@@ -243,7 +285,7 @@ const JSUpdateForm = ({ open, setOpen, params, page, fetchDetails }) => {
                     color="secondary"
                     // disabled={activeStep === 0}
                     onClick={() => {
-                       {
+                      {
                         setOpen(false);
                       }
                     }}

@@ -16,6 +16,7 @@ class IGS_COURSE_ENQ(BaseModel):
     purpose: str = None
     mode : str
     comments : str
+    user_id : int = None
 
     class Config:
         orm_mode = True
@@ -81,7 +82,7 @@ class IGS_COURSE_ENQ_GU(BaseModel):
     mobile: int
     technology: str
     start_date: str
-    followup_date: datetime
+    followup_date: str
     resource: str
     status: str
     feedback: str
