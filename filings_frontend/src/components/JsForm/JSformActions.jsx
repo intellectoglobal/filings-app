@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Box from "@mui/material/Box";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import {
@@ -54,6 +54,10 @@ const JSformActions = ({
   const handleClickOpen = () => {
     setOpen(true);
   };
+
+   useEffect(() => {
+  console.log("Edit icons params " + params);
+   }, []);
 
   const handleEdit = (params) => {
     const editedRow = params.row;

@@ -37,6 +37,14 @@ const UpdateLogics = ({ params, page, fetchDetails, closeForm }) => {
     }
   });
 
+
+  const handleDateChanges = (fieldName, date) => {
+    setNewValues((prevValues) => ({
+      ...prevValues,
+      [fieldName]: date ? date.toDate() : new Date(),
+    }));
+  };
+
   const [payment, setPayment] = useState(() => {
     if (paymentsLength !== 0) {
       return {
@@ -148,14 +156,8 @@ const UpdateLogics = ({ params, page, fetchDetails, closeForm }) => {
     mobile: newValues.mobile,
     technology: newValues.technology,
     date_of_enquiry: newValues.date_of_enquiry,
-    start_date:
-      newValues.status === "Confrimed"
-        ? moment(new Date()).format("DD-MM-YYYY")
-        : "",
-    followup_date:
-      newValues.status === "Confrimed" && newValues.payment_period !== ""
-        ? moment(FollowupDate()).format("DD-MM-YYYY")
-        : "",
+    start_date: newValues.start_date,
+    followup_date:newValues.followup_date,
     resource: newValues.resource,
     status: newValues.status,
     feedback: newValues.feedback,
@@ -164,6 +166,7 @@ const UpdateLogics = ({ params, page, fetchDetails, closeForm }) => {
     created_by: newValues.created_by,
     updated_by: newValues.updated_by,
   };
+  
 
   const editData = () => {
     console.log("edited data::" + editedData)
@@ -235,6 +238,7 @@ const UpdateLogics = ({ params, page, fetchDetails, closeForm }) => {
   return {
     payment,
     newValues,
+    handleDateChanges,
     handleChange,
     handlePaymentChange,
     handleSubmit,

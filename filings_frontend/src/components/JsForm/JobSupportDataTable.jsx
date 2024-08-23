@@ -62,9 +62,9 @@ const JobSupportDataTable = () => {
   //    navigate("/login");
   //  }, [dispatch, user_id, isAdmin,navigate]);
 
-  //  useEffect(() => {
-  //    console.log("Values came from the fsrequests ::", fsrequests);
-  //  }, [fsrequests]);
+   useEffect(() => {
+     console.log("Values came from the fsrequests ::", fsrequests);
+   }, [fsrequests]);
 
   const inputBox = {
     "& .MuiDataGrid-toolbarQuickFilter": {

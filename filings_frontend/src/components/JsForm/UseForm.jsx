@@ -91,8 +91,7 @@ const UseForm = (params) => {
     updated_by: values.updated_by,
     user_id: user_id,
   };
-  
-console.log("jobsupport data ::", enqdata);
+  console.log("jobsupport data ::", enqdata);
 
   const postData = () => {
     console.log("jobsuport data ::", enqdata);
