@@ -9,7 +9,7 @@ const UserUpdateLogics = ({ params, page }) => {
   const [apps, setApps] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const {stat:{user_id}, dispatch } = useValue();
+  const {state: {isAdmin}, dispatch } = useValue();
 
   // Handle field changes
   const handleChange = (e) => {
@@ -44,7 +44,7 @@ const UserUpdateLogics = ({ params, page }) => {
   // Handle form submit
   const handleSubmit = () => {
     updateUserData();
-    fsgetRequests(dispatch, user_id);
+    fsgetRequests(dispatch, isAdmin);
   };
 
   // Fetch initial data if needed (optional)

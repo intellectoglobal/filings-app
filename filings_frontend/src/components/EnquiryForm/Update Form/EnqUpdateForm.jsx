@@ -306,7 +306,7 @@ const UpdateForm = ({ open, setOpen, params, page }) => {
                       </Select>
                     </FormControl>
                   </Grid>
-                  <Grid item xs={12} sm={6}>
+                  {/* <Grid item xs={12} sm={6}>
                     <TextValidator
                       label="Assigned To"
                       size="small"
@@ -322,11 +322,11 @@ const UpdateForm = ({ open, setOpen, params, page }) => {
                         "This field is required",
                       ]}
                     />
-                  </Grid>
+                  </Grid> */}
                 </Grid>
 
                 <Grid item container spacing={2}>
-                  <Grid item xs={12} sm={6}>
+                  {/* <Grid item xs={12} sm={6}>
                     <FormControl fullWidth size="small">
                       <InputLabel color="green">Payment Type</InputLabel>
                       <Select
@@ -344,7 +344,7 @@ const UpdateForm = ({ open, setOpen, params, page }) => {
                         ))}
                       </Select>
                     </FormControl>
-                  </Grid>
+                  </Grid> */}
                   <Grid item xs={12} sm={6}>
                     <FormControl fullWidth size="small">
                       <InputLabel color="green">Payment Status</InputLabel>
@@ -366,7 +366,14 @@ const UpdateForm = ({ open, setOpen, params, page }) => {
                   </Grid>
                 </Grid>
 
-                <Grid  container spacing={-2} justifyContent="flex-end" item xs={12} sm={6}>
+                <Grid
+                  container
+                  spacing={-2}
+                  justifyContent="flex-end"
+                  item
+                  xs={12}
+                  sm={6}
+                >
                   <Button
                     type="submit"
                     variant="contained"

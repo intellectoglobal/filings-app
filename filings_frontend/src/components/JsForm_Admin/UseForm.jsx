@@ -11,7 +11,7 @@ const UseForm = (params) => {
   // const loginStatus = useSelector((state) => state.login.value);
   const parameter = params;
   const {
-    state: { fsrequests },
+    state: { fsrequests, isAdmin },
     dispatch,
   } = useValue();
 
@@ -130,7 +130,7 @@ const UseForm = (params) => {
   };
 
   useEffect(() => {
-    fsgetRequests(dispatch);
+    fsgetRequests(dispatch, isAdmin);
   }, []);
 
   // const handleDelete = async () => {
@@ -158,7 +158,7 @@ const UseForm = (params) => {
           console.log(error);
         });
       dispatch({ type: "FSDELETE_REQUESTS", payload: id });
-      fsgetRequests(dispatch);
+      fsgetRequests(dispatch, isAdmin);
     }
   };
   const handleClose = (event, reason) => {

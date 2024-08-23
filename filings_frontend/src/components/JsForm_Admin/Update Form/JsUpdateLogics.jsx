@@ -58,7 +58,7 @@ const UpdateLogics = ({ params, page }) => {
       };
     }
   });
-  const { dispatch } = useValue();
+  const {state: {isAdmin}, dispatch } = useValue();
   const handleChange = (e) => {
     const { name, value } = e.target;
     setValues((preValues) => {
@@ -219,7 +219,7 @@ const UpdateLogics = ({ params, page }) => {
   const handleSubmit = () => {
     editData();
     paymentRequests();
-    fsgetRequests(dispatch);
+    fsgetRequests(dispatch, isAdmin);
   };
 
   return {

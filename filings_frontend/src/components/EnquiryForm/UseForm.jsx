@@ -8,7 +8,7 @@ const UseForm = (params) => {
   const [open, setOpen] = useState(false);
   const parameter = params;
   const {
-    state: { enqrequests, user_id },
+    state: { enqrequests, user_id, isAdmin },
     dispatch,
   } = useValue();
   const [values, setValues] = useState({
@@ -55,7 +55,7 @@ const UseForm = (params) => {
   };
 
   useEffect(() => {
-    enqgetRequests(dispatch, user_id);
+    enqgetRequests(dispatch, user_id, isAdmin);
   }, []);
 
   const postData = () => {
@@ -116,7 +116,7 @@ const handleDelete = async () => {
           console.log(error);
         });
       dispatch({ type: "ENQDELETE_REQUESTS", payload: id });
-      enqgetRequests(dispatch);
+      enqgetRequests(dispatch, isAdmin, user_id);
     }
   };
 

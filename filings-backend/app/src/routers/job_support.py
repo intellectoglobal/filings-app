@@ -49,6 +49,7 @@ def job_support_data_all(db: Session = Depends(get_db)):
 
 @router.put("/job-support-data-update")
 async def job_support_data_update(request: schemas.IGS_JOB_SUPPORT_GU,  db: Session = Depends(get_db)):
+    
     return service.update_request(db=db, request=request)
 
 
@@ -56,9 +57,9 @@ async def job_support_data_update(request: schemas.IGS_JOB_SUPPORT_GU,  db: Sess
 async def job_support_data_delete(id: int,  db: Session = Depends(get_db)):
     return service.delete_request(db=db, id=id)
 
-@router.get("/job-support-all/{user_id}")
-def request_job_support(user_id: int = Path(...), db: Session = Depends(get_db)):
-    return service.get_job_support(db=db, user_id=user_id)
+@router.get("/job-support-all")
+def request_job_support(db: Session = Depends(get_db)):
+    return service.get_job_support(db=db)
 
 @router.post('/job-support-paymnet-data', status_code=status.HTTP_201_CREATED)
 async def job_support_create_payment(request: schemas.JOB_SUPPORT_PAYMENT,  db: Session = Depends(get_db)):

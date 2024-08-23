@@ -24,6 +24,8 @@ def get_requests(db: Session):
 
 
 def update_request(db: Session, request: schemas.IGS_JOB_SUPPORT) -> int:
+    print("Received payload:",request.dict())  # Convert the Pydantic model to a dictionary
+    
     db_req = models.IGS_JOB_SUPPORT(**request.dict())
     db_req.id = request.id
     db.merge(db_req)
@@ -37,8 +39,8 @@ def delete_request(db: Session, id:int):
     db.commit()
     return {id}
 
-def get_job_support(db: Session, user_id: int):
-    return db.query(models.IGS_JOB_SUPPORT).filter(models.IGS_JOB_SUPPORT.user_id == user_id).all()
+def get_job_support(db: Session):
+    return db.query(models.IGS_JOB_SUPPORT).options(joinedload(models.IGS_JOB_SUPPORT.payment)).all()
 
 def create_payment(db: Session, request: schemas.JOB_SUPPORT_PAYMENT):
     db_pay = models.JOB_SUPPORT_PAYMENT(**request.dict())

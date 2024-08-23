@@ -1,6 +1,8 @@
 import React, { useContext, useReducer, createContext, useEffect } from "react";
 import reducer from "./reducer";
 
+// const persistedUserId = localStorage.getItem("user_id");
+
 const initialState = {
   requests: [],
   users: [],
@@ -13,6 +15,7 @@ const initialState = {
   cmdrequests: [],
   home: false,
   sidebarState: false,
+  // user_id: persistedUserId ? persistedUserId : null, //storing in local storage other wise the userid is undefined 
 };
 
 export const Context = createContext();
@@ -33,6 +36,11 @@ export const ContextProvider = ({ children }) => {
     state: state,
     dispatch: dispatch,
   };
+
+//   const contextData = {
+//   state,
+//   dispatch,
+// };
 
   return <Context.Provider value={contextData}>{children}</Context.Provider>;
 };

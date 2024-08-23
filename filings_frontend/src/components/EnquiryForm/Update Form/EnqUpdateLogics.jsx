@@ -64,7 +64,7 @@ const UpdateLogics = ({ params = {}, page = "Main" }) => {
       };
     }
   });
-  const {state: {user_id}, dispatch } = useValue();
+  const {state: {isAdmin}, dispatch } = useValue();
 
 
   const handleChange = (e) => {
@@ -249,7 +249,7 @@ const editedData = {
          setSuccess(false); // Set success to false if there's an error
        });
     // paymentRequests();
-    fsgetRequests(dispatch, user_id);
+    fsgetRequests(dispatch, isAdmin);
   };
 
   useEffect(() => {

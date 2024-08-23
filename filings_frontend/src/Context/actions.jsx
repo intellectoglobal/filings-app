@@ -28,32 +28,46 @@ export const getUsers = async (dispatch) => {
   }
 };
 
-export const fsgetRequests = async (dispatch, user_id) => {
-    try {
-      console.log("userid ::", user_id);
-      const response = await axios.get(
-        `http://localhost:8000/api/v1/job-support-all/${user_id}`
-      );
-      const content = response.data;
-      dispatch({ type: "JS_GETREQUEST", payload: content });
-    } catch (error) {
-      console.error("Error fetching job support data:", error);
-    }
-  };
+export const fsgetRequests = async (dispatch, user_id, isAdmin) => {
+  try {
+    console.log("user_id ::", user_id);
+    const response = await axios.get(
+      `http://localhost:8000/api/v1/job-support-all`
+    );
+    const allRecords = response.data;
+    console.log("Fetched content:", allRecords);
 
-export const enqgetRequests = async (dispatch, user_id) => {
-    try {
-      console.log("userid ::", user_id);
-      const response = await axios.get(
-        `http://localhost:8000/api/v1/course-enquiry-all/${user_id}` // Use template literals to include user_id
-      );
-      const content = response.data;
-      dispatch({ type: "ENQ_GETREQUEST", payload: content });
-    } catch (error) {
-      console.error("Error fetching course enquiry data:", error);
-    }
-  };
-  
+    // Filter the records based on user_id
+    const filteredRecords = isAdmin
+      ? allRecords
+      : allRecords.filter((record) => record.user_id === user_id);
+      
+      console.log("Filtered records:", filteredRecords);
+
+    dispatch({ type: "JS_GETREQUEST", payload: filteredRecords });
+  } catch (error) {
+    console.error("Error fetching job support data:", error);
+  }
+};
+
+export const enqgetRequests = async (dispatch, user_id, isAdmin) => {
+  try {
+    console.log("user_id ::", user_id, isAdmin);
+    const response = await axios.get(
+      `http://localhost:8000/api/v1/course-enquiry-all` // No need to include user_id in the URL
+    );
+    const content = response.data;
+    console.log("records:: ", content);
+    // Filter the records based on user_id
+    const filteredRecords = isAdmin
+      ? content
+      : content.filter((record) => record.user_id === user_id);
+
+    dispatch({ type: "ENQ_GETREQUEST", payload: filteredRecords });
+  } catch (error) {
+    console.error("Error fetching course enquiry data:", error);
+  }
+};
 
 export const cmdgetRequests = async (dispatch) => {
   try {
@@ -66,4 +80,3 @@ export const cmdgetRequests = async (dispatch) => {
     console.error("Error fetching job support comment data:", error);
   }
 };
-

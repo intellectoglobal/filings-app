@@ -14,9 +14,9 @@ router = APIRouter(
 async def course_enquiry(request:schemas.IGS_COURSE_ENQ,  db: Session = Depends(get_db)):
     return service.create_course_enquiry(db=db , request=request)
 
-@router.get("/course-enquiry-all/{user_id}")
-def request_course_enquiry(user_id: int = Path(...), db: Session = Depends(get_db)):
-    return service.get_course_enquiry(db=db, user_id=user_id)
+@router.get("/course-enquiry-all")
+def request_course_enquiry(db: Session = Depends(get_db)):
+    return service.get_course_enquiry(db=db)
 
 @router.put("/course-enquiry-update")
 async def course_enquiry_update(request:schemas.IGS_COURSE_ENQ_ID,  db: Session = Depends(get_db)):
@@ -50,3 +50,25 @@ def course_enquiry_comment_data(db: Session = Depends(get_db)):
 async def course_enquiry_comment_update(request: schemas.IGS_COURSE_ENQ_GU,  db: Session = Depends(get_db)):
     return service.update_comment(db=db, request=request)
 
+
+@router.put("/course-enquiry-update/{enquiry_id}", response_model=schemas.IGS_COURSE_ENQ_ID)
+async def course_enquiry_update(
+    enquiry_id: int,
+    request: schemas.IGS_COURSE_ENQ_ID,
+    db: Session = Depends(get_db)
+):
+    try:
+        # Ensure the ID in the request matches the path parameter
+        if request.id != enquiry_id:
+            raise HTTPException(status_code=400, detail="ID mismatch")
+
+        # Call the service function to handle the update
+        updated_enquiry = service.update_course_enquiry(db=db, enquiry_id=enquiry_id, request=request)
+        if not updated_enquiry:
+            raise HTTPException(status_code=404, detail="Course enquiry not found")
+        
+        return updated_enquiry
+
+    except Exception as e:
+        # Handle any other exceptions
+        raise HTTPException(status_code=500, detail=str(e))

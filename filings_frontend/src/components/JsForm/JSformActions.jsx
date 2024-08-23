@@ -35,6 +35,7 @@ const JSformActions = ({
   baseUrl,
   onDelete, // Add onDelete prop
   fetchDetails,
+  handleRefresh,
 }) => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -59,7 +60,6 @@ const JSformActions = ({
     const editedRow = params.row;
     setLoading(true);
     axios
-      .put("http://localhost:8000/api/v1/job-support-data-update", editedRow)
       .put(`${baseUrl}/job-support-data-update`, editedRow)
       .then((res) => {
         console.log(res.data);
