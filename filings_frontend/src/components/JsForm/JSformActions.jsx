@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import React, { useState } from "react";
+// import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import {
@@ -233,7 +233,7 @@ const JSformActions = ({
                 background: "#ef4565",
                 color: "white",
                 "&:hover": {
-                  background: "#ef4565",
+                  // background: "#ef4565",
                 },
               }}
               onClick={handleDeleteConfirmed}

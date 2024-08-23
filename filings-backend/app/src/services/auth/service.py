@@ -85,7 +85,20 @@ def set_new_passwords(db: Session, email: str, new_password: str):
     db_user.is_pwd_set = True
     db.commit()
     db.refresh(db_user)
-    return {"msg": "Password updated successfully"}
+
+    # Remove sensitive and unnecessary fields
+    user_data = {
+        "active_flag": db_user.active_flag,
+        "user_id": db_user.user_id,
+        "email": db_user.email,
+        "apps": db_user.apps,
+        "is_pwd_set": db_user.is_pwd_set,
+        "user_name": db_user.user_name,
+        "is_admin": db_user.is_admin,
+        "role_id": db_user.role_id
+    }
+
+    return {"msg": "Password updated successfully", "data": user_data}
 
 # Role Services
 

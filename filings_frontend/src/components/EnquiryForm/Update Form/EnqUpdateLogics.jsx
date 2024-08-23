@@ -4,6 +4,7 @@ import axios from "axios";
 import moment from "moment";
 import { useValue } from "../../../Context/ContextProvider";
 import { fsgetRequests } from "../../../Context/actions";
+import baseURL from "../../../api/baseURL";
 
 const UpdateLogics = ({ params = {}, page = "Main" }) => {
   // Default the params.row to an empty object if it's undefined
@@ -63,7 +64,7 @@ const UpdateLogics = ({ params = {}, page = "Main" }) => {
       };
     }
   });
-  const { dispatch } = useValue();
+  const {state: {user_id}, dispatch } = useValue();
 
 
   const handleChange = (e) => {
@@ -248,14 +249,14 @@ const editedData = {
          setSuccess(false); // Set success to false if there's an error
        });
     // paymentRequests();
-    fsgetRequests(dispatch);
+    fsgetRequests(dispatch, user_id);
   };
 
   useEffect(() => {
     // Example: Fetching initial data and setting it
     if (params.id) {
       axios
-        .get(`/api/v1/course-enquiry/${params.id}`)
+        .get(`${baseURL}/api/v1/course-enquiry/${params.id}`)
         .then((response) => setValues(response.data))
         .catch((error) => console.error("Error fetching data", error));
     }

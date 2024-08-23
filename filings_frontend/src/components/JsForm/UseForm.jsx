@@ -8,7 +8,7 @@ const UseForm = (params) => {
   const [open, setOpen] = useState(false);
   const parameter = params;
   const {
-    state: { fsrequests },
+    state: { fsrequests, user_id },
     dispatch,
   } = useValue();
 
@@ -79,16 +79,17 @@ const UseForm = (params) => {
     payment_period: values.payment_period,
     created_by: values.created_by,
     updated_by: values.updated_by,
+    user_id: values.user_id,
   };
 
   const postData = () => {
     // if (Object.values(values).includes("") === false) {
     axios
-      .post("http://localhost:8000/api/job-support-data", enqdata, {
+      .post("http://localhost:8000/api/v1/job-support-data", enqdata, {
         headers: { "Content-Type": "application/json" },
       })
       .then((res) => {
-        console.log("Response from backend:", res.data);
+        console.log("Response from backend:", res.data);job-support-data
         setOpen(true);
       })
       .catch((error) => {
@@ -132,7 +133,7 @@ const UseForm = (params) => {
   };
 
   useEffect(() => {
-    fsgetRequests(dispatch);
+    fsgetRequests(dispatch, user_id);
   }, []);
 
   // const handleDelete = async () => {
@@ -160,8 +161,8 @@ const UseForm = (params) => {
           console.log(error);
         });
       dispatch({ type: "FSDELETE_REQUESTS", payload: id });
-      fsgetRequests(dispatch);
-    } catch (error) {
+      fsgetRequests(dispatch, user_id);
+    // } catch (error) {
       console.log("Error deleting employee data:", error);
       throw error; // Re-throw error so calling component can handle it
     }

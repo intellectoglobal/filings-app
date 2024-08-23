@@ -58,7 +58,7 @@ const UpdateLogics = ({ params, page, fetchDetails }) => {
       };
     }
   });
-  const { dispatch } = useValue();
+  const {state: {user_id}, dispatch } = useValue();
   const handleChange = (e) => {
     const { name, value } = e.target;
     setValues((preValues) => {
@@ -219,7 +219,7 @@ const UpdateLogics = ({ params, page, fetchDetails }) => {
   const handleSubmit = () => {
     editData();
     paymentRequests();
-    fsgetRequests(dispatch);
+    fsgetRequests(dispatch, user_id);
     fetchDetails();
   };
 

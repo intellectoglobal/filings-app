@@ -24,7 +24,7 @@ import { fsgetRequests } from "../../Context/actions";
 
 const JobSupportDataTable = () => {
   const {
-    state: { isLogged },
+    state: { isLogged, user_id },
   } = useValue();
   const navigate = useNavigate();
   const login = () => {
@@ -39,7 +39,7 @@ const JobSupportDataTable = () => {
   } = useValue();
 
   const handleRefresh = async () => {
-    await fsgetRequests(dispatch)
+    await fsgetRequests(dispatch, user_id)
   };
   console.log("values came from the fsrequests ::", fsrequests)
 

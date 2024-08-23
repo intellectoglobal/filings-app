@@ -51,6 +51,7 @@ export default function SignInComponent() {
       body: JSON.stringify(values),
     });
     const post_resp = await res.json();
+    console.log("post_response ::", post_resp.user_id)
     setError(post_resp.errors);
 
     if (post_resp.active_flag) {
@@ -87,10 +88,10 @@ export default function SignInComponent() {
         })
       );
 
-      if (values.email === "veera.pytech@gmail.com") {
-        navigate("/job-supp-table-admin"); // Redirect to the job-supp-table-admin page
-      } else if (post_resp.is_admin) {
-        navigate("/admin"); // Redirect to admin page
+      if (post_resp.role_id === 2) {
+        navigate("/admin");
+      // } else if (post_resp.is_admin) {
+      //   navigate("/job-supp-table-admin"); // Redirect to the job-supp-table-admin page
       } else {
         navigate("/job-supp-table"); // Redirect to employee page
       }
@@ -293,7 +294,7 @@ export default function SignInComponent() {
                         textDecoration: "none",
                         marginTop: "1.5rem",
                       }}
-                      to="#"
+                      to="/Forgot-Password"
                     >
                       Forgot password?
                     </Link>

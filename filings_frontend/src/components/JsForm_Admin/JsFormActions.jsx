@@ -348,7 +348,7 @@ const JsFormActions = ({ params, setEditId, editId, page }) => {
                 background: "#ef4565",
                 color: "white",
                 "&:hover": {
-                  background: "#ef4565", // Keeps the background color the same on hover
+                  // background: "#ef4565", // Keeps the background color the same on hover
                   opacity: 1, // Adjust opacity if needed
                 },
               }}

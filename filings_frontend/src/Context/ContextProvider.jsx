@@ -6,7 +6,7 @@ const initialState = {
   users: [],
   isAdmin: 0,
   currentUser: localStorage.getItem("currentUser"),
-  apps: JSON.parse(localStorage.getItem("apps")) || [],
+  apps: localStorage.getItem("apps") || [],
   isLogged: localStorage.getItem("isLogged") === "true", // Initialize from localStorage
   fsrequests: [],
   enqrequests: [],

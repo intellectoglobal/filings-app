@@ -24,6 +24,7 @@ import EnquiryFormDataTable from "./components/EnquiryForm/EnquiryFormDataTable"
 import HomePage from "./components/Home/Home";
 import SetNewPwd from "./components/Auth/SetNewPwd";
 import UpdateForm from "./components/EnquiryForm/Update Form/EnqUpdateForm.jsx";
+import ForgotPassword from "./components/Auth/ForgotPassword.jsx";
 function App() {
     // const isLoggedIn = getState().isLoggedIn
 
@@ -59,6 +60,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/" element={<UpdateForm />} />
           <Route path="/" element={<UpdateForm />} />
+          <Route path="/Forgot-Password" element={<ForgotPassword />} />
           {/* <Route
             path="/"
             element={

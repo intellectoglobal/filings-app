@@ -85,3 +85,11 @@ async def set_new_password(request: schemas.SetNewPwd, db: Session = Depends(get
         return result
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
+
+@router.post('/forgot-password')	
+async def set_new_password(request: schemas.SetNewPwd, db: Session = Depends(get_db)):
+    try:
+        result = service.set_new_passwords(db, email=request.email, new_password=request.new_password)
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
