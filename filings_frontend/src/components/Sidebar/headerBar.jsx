@@ -27,6 +27,7 @@ import {
   CourseEnqRoutes,
   FilingsRoutes,
   JobSuppRoutes,
+  JobSuppTableAdminRoutes,
 } from "./SidebarRoutes";
 
 const drawerWidth = 220;
@@ -177,12 +178,16 @@ export default function HeaderBar(props) {
     { text: "StreamLine-Filings", value: "Filings", href: "/enq-admin" },
     { text: "Admin", value: "Admin", href: "/admin" },
     { text: "Job-Support", value: "Job-Support", href: "/job-supp-table" },
-    { text: "Course-Enquiry", value: "Course-Enquiry", href: "/enquiry-table" },
+    { text: "Job-Support-Admin", value: "Job-Support-Admin", href: "/job-supp-table-admin" },
+    { text: "Course-Enquiry", value: "Course-Enquiry", href: "/enquiry-table" }
   ];
 
   const filteredOptions = options.filter((option) =>
     apps.includes(option.value)
   );
+
+  console.log(filteredOptions);
+  console.log("Apps:", apps);
 
   const ButtonGroup = () => {
     const handlesetCurrentApp = (value) => {
@@ -309,6 +314,7 @@ export default function HeaderBar(props) {
             {currentApp === "Filings" && <FilingsRoutes {...{ open }} />}
             {currentApp === "Job-Support" && <JobSuppRoutes open={open} />}
             {currentApp === "Admin" && <AdminRoutes open={open} />}
+            {currentApp === "Admin-Job-Support" && <JobSuppTableAdminRoutes open={open} />}
             {currentApp === "Course-Enquiry" && <CourseEnqRoutes open={open} />}
 
             <List style={{ marginTop: `auto` }}>

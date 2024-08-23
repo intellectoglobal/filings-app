@@ -58,7 +58,7 @@ const UpdateLogics = ({ params, page, fetchDetails, closeForm }) => {
       };
     }
   });
-  const { dispatch } = useValue();
+  const {state: {isAdmin}, dispatch } = useValue();
   const handleChange = (e) => {
     const { name, value } = e.target;
     setNewValues((preValues) => {
@@ -220,7 +220,7 @@ const UpdateLogics = ({ params, page, fetchDetails, closeForm }) => {
      try {
        editData();
        paymentRequests();
-       fsgetRequests(dispatch);
+       fsgetRequests(dispatch, isAdmin);
        fetchDetails();
        console.log("Before closing form"); // Debugging line
        closeForm();

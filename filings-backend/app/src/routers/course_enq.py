@@ -1,5 +1,5 @@
 from typing import List
-from fastapi import APIRouter, Depends, HTTPException,status
+from fastapi import APIRouter, Depends, Path,status
 from sqlalchemy.orm import Session
 from ..dependencies import get_db
 from ..services.course_enq import service, schemas

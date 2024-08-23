@@ -38,3 +38,10 @@ class User_GU(BaseModel):
 class SetNewPwd(BaseModel):
 	email:str
 	new_password:str
+
+class UserRole(BaseModel):
+    role_id: int
+    role_name: str
+
+    class Config:
+        orm_mode = True

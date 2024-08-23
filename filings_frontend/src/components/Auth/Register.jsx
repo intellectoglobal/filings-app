@@ -18,15 +18,15 @@ const theme = createTheme({
 });
 
 export default function SignUpComponent() {
-  const signIn = useSignIn();
-  const [values, setValues] = React.useState({
-    email: "",
-    user_name: "",
-    password: "",
-    is_admin: 1,
-    apps: ["Filings", "Admin", "Job-Support", "Course-Enquiry"],
-  });
-  const navigate = useNavigate();
+    const signIn = useSignIn();
+    const [values, setValues] = React.useState({
+      email: "",
+      user_name: "",
+      password: "",
+      is_admin: 1,apps : ["Filings", "Admin", "Job-Support", "Course-Enquiry"]
+      
+    });
+    const navigate = useNavigate();
 
   const handleChange = (event) => {
     setValues({ ...values, [event.target.name]: event.target.value });

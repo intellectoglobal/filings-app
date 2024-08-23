@@ -20,4 +20,4 @@ class User(BaseModel):
 	is_admin = Column(BOOLEAN)
 	apps = Column(ARRAY(String))
 	is_pwd_set = Column(BOOLEAN, default = False)
-	# role_id = Column(Integer, ForeignKey('roles.role_id'))
+	role_id = Column(Integer, ForeignKey('IGS_USER_ROLE.role_id'))

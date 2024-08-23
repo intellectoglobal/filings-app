@@ -95,14 +95,6 @@ const EnqFormActions = ({ params, setEditId, editId, page }) => {
       },
     });
 
-  const handleDeleteDialogOpen = () => {
-    setOpenDialog(true);
-  };
-
-  const handleDeleteDialogClose = () => {
-    setOpenDialog(false);
-  };
-
   return isLogged ? (
     <>
       <ThemeProvider theme={getMuiTheme()}>
@@ -169,7 +161,7 @@ const EnqFormActions = ({ params, setEditId, editId, page }) => {
               sx={{ boxShadow: 0 }}
               size="small"
               aria-label="delete"
-              onClick={handleDeleteDialogOpen}
+              onClick={() => setOpenDialog(true)} // Open the delete dialog
             >
               <DeleteOutlined />
             </IconButton>
@@ -194,7 +186,8 @@ const EnqFormActions = ({ params, setEditId, editId, page }) => {
           </DialogActions>
         </Dialog>
 
-        <Dialog open={openDialog} onClose={handleDeleteDialogClose}>
+        {/* Delete Dialog */}
+        <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
           <DialogTitle sx={{ fontWeight: "bold" }}>Confirm Delete</DialogTitle>
           <DialogContent>
             <DialogContentText sx={{ color: "black" }}>
@@ -202,7 +195,7 @@ const EnqFormActions = ({ params, setEditId, editId, page }) => {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleDeleteDialogClose} color="primary">
+            <Button onClick={() => setOpenDialog(false)} color="primary">
               Cancel
             </Button>
             <Button

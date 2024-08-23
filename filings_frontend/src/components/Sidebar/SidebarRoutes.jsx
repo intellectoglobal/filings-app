@@ -602,6 +602,136 @@ const AdminRoutes = ({ open }) => {
   );
 };
 
+const JobSuppTableAdminRoutes = ({ open }) => {
+  const [Expand, setExpand] = React.useState(false);
+
+  const handleClickExpand = () => {
+    setExpand(!Expand);
+  };
+
+  const [selectedIndex, setSelectedIndex] = React.useState(1);
+
+  const handleListItemClick = (event, index) => {
+    setSelectedIndex(index);
+  };
+
+  const jobsupp_admin_nav = [
+    {
+      isSelected: 1,
+      icon: <SupervisorAccountRoundedIcon />,
+      path: "/job-supp-table-admin",
+      name: "Job Support Admin",
+    },
+    // Add more routes here if needed
+  ];
+
+  return (
+    <>
+      <List component="div">
+        <ListItemButton
+          sx={{
+            borderRadius: "6px",
+            "&:hover": {
+              background: "#90b4ce",
+              "& .icon-list-1": {
+                color: "#FFFFFE",
+              },
+              "& .text-list-1": {
+                color: "#FFFFFE",
+              },
+            },
+            minHeight: 48,
+            justifyContent: open ? "initial" : "center",
+            px: 2.5,
+          }}
+          onClick={handleClickExpand}
+        >
+          <ListItemIcon
+            className="icon-list-1"
+            sx={{
+              color: "#094067",
+              minWidth: 0,
+              mr: open ? 3 : "auto",
+              justifyContent: "center",
+            }}
+          >
+            <ShieldRoundedIcon />
+          </ListItemIcon>
+          <ListItemText
+            className="text-list-1"
+            sx={{ color: "#094067", opacity: open ? 1 : 0 }}
+            primary="Job Support Admin"
+          />
+          {Expand ? (
+            <ExpandLess
+              className="icon-list-1"
+              sx={{
+                color: "#094067",
+              }}
+            />
+          ) : (
+            <ExpandMore
+              className="icon-list-1"
+              sx={{
+                color: "#094067",
+              }}
+            />
+          )}
+        </ListItemButton>
+        <Collapse in={Expand} timeout="auto" unmountOnExit>
+          {jobsupp_admin_nav.map((text, idx) => (
+            <ListItem
+              component={Link}
+              to={text.path}
+              key={idx}
+              disablePadding
+              sx={{ display: "block" }}
+            >
+              <ListItemButton
+                selected={selectedIndex === text.isSelected}
+                onClick={(event) => handleListItemClick(event, text.isSelected)}
+                sx={{
+                  borderRadius: "6px",
+                  "&:hover": {
+                    background: "#90b4ce",
+                    "& .icon-list-1": {
+                      color: "#FFFFFE",
+                    },
+                    "& .text-list-1": {
+                      color: "#FFFFFE",
+                    },
+                  },
+                  minHeight: 48,
+                  justifyContent: open ? "initial" : "center",
+                  pl: open ? 4 : 2.5,
+                }}
+              >
+                <ListItemIcon
+                  className="icon-list-1"
+                  sx={{
+                    color: "#094067",
+                    minWidth: 0,
+                    mr: open ? 3 : "auto",
+                    justifyContent: "center",
+                  }}
+                >
+                  {text.icon}
+                </ListItemIcon>
+                <ListItemText
+                  className="text-list-1"
+                  primary={text.name}
+                  sx={{ color: "#094067", opacity: open ? 1 : 0 }}
+                />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </Collapse>
+      </List>
+      <Divider />
+    </>
+  );
+};
+
 const CourseEnqRoutes = ({ open }) => {
   const [Expand, setExpand] = React.useState(false);
   const [ReqExpand, setReqExpand] = React.useState(false);
@@ -750,4 +880,4 @@ const CourseEnqRoutes = ({ open }) => {
 };
 
 
-export { FilingsRoutes, JobSuppRoutes, AdminRoutes, CourseEnqRoutes };
+export { FilingsRoutes, JobSuppRoutes, AdminRoutes, CourseEnqRoutes, JobSuppTableAdminRoutes};

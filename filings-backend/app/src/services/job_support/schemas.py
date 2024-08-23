@@ -7,17 +7,21 @@ class IGS_JOB_SUPPORT(BaseModel):
     candidate_name: str  
     mobile: int
     technology: str
-    start_date: date
-    followup_date: date
     resource: str
     status: str
     feedback: str
     created_by: str = "admin"
     updated_by: str = "admin"
+    created_at: Optional[datetime]  
+    updated_at: Optional[datetime]
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
     payment_period: str
     date_of_enquiry : date
+    start_date: Optional[date] = None
+    followup_date: Optional[date] = None
+    user_id : int = None
+
 
     @validator('start_date', 'followup_date', 'date_of_enquiry', pre=True)
     def parse_date(cls, v):

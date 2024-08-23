@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -6,34 +6,28 @@ import { useMemo } from "react";
 import {
   DataGrid,
   GridToolbarContainer,
+  GridToolbarColumnsButton,
   GridToolbarFilterButton,
   GridToolbarExport,
   GridToolbarQuickFilter,
-  GridToolbarColumnsButton,
+  GridToolbarExportContainer,
   GridToolbarDensitySelector,
 } from "@mui/x-data-grid";
 import { Button, Paper } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { Link, useNavigate } from "react-router-dom";
 import UseForm from "./UseForm";
-import EnqFormActions from "./EnqFormActions";
+import JsFormActions from "./JsFormActions";
+import { renderEndDateCell } from "./JsCustomRender";
 import { useValue } from "../../Context/ContextProvider";
-import RefreshIcon from "@mui/icons-material/Refresh";
 
-const EnquiryFormDataTable = () => {
-  const [refresh, setRefresh] = useState(0);
-  const handleRefresh = async () => {
-    console.log("refreshed");
-    setRefresh((prev) => prev + 1);
-
-    try {
-      const response = await fetch(
-        "http://localhost:8000/api/v1/course-enquiry-all"
-      );
-      const result = await response.json();
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
+const JobSupportFollowUpTableAdmin = () => {
+  const {
+    state: { isLogged },
+  } = useValue();
+  const navigate = useNavigate();
+  const login = () => {
+    navigate("/login");
   };
   const inputBox = {
     "& .MuiDataGrid-toolbarQuickFilter": {
@@ -109,24 +103,51 @@ const EnquiryFormDataTable = () => {
         },
       },
     });
-  const {
-    state: { isLogged, },
-  } = useValue();
+
   const [editId, setEditId] = useState(null);
-  const { enqrequests } = UseForm();
-  const navigate = useNavigate();
-  const login = () => {
-    navigate("/login");
-  };
+  const {  FollowupData } = UseForm();
+  // const [rowEditStatus, setRowEditStatus] = useState({});
+  // const handleRowEditStart = (params) => {
+  //   setRowEditStatus({
+  //     ...rowEditStatus,
+  //     [params.id]: "editing",
+  //   });
+  //   setEditId(params.id);
+  // };
+  // const handleRowEditStop = (params) => {
+  //   setRowEditStatus({
+  //     ...rowEditStatus,
+  //     [params.id]: null,
+  //   });
+  //   setEditId(null);
+  // };
+
+  // const handleRowEditCancel = (params) => {
+  //   setRowEditStatus({
+  //     ...rowEditStatus,
+  //     [params.id]: null,
+  //   });
+  //   setEditId(null);
+  // };
+  const Table = "Main"
   const enqColumns = useMemo(() => [
     {
       field: "actions",
       headerName: "Actions",
       type: "actions",
-      width: 100,
+      width: 120,
       filterable: true,
       renderCell: (params) => (
-        <EnqFormActions {...{ params, editId, setEditId }} />
+        <JsFormActions
+          params={params}
+          editId={editId}
+          setEditId={setEditId}
+          page={Table}
+          // rowEditStatus={rowEditStatus}
+          // onRowEditStart={handleRowEditStart}
+          // onRowEditStop={handleRowEditStop}
+          // onRowEditCancel={handleRowEditCancel} //success, setSuccess
+        />
       ),
     },
     // {
@@ -139,7 +160,16 @@ const EnquiryFormDataTable = () => {
     //   filterable: true,
     // },
     {
-      field: "name",
+      field: "date_of_enquiry",
+      headerAlign: "center",
+      align: "center",
+     // editable: true,
+      filterable: true,
+      headerName: "Start Date",
+      width: 120,
+    },
+    {
+      field: "candidate_name",
       headerAlign: "center",
       editable: true,
       align: "center",
@@ -147,68 +177,18 @@ const EnquiryFormDataTable = () => {
       width: 100,
       filterable: false,
     },
+    // {
+    //   field: "mobile",
+    //   headerAlign: "center",
+    //   align: "center",
+    //   editable: true,
+    //   headerName: "Mobile",
+    //   width: 100,
+    //   filterable: true,
+    // },
     {
-      field: "followup_call_date",
-      headerAlign: "center",
-      align: "center",
-      editable: true,
-      filterable: true,
-      headerName: "FollowUp Date",
-      width: 120,
-    },
-    {
-      field: "followup_status",
-      headerAlign: "center",
-      align: "center",
-      editable: true,
-      filterable: true,
-      headerName: "Followup Status",
-      width: 120,
-      type: "singleSelect",
-      valueOptions: [
-        "Trainer Needed",
-        "Confrimed",
-        "Demo Completed",
-        "Demo Scheduled",
-        "Demo Yet to Schedule",
-        "Not Able To Provide",
-        "Need to Follow",
-        "No Response",
-        "Others",
-      ],
-    },
-    {
-      field: "comments",
-      headerAlign: "center",
-      align: "center",
-      editable: true,
-      filterable: true,
-      headerName: "Comments",
-      width: 120,
-    },
-    {
-      field: "enquiry_by",
-      headerAlign: "center",
-      align: "center",
-      editable: true,
-      filterable: true,
-      headerName: "Enquiry By",
-      width: 120,
-      type: "singleSelect",
-      valueOptions: ["Email", "mobile", "Email&Mobile"],
-    },
-    {
-      field: "mobile",
-      headerAlign: "center",
-      align: "center",
-      editable: true,
-      headerName: "Mobile",
-      width: 100,
-      filterable: true,
-    },
-    {
-      field: "location",
-      headerName: "Location",
+      field: "technology",
+      headerName: "Technology",
       editable: true,
       headerAlign: "center",
       align: "center",
@@ -217,8 +197,8 @@ const EnquiryFormDataTable = () => {
       filterable: true,
     },
     {
-      field: "course",
-      headerName: "Course",
+      field: "resource",
+      headerName: "Resource",
       editable: true,
       headerAlign: "center",
       align: "center",
@@ -227,39 +207,46 @@ const EnquiryFormDataTable = () => {
       filterable: true,
     },
     {
-      field: "fee_structure",
-      headerName: "Fee Structure ",
-      editable: true,
-      headerAlign: "center",
-      align: "center",
-      width: 100,
-      sortable: true,
-      filterable: true,
-    },
-    {
-      field: "experience_by",
-      headerName: "Experience/Domain",
+      field: "status",
+      headerName: "Status",
       editable: true,
       width: 100,
-      headerAlign: "center",
-      align: "center",
       type: "singleSelect",
-      valueOptions: ["Working Professional", "Corporate", "Fresher", "Student"],
+      headerAlign: "center",
+      align: "center",
+      valueOptions: [
+        "Cannot Provide Support",
+        "Confrimed",
+        "Demo Completed",
+        "Demo Scheduled",
+        "Demo Yet to Schedule",
+        "Follow Up",
+        "Not Interested",
+        "Resource Not Available",
+        "Waiting For Response",
+      ],
       filterable: false,
     },
     {
-      field: "mode",
-      headerName: "Mode",
-      editable: true,
-      width: 100,
+      field: "feedback",
+     // editable: true,
+      headerName: "Feedback",
+      width: 180,
+      headerAlign: "center",
+      filterable: false,
+      align: "center",
+    },
+    {
+      field: "followup_date",
+      //editable: true,
+      headerName: "Followup Date",
+      width: 180,
       headerAlign: "center",
       align: "center",
-      type: "singleSelect",
-      valueOptions: ["online", "offline", "both"],
       filterable: false,
+      renderCell: renderEndDateCell,
     },
   ]);
-
   function CustomToolbar() {
     return (
       <GridToolbarContainer sx={{ background: "#000000" }}>
@@ -274,6 +261,7 @@ const EnquiryFormDataTable = () => {
       </GridToolbarContainer>
     );
   }
+
   return isLogged ? (
     <>
       <ThemeProvider theme={getMuiTheme()}>
@@ -304,7 +292,7 @@ const EnquiryFormDataTable = () => {
                 noWrap
                 component="h3"
               >
-                Course-Enquiry List
+                Job Support List - FollowUp
               </Typography>
 
               <Typography
@@ -326,34 +314,26 @@ const EnquiryFormDataTable = () => {
             </div>
             <div>
               <Button
-                to="/enquiry-form"
+                to="/job-supp-form"
                 component={Link}
                 size="small"
                 color="secondary"
                 sx={{ height: "30px", width: "40px", color: "#FFFFFE" }}
                 startIcon={<AddIcon />}
-                // onClick={window.scrollTo(0, 0)}
+                onClick={window.scrollTo(0, 0)}
                 variant="contained"
               >
                 Add
               </Button>
-              {/* <Button
-                startIcon={<RefreshIcon />}
-                // onClick={onRefresh}
-                onClick={handleRefresh}
-                sx={{ ml: 2, bgcolor: "#FFFFFF" }}
-              >
-                Refresh
-              </Button> */}
             </div>
           </div>
           <Box height={595}>
             <DataGrid
               sx={{ border: 0 }}
               columns={enqColumns}
-              rows={enqrequests}
+              rows={ FollowupData }
               getRowId={(row) => row.id}
-              rowsPerPageOptions={[10, 20, 30,50,100]}
+              rowsPerPageOptions={[10, 20, 30]}
               components={{ Toolbar: CustomToolbar }}
               disableColumnMenu
               componentsProps={{
@@ -365,7 +345,9 @@ const EnquiryFormDataTable = () => {
                 },
                 panel: {
                   sx: {
-                    "& .MuiDataGrid-filterForm": {},
+                    "& .MuiDataGrid-filterForm": {
+                      // inset: `-125px auto auto 350px`,
+                    },
                     "& .MuiDataGrid-paper": {
                       boxShadow: "none !important",
                     },
@@ -376,6 +358,11 @@ const EnquiryFormDataTable = () => {
               onCellEditCommit={(params) => {
                 setEditId(params.id);
               }}
+              // onRowEditStart={handleRowEditStart}
+              // onRowEditStop={handleRowEditStop}
+              // onRowEditCancel={handleRowEditCancel}
+              // isRowEditable={(params) => !rowEditStatus[params.id]}
+              // editMode="row"
             />
           </Box>
         </Paper>
@@ -386,4 +373,4 @@ const EnquiryFormDataTable = () => {
   );
 };
 
-export default EnquiryFormDataTable;
+export default JobSupportFollowUpTableAdmin;

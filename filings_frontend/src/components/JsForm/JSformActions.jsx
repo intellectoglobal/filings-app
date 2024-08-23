@@ -34,6 +34,7 @@ const JSformActions = ({
   baseUrl,
   onDelete, // Add onDelete prop
   fetchDetails,
+  handleRefresh,
 }) => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);

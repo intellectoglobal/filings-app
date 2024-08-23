@@ -77,6 +77,7 @@ export const UsersActions = ({ params, rowId, setRowId, fetchAllUser }) => {
     }
   };
 
+    console.log("params from the admin ::", params)
   const handleEdit = () => {
     setCurrentUserId(params.id);
     setUpdateDialogOpen(true);
@@ -202,6 +203,15 @@ export const UsersActions = ({ params, rowId, setRowId, fetchAllUser }) => {
         setOpen={setUpdateDialogOpen}
         userId={currentUserId}
       />
+      {/* UserUpdate Dialog */}
+      {updateDialogOpen && (
+        <UserUpdate
+          open={updateDialogOpen}
+          setOpen={setUpdateDialogOpen}
+          userId={currentUserId}
+          fetchAllUser={(value) =>fetchAllUser(value)}
+        />
+      )}
 
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
         <DialogTitle sx={{ fontWeight: "bold" }}>Confirm Delete</DialogTitle>

@@ -25,7 +25,7 @@ import { fsgetRequests } from "../../Context/actions";
 
 const JobSupportFollowUpTable = () => {
   const {
-    state: { isLogged },
+    state: { isLogged, isAdmin },
     dispatch,
   } = useValue();
   const navigate = useNavigate();
@@ -115,8 +115,8 @@ const JobSupportFollowUpTable = () => {
   const { FollowupData } = UseForm();
 
   useEffect(() => {
-    fsgetRequests(dispatch);
-  }, [dispatch]);
+    fsgetRequests(dispatch, isAdmin);
+  }, [dispatch, isAdmin]);
   // const [rowEditStatus, setRowEditStatus] = useState({});
   // const handleRowEditStart = (params) => {
   //   setRowEditStatus({
