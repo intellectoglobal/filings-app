@@ -49,6 +49,7 @@ def job_support_data_all(db: Session = Depends(get_db)):
 
 @router.put("/job-support-data-update")
 async def job_support_data_update(request: schemas.IGS_JOB_SUPPORT_GU,  db: Session = Depends(get_db)):
+    
     return service.update_request(db=db, request=request)
 
 

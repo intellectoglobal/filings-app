@@ -166,6 +166,7 @@ const UpdateLogics = ({ params, page, fetchDetails, closeForm }) => {
   };
 
   const editData = () => {
+    console.log("edited data::" + editedData)
     axios
       .put(`http://localhost:8000/api/v1/job-support-data-update`, editedData)
       .then((res) => {

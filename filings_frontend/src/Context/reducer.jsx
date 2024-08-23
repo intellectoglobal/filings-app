@@ -42,17 +42,17 @@ const reducer = (state, action) => {
         sidebarState: action.payload,
       };
     case "LOGGED_IN":
-      localStorage.setItem("isLogged", true);
+      // localStorage.setItem("isLogged", true);
       return {
         ...state,
         isLogged: true,
         
       };
     case "LOGGED_OUT":
-      localStorage.removeItem("isLogged");
-      localStorage.removeItem("currentUser");
-      localStorage.removeItem("apps");
-      localStorage.removeItem("user_id");
+      // localStorage.removeItem("isLogged");
+      // localStorage.removeItem("currentUser");
+      // localStorage.removeItem("apps");
+      // localStorage.removeItem("user_id");
       return {
         ...state,
         isLogged: false,
@@ -66,13 +66,13 @@ const reducer = (state, action) => {
         isAdmin: action.payload,
       };
     case "APPS_ACCESS":
-      localStorage.setItem("apps", JSON.stringify(action.payload));
+      // localStorage.setItem("apps", JSON.stringify(action.payload));
       return {
         ...state,
         apps: action.payload,
       };
     case "CURRENT_USER":
-      localStorage.setItem("currentUser", JSON.stringify(action.payload));
+      // localStorage.setItem("currentUser", JSON.stringify(action.payload));
       return {
         ...state,
         currentUser: action.payload,
@@ -98,13 +98,13 @@ const reducer = (state, action) => {
         cmdrequests: action.payload,
       };
     case "USER_ID":
-      // return{
-      //   ...state,
-      //   user_id: action.payload,
-      // }
-      const userId = action.payload;
-      localStorage.setItem("user_id", userId);
-      return { ...state, user_id: userId };
+      return{
+        ...state,
+        user_id: action.payload,
+      }
+      // const userId = action.payload;
+      // localStorage.setItem("user_id", userId);
+      // return { ...state, user_id: userId };
     default:
       throw new Error("No action matched");
   }

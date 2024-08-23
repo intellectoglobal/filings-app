@@ -21,13 +21,18 @@ import UseForm from "../UseForm";
 
 const JSUpdateForm = ({ open, setOpen, params, page, fetchDetails }) => {
   const { handleDateChange, values } = UseForm();
-  const { newValues, payment, handlePaymentChange, handleChange, handleSubmit } =
-    UpdateLogics({
-      page,
-      params,
-      fetchDetails,
-      closeForm: () => setOpen(false),
-    });
+  const {
+    newValues,
+    payment,
+    handlePaymentChange,
+    handleChange,
+    handleSubmit,
+  } = UpdateLogics({
+    page,
+    params,
+    fetchDetails,
+    closeForm: () => setOpen(false),
+  });
   const theme = createTheme({
     palette: {
       primary: {
@@ -57,6 +62,7 @@ const JSUpdateForm = ({ open, setOpen, params, page, fetchDetails }) => {
   ];
   const paymentValues = ["Task", "Weekly", "BiWeekly", "Monthly"];
   const paymentStatus = ["Not Paid", "Paid", "Pending"];
+
   return (
     <>
       <Dialog scroll={"body"} fullWidth maxWidth={"sm"} open={open}>
@@ -64,110 +70,87 @@ const JSUpdateForm = ({ open, setOpen, params, page, fetchDetails }) => {
           sx={{
             fontFamily: "PT Sans Caption",
             fontSize: "18px",
-            // margin: "30px",
             fontWeight: "500",
-            position: "relative",
             color: "#ef4565",
-            top: "1rem",
+            marginTop: "1rem",
           }}
         >
           Update Form
         </DialogTitle>
-        <DialogContent
-        // sx={{
-        //   height: newValues.status === "Confrimed" ? "450px" : "300px",
-        // }}
-        >
+        <DialogContent>
           <DialogContentText></DialogContentText>
           <Box mt={2}>
             <ThemeProvider theme={theme}>
               <ValidatorForm onSubmit={""}>
-                <Grid
-                  style={{
-                    "& .MuiTypographyH6": {
-                      fontSize: "12px",
-                      lineHeight: "35px",
-                      fontWeight: "600",
-                    },
-                    flexDirection: "column",
-                    position: "relative",
-                    marginTop: "1rem",
-                  }}
-                  container
-                  direction="row"
-                  justify="center"
-                  alignItems="center"
-                  // mt="3"
-                >
-                  <Grid
-                    style={{ display: "flex", gap: "1rem", margin: "1rem" }}
-                  >
+                <Grid container spacing={2}>
+                  <Grid item xs={12} sm={6}>
                     <TextValidator
-                      key={1}
                       label="Candidate name"
                       size="small"
                       type="text"
                       name="candidate_name"
-                      required={true}
+                      required
                       value={newValues.candidate_name}
                       onChange={handleChange}
+                      fullWidth
                     />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
                     <TextValidator
                       label="Technology"
                       size="small"
                       type="text"
                       name="technology"
-                      required={true}
+                      required
                       value={newValues.technology}
                       onChange={handleChange}
+                      fullWidth
                     />
                   </Grid>
-                  <Grid
-                    style={{ display: "flex", gap: "1rem", margin: "1rem" }}
-                  >
+                  <Grid item xs={12} sm={6}>
                     <TextValidator
-                      key={1}
                       label="Mobile"
                       size="small"
                       type="number"
                       name="mobile"
-                      required={true}
+                      required
                       value={newValues.mobile}
                       onChange={handleChange}
+                      fullWidth
                     />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
                     <TextValidator
                       label="Resource"
                       size="small"
                       type="text"
                       name="resource"
-                      required={true}
+                      required
                       value={newValues.resource}
                       onChange={handleChange}
+                      fullWidth
                     />
                   </Grid>
-                  <Grid
-                    style={{ display: "flex", gap: "1rem", margin: "1rem" }}
-                  >
+                  <Grid item xs={12} sm={6}>
                     <TextValidator
-                      label="FeedBack"
+                      label="Feedback"
                       size="small"
                       type="text"
                       name="feedback"
-                      required={true}
+                      required
                       value={newValues.feedback}
                       onChange={handleChange}
+                      fullWidth
                     />
-                    <FormControl sx={{ minWidth: "25ch" }} size="small">
-                      <InputLabel color="green" id="demo-simple-select-label">
-                        Status
-                      </InputLabel>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <FormControl fullWidth size="small">
+                      <InputLabel color="green">Status</InputLabel>
                       <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-label"
                         label="Status*"
                         color="green"
                         name="status"
-                        required={true}
+                        required
                         value={newValues.status}
                         onChange={handleChange}
                       >
@@ -179,56 +162,69 @@ const JSUpdateForm = ({ open, setOpen, params, page, fetchDetails }) => {
                       </Select>
                     </FormControl>
                   </Grid>
-                  {newValues.status === "Confrimed" ? (
-                    <Grid
-                      style={{ display: "flex", gap: "1rem", margin: "1rem" }}
-                    >
-                      <FormControl sx={{ minWidth: "25ch" }} size="small">
-                        <InputLabel color="green" id="demo-simple-select-label">
-                          Payment Peroid
-                        </InputLabel>
-                        <Select
-                          labelId="demo-simple-select-label"
-                          id="demo-simple-label"
-                          label="Payment_Period*"
-                          color="green"
-                          required={true}
-                          name="payment_period"
-                          value={newValues.payment_period}
-                          onChange={handleChange}
-                        >
-                          {paymentValues.map((val, index) => (
-                            <MenuItem key={index} value={val}>
-                              {val}
-                            </MenuItem>
-                          ))}
-                        </Select>
-                      </FormControl>
-                      <TextValidator
-                        label="Payable Amount"
-                        size="small"
-                        type="text"
-                        name="payment_amount"
-                        required={true}
-                        value={payment.payment_amount}
-                        onChange={handlePaymentChange}
-                      />
-                    </Grid>
-                  ) : (
-                    <></>
+
+                  {newValues.status === "Confrimed" && (
+                    <>
+                      <Grid item xs={12} sm={6}>
+                        <FormControl fullWidth size="small">
+                          <InputLabel color="green">Payment Period</InputLabel>
+                          <Select
+                            label="Payment_Period*"
+                            color="green"
+                            required
+                            name="payment_period"
+                            value={newValues.payment_period}
+                            onChange={handleChange}
+                          >
+                            {paymentValues.map((val, index) => (
+                              <MenuItem key={index} value={val}>
+                                {val}
+                              </MenuItem>
+                            ))}
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <TextValidator
+                          label="Payable Amount"
+                          size="small"
+                          type="text"
+                          name="payment_amount"
+                          required
+                          value={payment.payment_amount}
+                          onChange={handlePaymentChange}
+                          fullWidth
+                        />
+                      </Grid>
+                    </>
                   )}
-                  {newValues.status === "Follow Up" ? (
-                    <Grid
-                      style={{ display: "flex", gap: "1rem", margin: "1rem" }}
-                    >
-                      <FormControl sx={{ minWidth: "25ch" }} size="small">
+
+                  {newValues.status === "Follow Up" && (
+                    <>
+                      <Grid item xs={12} sm={6}>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                           <DatePicker
-                            orientation="landscape"
+                            label="Start Date"
+                            value={values.start_date}
+                            onChange={(date) =>
+                              handleDateChange("start_date", date)
+                            }
+                            renderInput={(params) => (
+                              <TextValidator
+                                color="green"
+                                size="small"
+                                {...params}
+                                helperText={null}
+                                fullWidth
+                              />
+                            )}
+                          />
+                        </LocalizationProvider>
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                          <DatePicker
                             label="Follow Up Date"
-                            openTo="day"
-                            format="dd-MM-yyyy"
-                            views={["day"]}
                             value={values.followup_date}
                             onChange={(date) =>
                               handleDateChange("followup_date", date)
@@ -244,25 +240,18 @@ const JSUpdateForm = ({ open, setOpen, params, page, fetchDetails }) => {
                             )}
                           />
                         </LocalizationProvider>
-                      </FormControl>
-                    </Grid>
-                  ) : (
-                    <></>
+                      </Grid>
+                    </>
                   )}
-                  {newValues.status === "Confrimed" ? (
-                    <Grid
-                      style={{ display: "flex", gap: "1rem", margin: "1rem" }}
-                    >
-                      <FormControl sx={{ minWidth: "25ch" }} size="small">
-                        <InputLabel color="green" id="demo-simple-select-label">
-                          Payment Status
-                        </InputLabel>
+
+                  {newValues.status === "Confrimed" && (
+                    <Grid item xs={12}>
+                      <FormControl fullWidth size="small">
+                        <InputLabel color="green">Payment Status</InputLabel>
                         <Select
-                          labelId="demo-simple-select-label"
-                          id="demo-simple-label"
                           label="Payment_Status*"
                           color="green"
-                          required={true}
+                          required
                           name="payment_status"
                           value={payment.payment_status}
                           onChange={handlePaymentChange}
@@ -275,36 +264,30 @@ const JSUpdateForm = ({ open, setOpen, params, page, fetchDetails }) => {
                         </Select>
                       </FormControl>
                     </Grid>
-                  ) : (
-                    <></>
                   )}
                 </Grid>
-                <Stack spacing={40} direction="row" mt="1rem">
+                <Stack spacing={2} direction="row" mt="1rem">
                   <Button
                     variant="contained"
                     color="secondary"
-                    // disabled={activeStep === 0}
                     onClick={() => {
-                      {
-                        setOpen(false);
-                      }
+                      setOpen(false);
                     }}
                   >
                     Back
                   </Button>
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    style={{ left: "4rem" }}
-                    onClick={() => {
-                      {
+                  <Grid container justifyContent="flex-end">
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      onClick={() => {
                         handleSubmit();
                         setOpen(false);
-                      }
-                    }}
-                  >
-                    Submit
-                  </Button>
+                      }}
+                    >
+                      Submit
+                    </Button>
+                  </Grid>
                 </Stack>
               </ValidatorForm>
             </ThemeProvider>

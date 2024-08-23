@@ -24,6 +24,8 @@ def get_requests(db: Session):
 
 
 def update_request(db: Session, request: schemas.IGS_JOB_SUPPORT) -> int:
+    print("Received payload:",request.dict())  # Convert the Pydantic model to a dictionary
+    
     db_req = models.IGS_JOB_SUPPORT(**request.dict())
     db_req.id = request.id
     db.merge(db_req)

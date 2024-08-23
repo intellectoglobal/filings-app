@@ -47,25 +47,25 @@ const UseForm = (params) => {
   const handleDateChange = (fieldName, date) => {
     setValues((prevValues) => ({
       ...prevValues,
-      [fieldName]: date ? date.toDate() : new Date(),
+      [fieldName]: date ? date.toDate() : new Date(), // Handle null case by setting the current date
     }));
   };
 
-  const FollowupDate = () => {
-    let currentDate = new Date();
-    switch (values.payment_period) {
-      case "Task":
-        return currentDate;
-      case "Weekly":
-        return new Date(currentDate.getTime() + 6 * 24 * 60 * 60 * 1000);
-      case "BiWeekly":
-        return new Date(currentDate.getTime() + 14 * 24 * 60 * 60 * 1000);
-      case "Monthly":
-        return new Date(currentDate.getTime() + 30 * 24 * 60 * 60 * 1000);
-      default:
-        return currentDate;
-    }
-  };
+  // const FollowupDate = () => {
+  //   let currentDate = new Date();
+  //   switch (values.payment_period) {
+  //     case "Task":
+  //       return currentDate;
+  //     case "Weekly":
+  //       return new Date(currentDate.getTime() + 6 * 24 * 60 * 60 * 1000);
+  //     case "BiWeekly":
+  //       return new Date(currentDate.getTime() + 14 * 24 * 60 * 60 * 1000);
+  //     case "Monthly":
+  //       return new Date(currentDate.getTime() + 30 * 24 * 60 * 60 * 1000);
+  //     default:
+  //       return currentDate;
+  //   }
+  // };
 
   const enqdata = {
     candidate_name: values.candidate_name,
@@ -91,6 +91,8 @@ const UseForm = (params) => {
     updated_by: values.updated_by,
     user_id: user_id,
   };
+  
+console.log("jobsupport data ::", enqdata);
 
   const postData = () => {
     console.log("jobsuport data ::", enqdata);

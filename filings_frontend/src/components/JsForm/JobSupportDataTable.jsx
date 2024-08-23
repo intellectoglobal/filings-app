@@ -25,46 +25,46 @@ import { useSelector, useDispatch } from "react-redux";
 
 const JobSupportDataTable = () => {
   const {
-    // state: { isLogged, isAdmin },
+    state: { isLogged, isAdmin },
   } = useValue();
   const navigate = useNavigate();
-  const dispatch = useDispatch();  
-  // const login = () => {
-  //   navigate("/login");
-  // };
+  // const dispatch = useDispatch();  
+  const login = () => {
+    navigate("/login");
+  };
 
   // Access state from Redux store
-  const { isLogged, isAdmin, fsrequests, user_id } = useSelector(
-    (state) => state
-  );
+  // const { isLogged, isAdmin, fsrequests, user_id } = useSelector(
+  //   (state) => state
+  // );
 
 
   
-  // const [data, setData] = useState([]);
-  // const [refresh, setRefresh] = useState(0);
-  // const {
-  //   state: { fsrequests, user_id },
-  //   dispatch,
-  // } = useValue();
+  const [data, setData] = useState([]);
+  const [refresh, setRefresh] = useState(0);
+  const {
+    state: { fsrequests, user_id },
+    dispatch,
+  } = useValue();
 
   const handleRefresh = async () => {
     await fsgetRequests(dispatch, user_id, isAdmin);
   };
-  // console.log("values came from the fsrequests ::", fsrequests);
+  console.log("values came from the fsrequests ::", fsrequests);
 
-  // useEffect(() => {
-  //   //  if(fsrequests.length === 0)
-  //   handleRefresh();
-  // }, []);
+  useEffect(() => {
+    //  if(fsrequests.length === 0)
+    handleRefresh();
+  }, []);
 
-   useEffect(() => {
-     handleRefresh();
-     navigate("/login");
-   }, [dispatch, user_id, isAdmin,navigate]);
+  //  useEffect(() => {
+  //    handleRefresh();
+  //    navigate("/login");
+  //  }, [dispatch, user_id, isAdmin,navigate]);
 
-   useEffect(() => {
-     console.log("Values came from the fsrequests ::", fsrequests);
-   }, [fsrequests]);
+  //  useEffect(() => {
+  //    console.log("Values came from the fsrequests ::", fsrequests);
+  //  }, [fsrequests]);
 
   const inputBox = {
     "& .MuiDataGrid-toolbarQuickFilter": {
